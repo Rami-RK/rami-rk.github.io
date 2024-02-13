@@ -3,14 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LaTeX Example</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>Article Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .article-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .image {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <p>This is a LaTeX example:</p>
-    <div>
-        \(x = \frac{{-b \pm \sqrt{{b^2 - 4ac}}}}{{2a}}\)
+    <h1>Article Title</h1>
+    <div class="article-content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod ligula non nunc malesuada, vitae fermentum magna venenatis. Donec vestibulum libero et nibh varius, quis tempor lorem euismod.</p>
+        
+        <div class="image">
+            <img src="photo1.jpg" alt="Photo 1">
+            <p>Caption for Photo 1</p>
+        </div>
+        
+        <p>Nullam nec ipsum vel velit tristique sollicitudin. Duis posuere commodo metus, eget mattis lectus hendrerit at. Mauris eget neque eu dui tempor placerat.</p>
+        
+        <div class="image">
+            <img src="photo2.jpg" alt="Photo 2">
+            <p>Caption for Photo 2</p>
+        </div>
+        
+        <p>Here is a mathematical equation:</p>
+        <div>
+            \(x = \frac{{-b \pm \sqrt{{b^2 - 4ac}}}}{{2a}}\)
+        </div>
     </div>
 </body>
 </html>
