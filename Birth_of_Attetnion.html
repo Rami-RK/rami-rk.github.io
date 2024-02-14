@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <title>Birth of Attention Mechanism</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .article-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .image {
+            text-align: center;
+        }
+		.justified {
+            text-align: justify;
+	    }
+		
+    </style>
+</head>
+<body>
+    <h2><center>Birth of Attention Mechanism</center></h2>
+    <div class="article-content">
+        <p class="justified">
+		We are going to understand the attention mechanism in the context of language translation using seq2seq (encoder-decoder) architecture.
+		In the example given below in Fig.1, a Hindi sentence “मुझे खाना पसंद है” is fed into an encoder which has been translated(decoded) by 
+		a decoder into English as “I love to eat”. 
+		<br><br>
+
+		The encoder is used to ingest the input. It simply computes 
+		all the <b>h of T’s </b>(i.e. h(1), h(2), …) at every time step of the input and gives one final hidden state vector, 
+		which we'll call <b>h(T)</b>, assuming that the input sequence has a length of <b>T</b>.  
+		<br><br>
+		Here, h(T) is the output of the encoder, which is also the input to the decoder. 
+		We can think of h(T) as a vector, which is a compressed representation of the input sequence.
+		<br><br>
+		  <center><b>h(T): A compressed representation of the input &rarr; “Thought Vector”. </b></center>
+		</p>
+        
+        <div class="image">
+            <img src="https://www.dropbox.com/scl/fi/3iq4rrel6ry23e12s1fsg/enc_dec_rnn.png?rlkey=dcbj3sn51sy3wlsa7vmsepw3v&raw=1" alt="Photo 1" width="800" height="400">
+        
+            <p>Figure 1</p>
+        </div>
+        <h3>Let’s see the decoder in detail.</h3>
+        <p class="justified">
+		Every RNN unit has two sources of input data, the first being the actual input and the second being the previous head state.
+		The decoder is also an RNN but a different RNN from the encoder. In this diagram, the inputs go along the bottom of 
+		the RNN unit while the previous head state comes through the left. For a normal RNN, the initial hidden state is 
+		usually just a vector of zeros, or maybe some trainable but fixed vector. In this case, for the decoder, the initial
+		hidden state actually comes from the output of the encoder, which is h(T). Thus, the job of the decoder is to 
+		decompress the compressed representation of the input. 
+		</p>
+                
+		<h3>What goes into the bottom of the decoder RNN unit?  </h3>
+        <p class="justified">
+		At the beginning, there's a special token called  &lt;SOS&gt;  which indicates the start of a sentence or sequence. 
+		The decoder RNN acts like a text generation tool, similar to how forecasts are made in time series analysis, 
+		where it predicts the next element based on previous ones, such a model is also known as <b> an autoregressive model 
+		or causal model </b>. So, starting with the &lt;SOS&gt; token and an initial hidden state, we predict the first word of 
+		the translated sequence. After getting this first word, we put it back into the decoder as input, using it to 
+		predict the second word in the sequence. We keep repeating this process until we've generated the entire translated 
+		sequence. To know when to stop, we watch for the special end token produced by our model, signaling that the translation 
+		is complete.<br><br>Note that, we need a lot of data sets containing paired Hindi sentences and equivalent English sentences 
+		to train the model, and only after the model performs the translation as shown in the diagram above.
+		</p>
+		<h3> <center>Problem with Seq2Seq </center></h3>
+		<ol><b>
+		<li>Every input sequence is converted using an encoder RNN into a single vector. 
+		Here's the problem - What if the input sentence is very long? 
+		The final encoder state h(T) always has the same size and has to remember the whole input.</li><br>
+		<li>Is this how we translate text as humans? No! More likely, we focus on a few words at a time.</li>
+		</b></ol>
+		<h3> <center>To Solve this Problem: Attention is originated for Seq2Seq</center></h3>
+		
+		 <div class="image">
+            <img src="https://www.dropbox.com/scl/fi/lr5ewhcgrse843vkbkqps/attention_def.png?rlkey=m48dfme5oe5fmm69vuzjyjl7j&raw=1" alt="Photo 2" width="570" height="200">
+        </div>
+		
+		<p class="justified">
+		Let’s try to understand this attention concept with a simple example, where the input: <b>“मेँ   खेलने जा रहा हूँ “ </b>is fed into 
+		an encoder and translated into <b> “I am going to play” </b> as an output from the decoder as shown in fig.2 below. 
+		In this figure <b>‘i/p’</b> at bottom represents input sequence and <b>‘o/p’ </b>at top rerpesents output sequece.
+		<br><br> 
+		Here, the list '\( t_1 \)'contains the values for attention that <b> output at time step 1  should pay attention to all input 
+		sequences </b>. The list <b>' \( t_2 \)' </b> contains the values for attention that <b>output at time step 2 should pay attention to all 
+		input sequences </b> and similarly other lists are also representing attention values for input sequences for different 
+		output at different time steps.		
+		</p>
+		
+		 <div class="image">
+            <img src="https://www.dropbox.com/scl/fi/sz7kitflnn2l3vy4d6pnz/attention_values.png?rlkey=v21nbz1t1j6t6iwe2ysyqt3rx&raw=1" alt="Photo 2" width="500" height="400">
+            <p>Figure 2</p>
+        </div>
+		
+		<p class="justified">
+		Let’s understand the attention values inside list 't1'. When we're aiming to generate the first word 'I' in our output, 
+		what we're actually doing is figuring out the likelihood of each input word being the one we should focus on. At this stage,
+		it's fine if we don't know the translations for 'खेलने' or 'जा रहा' or 'हूँ', as long as we know the translation for 'मेँ' because that's 
+		the word we need to generate first. So, we can simplify things by saying that, at this point, we only need to pay attention 
+		to the first word in the input and can ignore everything else. This is the reason the attention value is 1 
+		for the first input (मेँ) and 0 for all other input sequences. <br><br>
+		What about the second time step word “am” in output? We just need to focus on the last word हूँ in the input, 
+		and thus, the list ‘t2’ contains attention value 1 at last and 0 for all other input sequences.<br><br>
+		
+		What about the third time step word “going” in output? Is it always going to be that we only need to focus on one word at a time? 
+		No. We will focus on two input sequences ‘जा ' and 'रहा’ and ignore everything else. This is the reason, 
+		the list t3 contains attention values 0.5 and 0.5 at respective time 
+		step positions of ‘जा ' and 'रहा’ and the remaining all are zero. Similarly, for the remaining time step. <br><br>
+		
+		Is this the encoder-decoder architecture doing, that we saw previously in Fig.1? No! Every time step 
+		focuses on the encoding of the entire sentence (i.e. final h(T)) 
+		because that is the encoding that we are feeding to every time step. This is the problem we need to fix.<br><br>
+		<b>We need to learn to pay attention to certain important parts of the sentence. Ideally, at each time-step, 
+		we should feed only the relevant information i.e. encodings of relevant words to the decoder.</b>
+		</p>
+		
+		<h3> <center>Improved Encoder-Decoder Architecture with Attention </center></h3>
+		
+		<p class="justified">
+		
+		Let’s see how to improve the previous encoder-decoder architecture with the concept of Attention.<br><br>
+		
+		In the given Fig.3 below, the decoder is drawn on top of the encoder and instead of feeding only 
+		the last hidden state of the encoder to the decoder all hidden states are fed into the decoder at each time step 
+		with some weightage noted by alpha. For the sake of simplicity, connection for only output at time state t=2 and t=4 have shown.
+		<br><br>
+		
+		A weighted combination of each output is taken from the encoder cells (i.e., vector of the same shape) and fed
+		into each step cell of the decoder. Assume for the time being that, we got these alpha’s 
+		(i.e. attention weights for each hidden state from the encoder) from some magic, we will figure out how to calculate it.
+		<br><br>
+		
+		<b>For output at the time state t=2 i.e. ‘Love’,</b><br>
+		\(α_{2,1}\) : is the weight of attention that it should pay to input at time state 1<br>
+		\(α_{2,2}\) : is the weight of attention that it should pay to input at time state 2<br>
+		\(α_{2,3}\) : is the weight of attention that it should pay to input at time state 3<br>
+		\(α_{2,4}\) : is the weight of attention that it should pay to input at time state 4<br><br>
+		
+		<b>Similarly, for output at the time state t=4 i.e. ‘eat’,,</b><br>
+		\(α_{4,1}\) : is the weight of attention that it should pay to input at time state 1<br>
+		\(α_{4,2}\) : is the weight of attention that it should pay to input at time state 2<br>
+		\(α_{4,3}\) : is the weight of attention that it should pay to input at time state 3<br>
+		\(α_{4,4}\) : is the weight of attention that it should pay to input at time state 4
+	
+		</p>
+		
+		 <div class="image">
+            <img src="https://www.dropbox.com/scl/fi/9l2h60yo4dcb7sz8r3uf4/rnn_with_attention.png?rlkey=t3ev0nx7xhq7e3oqth4it5i8s&raw=1" alt="Photo 3" width="450" height="725">
+            <p>Figure 3</p>
+        </div>
+		
+		<h3> <center>Context Vector</center></h3>
+		<p class="justified">
+		
+		Now, defining weighted combination as a context vector, say for output at time step 4:<br><br>
+		
+		<b>\( C(4) = α_{4,1} * h(1)+ α_{4,2} * h(2) + α_{4,3} * h(3)+  α_{4,4} * h(4) \)</b> <br><br>
+		
+		Denoting:<br>
+		Input time step by j=1, 2, ..., T <br>
+		Output time step by i =1,2, ..., t <br>
+		 We can generalize the above equation as a <b>Context vector: </b>\( C(i)=\sum_{j=1}^{T_x} \alpha_{i,j}h(j) \)
+		 <br><br>
+		 Here, the context vector is simply the weighted sum of h’s where the weights are the alphas.
+		 So, this is the basic idea behind attention. We have weights from every input to every output, 
+		 which tells us how much each output should pay attention to which input.
+		</p>
+		<h3> <center>Calculating Attention Weights</center></h3>
+		
+		<p class="justified">
+		 Before calculating alphas, let’s introduce a term called alignment score noted by \( e_{i,j} \) and defined 
+		as: at \( i^{th} \) time step of decoder, how important is the \( j^{th} \) word in the input. 
+		This should depend on or should be a function of jth word and whatever has happened in the decoder so far. 
+		Note, \(S_1, S_2…, S_t \)   are decoder side hidden states.
+		<br><br>
+		<b> <center>score: \( e_{i,j} = f( S_{i-1}, h_j ) \)</center> </b>
+		<br><br>
+		We are interested in \( e_(i,j) \)  for all the input words. For \( j^{th} \) input word, we are interested in knowing how
+		important it is for the ith time-step output of the decoder. <b>There are several ways
+		this function can be defined and no need to know at this moment but the intuition that it depends on\(  S_{i-1} \),and  \( h_j \) 
+		is sufficient.</b><br><br>
+		Now across all the input words, we want the sum of this score value to be one. We don’t want some arbitrary weights.  
+		It is just like probability distribution over what word is important by how much. We can achieve this by taking <b>SoftMax of the score.</b>  
+		<br><br>
+		<b> <center>\( \alpha_{i,j} = \frac{e_{i,j}}{\sum_{k=1}^{T} \exp(e_{i,k})}  \)</center> </b>
+		<br><br>
+		
+		<b>Attention Weight, \( α_{i,j} \) </b>denotes the probability of focusing on the jth word to produce ith output word. 
+		</p>
+     
+    </div>
+</body>
+</html>
