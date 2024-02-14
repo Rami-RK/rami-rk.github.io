@@ -194,7 +194,7 @@
 		Now across all the input words, we want the sum of this score value to be one. We don’t want some arbitrary weights.  
 		It is just like probability distribution over what word is important by how much. We can achieve this by taking <b>SoftMax of the score.</b>  
 		<br><br>
-		<b> <center>\( \alpha_{i,j} = \frac{e_{i,j}}{\sum_{k=1}^{T} \exp(e_{i,k})}  \)</center> </b>
+		<b> <center>\( \alpha_{i,j} = \frac{ \exp(e_{i,j})}{\sum_{k=1}^{T} \exp(e_{i,k})}  \)</center> </b>
 		<br><br>
 		
 		<b>Attention Weight, \( α_{i,j} \) </b>denotes the probability of focusing on the jth word to produce ith output word. 
