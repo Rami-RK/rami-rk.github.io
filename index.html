@@ -1,169 +1,248 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Resume</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramendra Kumar - AI/ML & Data Science</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        
+        .header { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 2rem 0; box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        h1 { text-align: center; color: #2c3e50; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .subtitle { text-align: center; color: #7f8c8d; font-size: 1.2rem; }
+        
+        .tabs { display: flex; background: #34495e; margin: 2rem 0; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+        .tab-btn { flex: 1; padding: 1.2rem 1rem; background: none; border: none; color: white; font-size: 1.1rem; font-weight: 500; cursor: pointer; transition: all 0.3s ease; }
+        .tab-btn:hover { background: rgba(255,255,255,0.1); }
+        .tab-btn.active { background: #3498db; }
+        
+        .tab-content { display: none; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 20px; padding: 2.5rem; margin-bottom: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.1); min-height: 60vh; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .hero { text-align: center; margin-bottom: 3rem; }
+        .hero img { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; margin: 0 auto 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .hero h2 { color: #2c3e50; font-size: 2rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.1rem; color: #555; max-width: 600px; margin: 0 auto; }
+        
+        .articles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
+        .article-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.1); transition: all 0.3s ease; cursor: pointer; }
+        .article-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .article-img { height: 200px; background: linear-gradient(45deg, #3498db, #2ecc71); display: flex; align-items: center; justify-content: center; color: white; font-size: 4rem; }
+        .article-content { padding: 1.5rem; }
+        .article-title { font-size: 1.3rem; color: #2c3e50; margin-bottom: 0.5rem; font-weight: 600; }
+        .article-excerpt { color: #7f8c8d; font-size: 0.95rem; line-height: 1.5; }
+        
+        .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .about-card { background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center; }
+        
+        @media (max-width: 768px) {
+            .tabs { flex-direction: column; }
+            .tab-btn { padding: 1rem; }
+            .container { padding: 0 1rem; }
+            h1 { font-size: 2rem; }
+        }
+        
+        footer { text-align: center; padding: 2rem; color: white; background: rgba(0,0,0,0.2); }
+		
+		.name-with-photo {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 14px;
+		}
+
+		.profile-photo {
+			width: 85px;
+			height: 85px;
+			border-radius: 50%;
+			object-fit: cover;
+			border: 2px solid #4f46e5; /* matches modern AI theme */
+		}
+		
+		.justify-text {
+			text-align: justify;
+			text-justify: inter-word;
+			line-height: 1.7;
+		}
+
+		
+    </style>
 </head>
 <body>
-<style>
-.container {
- display: grid;
- align-items: center; 
- grid-template-columns: 1fr 1fr 1fr 1fr;
- column-gap: 3px;
-}
- </style>
+    <header class="header">
+        <div class="container">
+		<div class="name-with-photo">
+			<img src="ramendra-photo.png" alt="Ramendra Kumar" class="profile-photo">
+			<h1>Ramendra Kumar</h1>
+		</div>
+
+			
+			<p class="subtitle">Demystifying AI and Machine Learning, One Concept at a Time.</p>
+        </div>
+    </header>
 
     <div class="container">
-      <div class="image">
-        <img src="ramendra-photo.png"  width="240" height="207">
-      </div>
-      <div class="text">
-	    <h2>Ramendra Kumar</h2>
-        <p>Email: karna.ramenk@gmail.com</p>
-        <p>LinkedIn: <a href="https://www.linkedin.com/in/ramendra-kumar-57334478/">Ramendra Kumar</a></p>
-        <p>Github: <a href="https://github.com/rami-rk">rami-rk</a></p>
-        <p>Phone: 98******42</p>
-      </div>
+        <nav class="tabs">
+            <button class="tab-btn active" onclick="openTab('aiml')">AI/ML</button>
+            <button class="tab-btn" onclick="openTab('math')">Math</button>
+            <button class="tab-btn" onclick="openTab('about')">About Me</button>
+        </nav>
+
+        <div id="aiml" class="tab-content active">
+            <div class="hero">
+                <h2>🧠 Artificial Intelligence, Machine Learning & GenAI</h2>
+                <p>Practical insights into classical machine learning and modern AI covering NLP & LLMs, Computer Vision, MLOps/LLMOps, and AWS deployment.</p>
+            </div>
+            <div class="articles-grid">
+                <a href="AIML/self_attention.html" class="article-card" target="_blank" rel="noopener">
+                    <div class="article-img">📚</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Self Attention</h3>
+                        <p class="article-excerpt">From intuition to Scaled Dot-Product Attention. Part of the Transformers & Attention series, this article explores the core idea behind modern Transformer architectures: self-attention.</p>
+                    </div>
+                </a>
+                <a href="AIML/birth_of_attention_mechanism.html" class="article-card" target="_blank" rel="noopener">
+                    <div class="article-img">🧾</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Birth of Attention Mechanism</h3>
+                        <p class="article-excerpt">This article kicks off the Transformers & Attention series by exploring why attention emerged and how it became 
+						the foundation of modern Transformer-based models like BERT and GPT.</p>
+                    </div>
+                </a>
+                <a href="https://github.com/Rami-RK/image_segmentation" class="article-card" target="_blank" rel="noopener">
+                    <div class="article-img">🖼️</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Image Segmentation: U-Net & DeepLabV3+</h3>
+                        <p class="article-excerpt">Computer vision pipelines for segmentation using modern deep learning architectures.</p>
+                    </div>
+                </a>
+                <a href="https://huggingface.co/spaces/rami-rk" class="article-card" target="_blank" rel="noopener">
+                    <div class="article-img">⚡</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Gradio Apps on Hugging Face Spaces</h3>
+                        <p class="article-excerpt">Deploy interactive ML demos—classification, summarization, and more—via lightweight Gradio apps.</p>
+                    </div>
+                </a>
+                <a href="https://github.com/Rami-RK/Time_Series" class="article-card" target="_blank" rel="noopener">
+                    <div class="article-img">📈</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Time Series: Sunspot Analysis</h3>
+                        <p class="article-excerpt">Forecasting fundamentals and exploratory analysis using classic time-series datasets.</p>
+                    </div>
+                </a>
+                <a href="https://github.com/Rami-RK" class="article-card" target="_blank" rel="noopener">
+                    <div class="article-img">🧑‍💻</div>
+                    <div class="article-content">
+                        <h3 class="article-title">More Projects on GitHub</h3>
+                        <p class="article-excerpt">Explore additional notebooks and repos: transformers, LangChain explorations, ML starters, and deployments.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div id="math" class="tab-content">
+            <div class="hero">
+                <h2>📐 Math Foundations</h2>
+                <p>Core topics that power ML: linear algebra, probability & statistics, calculus, numerical methods, and optimization.</p>
+            </div>
+                        <div class="articles-grid">
+                <a href="https://rami-rk.github.io/" class="article-card" target="_blank" rel="noopener">
+                    <div class="article-img">📄</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Resume & Background</h3>
+                        <p class="article-excerpt">Academic and professional overview, including coursework and research experience.</p>
+                    </div>
+                </a>
+                <div class="article-card" style="cursor: default;">
+                    <div class="article-img">📚</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Relevant Coursework</h3>
+                        <p class="article-excerpt">Linear Algebra • Probability & Statistics • Numerical Methods • Differential & Integral Calculus</p>
+                    </div>
+                </div>
+                <div class="article-card" style="cursor: default;">
+                    <div class="article-img">🧠</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Deep Learning Topics</h3>
+                        <p class="article-excerpt">CNNs • Sequence Models • Optimization (GD/Adam) • Attention & Transformers</p>
+                    </div>
+                </div>
+                <a href="https://www.sciencedirect.com/science/article/pii/S0378778820300143" class="article-card" target="_blank" rel="noopener">
+                    <div class="article-img">📰</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Publication: Energy & Buildings (Feb 2020)</h3>
+                        <p class="article-excerpt">Performance Analysis of an in-situ Data Centre (Elsevier).</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div id="about" class="tab-content">
+            <div class="hero">
+                <div class="hero-img-placeholder">
+                    <!-- Replace with your photo: <img src="your-photo.jpg" alt="Rami RK"> -->
+                </div>
+                <h2>Data Scientist | AI/ML Consultant</h2>
+				<p class="justify-text">
+				Welcome, everyone!
+				<br>
+
+				I’m Ramendra, and I love being called Rami.
+
+				I’m a passionate learner and educator, and I created this blog to share knowledge across Mathematics, Artificial Intelligence, and Machine Learning. The content here spans a broad spectrum-from mathematical and statistical foundations to modern AI, Machine Learning, and Data Science applications.
+
+				In today’s world, intelligent systems with heavy  mathematics under the hood quietly power much of what we interact with every day. I believe that understanding these foundations whether you come from a technical or non-technical background empowers you to better navigate and shape the future.
+
+				Through this blog, I aim to demystify AI and Machine Learning, breaking the notion that they are complex or accessible only to a select few. With curiosity, consistency, and the right mindset, anyone can begin this journey.
+
+				The real magic happens when mathematics meets data, algorithms, and computational power—from personal machines to scalable cloud computing platforms. This is where ideas evolve into meaningful, real-world impact.								
+				<br>
+				I am a Data Scientist currently working at Volkswagen (Scania), focused on real-world AI solutions—from classical ML to transformer-based NLP (BERT/GPT variants), RAG, and production MLOps/LLMOps on AWS.</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>🚀 Current Work</h3>
+                    <p>Multi-modal RAG pipelines, AWS Bedrock agents, document processing with OCR & multilingual NLP.</p>
+                </div>
+                <div class="about-card">
+                    <h3>💻 Tech Stack</h3>
+                    <p>Python, AWS (Bedrock, SageMaker), LangChain, Weaviate, Docker/K8s, Langfuse monitoring.</p>
+                </div>
+                <div class="about-card">
+                    <h3>📍 Location</h3>
+                    <p>Delhi, NCR,India</p>
+                </div>
+                <div class="about-card">
+                    <h3>✉️ Contact</h3>
+                    <p><a href="karna.ramenk@gmail.com">your-email@example.com</a></p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div>
-        <h3>SUMMARY</h3>
-        <p>
-        I am a Data Scientist, currently working at Volkswagen(Scania), contributing to real-world AI projects with hands-on experience 
-	in deploying and fine-tuning  both classical & transformer-based models such as BERT, GPT variants, and publicly available LLMs. 
-	Skilled in leveraging cloud platforms like AWS, including AWS Bedrock, for scalable AI/ML development. Experienced 
-	in implementing MLOps/LLMOps practices for model lifecycle management, automation, and observability. Proficient 
-	in orchestrating AI workflows using Kubernetes and building robust NLP and Generative AI solutions.
+    <footer>
+        <p>&copy; 2025 Ramendra Kumar. Built for the ❤️ of  AI/ML,& Math.</p>
+    </footer>
 
-        </p>
-    </div>
-
-    <div>
-        <h3>WORK EXPERIENCE</h3>
-        <ul>
-
-            <li>
-                <strong>Data Scientist | AI/ML Consultant: Volkswagen Group Technology Solutions India, Gurugram. (Nov 2024 - Continue)</strong>
-                <ul>
-                    <li>Extensive involvement in end-to-end AI/ML project lifecycles, from problem scoping to development, deployment, and monitoring.</li>
-                </ul>
-            </li>
-
-		
-            <li>
-                <strong>Principal Consultant: NSE TalentSprint, Hyd. (April 2021 - Oct 2024)</strong>
-                <ul>
-                    <li>Led and coordinated with the academic and operational team</li>
-                    <li>Proposed and designed industry-relevant Projects and Assignments in the ML & Generative AI Domain</li>
-                    <li>Giving Lecture sessions on selected topics</li>
-                </ul>
-            </li>
-            <li>
-                <strong>Research Fellow: IIT Delhi (March - May, 2019)</strong>
-                <ul>
-                    <li>Project: Energy Efficiency and Occupant Comfort Management in the Built Environment</li>
-                    <li>Responsibility: BMS Data Collection, Analysis, and Modeling.</li>
-                </ul>
-            </li>
-            <li>
-                <strong>Assistant Professor: Thapathali Campus, Kathmandu, Nepal (June 2015 – Dec 2016)</strong>
-            </li>
-            <li>
-                <strong>Lecturer: Sagarmatha Engineering College, Kathmandu, Nepal (Nov 2011 – May 2015)</strong>
-            </li>
-        </ul>
-    </div>
-
-    <div>
-        <h3>ACADEMIC DETAILS</h3>
-        <ul>
-            <li>M.S. Mech.Eng.(Thermal Science) (CGPA: 8.57/10) - I.I.T. Delhi 2019</li>
-            <li>B.E. Mechanical Engineering (70.82%) - T.U. Kathmandu, Nepal 2010</li>
-        </ul>
-    </div>
-
-    <div>
-        <h3>TECHNICAL SKILLS</h3>
-        <p>
-            Machine Learning, MLOps, Deep Learning, CV, NLP: BERT, GPT, ChatGPT, T5, LLMs | Python: NumPy, Pandas, Matplotlib, Scikit-Learn, TensorFlow/Keras, PyTorch, AWS (SageMaker, S3 Cloud9, EC2, ECR-ECS-Fargate), SQL
-        </p>
-    </div>
-
-    <div>
-        <h3>COURSES (Relevant to DS/ML)</h3>
-        <ul>
-            <li>Computer Programming</li>
-            <li>Probability and Statistics</li>
-            <li>Numerical Methods</li>
-            <li>Linear Algebra</li>
-            <li>Differential and Integral Calculus</li>
-            <li>Engineering Economics</li>
-            <li>Experimental Methods</li>
-            <li>Economics & Planning of Energy Systems</li>
-	    <li><a href="https://www.linkedin.com/in/ramendra-kumar-57334478/details/certifications">CNN, NN & Deep Learning, Sequence Models</a></li>
-		
-        </ul>
-    </div>
-
-    <div>
-        <h3>IIT DELHI THESIS</h3>
-        <ul>
-            <li>
-                <strong>Title: Performance analysis of an in-situ Data Center</strong>
-                <ul>
-                    <li>Supervisor: Prof. Sanjeev Jain</li>
-                    <li>Objectives:</li>
-                    <ol>
-                        <li>Energy analysis of the data center at IIT, Delhi. (Application of Data Analysis, Machine Learning: Multivariable Regression and Neural Network)</li>
-                        <li>Investigation of airflow management and temperature distribution inside the server room. (Application of Ansys ICEPAK - CFD)</li>
-                    </ol>
-                    <li>Outcome: Identification of Energy Conservation Opportunities.</li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-
-    <div>
-        <h3>SCHOLASTIC ACHIEVEMENTS</h3>
-        <ul>
-            <li>Got admission in the Regular category in B. Engineering, Pulchowk Campus.</li>
-		<ul>
-			<li>Merit-based students, through entrance exams, are selected in this category and get full scholarships throughout four years.</li>
-		</ul>
-            <li>Got best project award - HVAC domain in MSR project (IIT Delhi) –2018/19</li>
-        </ul>
-    </div>
-
-    <div>
-        <h3>PERSONAL PROJECTS</h3>
-        <ul>
-            <li> <a href="https://github.com/Rami-RK/Machine-Learning-Projects"> Implementation of classical ML:</a>
-                
-               
-                <ul>
-                    <li>Credit Card Fraud Detection (Imbalance Classification)</li>
-                    <li>Loan amount prediction</li>
-                    <li>Housing price prediction</li>
-                </ul>
-            </li>
-            <li> <a href="https://huggingface.co/spaces/Ramendra/demo_B21_AIML">CNN-Transfer Learning for Image Classification and Gradio app hosting on HF spaces</a> </li>
-            <li><a href="https://github.com/Rami-RK/image_segmentation">Image Segmentation: Unet and Deeplab V3+ </a> </li>
-            <li><a href="https://github.com/Rami-RK/HugingFace_Transformers/blob/main/Hf_Fine_Tunning_BERT_Custom_Data_Set.ipynb">BERT fine-tuning for sentiment classification</a></li>
-            <li><a href="https://github.com/Rami-RK/Retrieval_Augmented_Generation_RAG/blob/main/RAG_Step_3_Retrieval_QandA_Integrated_with_LLM.ipynb">RAG-Chat with your document (OpenAI API + Lang Chain)</a></li>
-            <li><a href="https://github.com/Rami-RK/HugingFace_Transformers/blob/main/Fine_Tune_GPT2.ipynb">Fine-tune GPT2 on your custom dataset for Generative question-answering</a></li>
-            <li><a href="https://github.com/Rami-RK/HugingFace_Transformers/blob/main/Bert_QA_Squad.ipynb">Fine Tune BERT For Extractives Question Answering</a></li>
-            <li><a href="https://huggingface.co/spaces/Ramendra/space-demo">Text Summarization Gradio app deployed on HF spaces</a></li>
-            <li><a href="https://github.com/Rami-RK/Time_Series">Time Series Analysis of Sunspot Data</a></li>
-            <li><a href="https://github.com/Rami-RK/MLOps">Sample ML in production (CI): Test Cases and Packaging included</a></li>
-        </ul>
-    </div>
-
-    <div>
-        <h3>PUBLICATIONS</h3>
-        <ul>
-            <li><a href="https://www.sciencedirect.com/science/article/abs/pii/S0378778819320729">Performance Analysis of an in-situ Data Centre: Journal - Energy and Buildings (Elsevier) Feb 2020</a></li>
-            <li><a href="http://conference.ioe.edu.np/publications/ioegc2013/IOEGC-Proceedings-2013.pdf">Study on Diesel Fuel Consumption Reduction in Dairy Industries by Application of Solar Thermal Energy. - IOE Graduate Conference, Nov 2013 (Kathmandu, Nepal)</a></li>
-        </ul>
-    </div>
+    <script>
+        function openTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tab buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
 </body>
 </html>

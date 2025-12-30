@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birth of Attention Mechanism | Rami RK</title>
+
+  <!-- MathJax (kept for equations) -->
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+:root{
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --muted: #6b7280;
+    --border: #e1e7f5;
+    --shadow: 0 18px 45px rgba(0,0,0,0.12);
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.08);
+    --accent: #667eea;
+    --accent2: #764ba2;
+    --link: #2980b9;
+    --note-bg: #f1f5ff;
+    --quote-bg: #f8f9fb;
+  }
+
+  :root[data-theme="dark"]{
+    --bg: #0b1220;
+    --card: #0f172a;
+    --text: #e5e7eb;
+    --muted: #a1a1aa;
+    --border: rgba(255,255,255,0.10);
+    --shadow: 0 18px 45px rgba(0,0,0,0.55);
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.40);
+    --accent: #7c8cff;
+    --accent2: #a879ff;
+    --link: #7dd3fc;
+    --note-bg: rgba(124,140,255,0.10);
+    --quote-bg: rgba(125,211,252,0.08);
+	--toc-top: 260px;
+  }
+
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+  }
+	 html {
+	  scroll-behavior: smooth;
+	}
+
+  .progress-bar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    z-index: 9999;
+  }
+
+  .article-wrapper{
+    max-width: 980px;
+    margin: 3rem auto;
+    background: var(--card);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .hero{
+    padding: 2.6rem 2.2rem 2.1rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+  }
+
+  .hero-top{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .hero h1{
+    margin: 0 0 0.5rem 0;
+    font-size: 2.2rem;
+    line-height: 1.25;
+  }
+  .hero p{
+    margin: 0.2rem 0;
+    opacity: 0.9;
+  }
+
+  .theme-toggle{
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.14);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.5rem 0.7rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.12s ease, background 0.12s ease;
+    flex: 0 0 auto;
+  }
+  .theme-toggle:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.18); }
+  .theme-toggle:active{ transform: translateY(0px); }
+
+	.content-shell{
+	  display: block;
+	  padding: 2rem 2.2rem 2.6rem;
+
+	  /* push content right to make space for fixed TOC */
+	  padding-left: calc(250px + 2.2rem + 18px);
+	}
+
+
+  .toc{
+	  position: fixed;
+	  top: var(--toc-top, 260px);                 /* leaves space for the progress bar/header area */
+	  left: max(16px, calc((100vw - 980px)/2));  /* aligns with your centered card */
+	  width: 250px;
+
+	  max-height: calc(100vh - 90px);
+	  overflow: auto;
+
+	  background: rgba(255,255,255,0.55);
+	  border: 1px solid var(--border);
+	  border-radius: 14px;
+	  padding: 1rem 1rem;
+	  box-shadow: var(--shadow-soft);
+	  backdrop-filter: blur(8px);
+	  z-index: 50;
+  }
+  :root[data-theme="dark"] .toc{
+    background: rgba(15,23,42,0.65);
+  }
+	 .toc-top a {
+	  font-weight: 600;
+	  color: var(--accent);
+	}
+
+	.toc-top a:hover {
+	  text-decoration: underline;
+	}
+
+  
+  .toc-title{
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+  }
+  .toc ul{
+    margin: 0.2rem 0 0;
+    padding-left: 1.1rem;
+  }
+  .toc a{
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+  .toc a:hover{ text-decoration: underline; }
+  .toc a.active{ color: var(--text); font-weight: 600; }
+
+  .article-content{ min-width: 0; }
+
+  h2{
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.4rem;
+    color: var(--text);
+    border-left: 4px solid var(--accent);
+    padding-left: 0.6rem;
+  }
+  h3{
+    margin-top: 1.6rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+    color: var(--text);
+    opacity: 0.9;
+  }
+  p{ margin: 0.4rem 0; text-align: justify; }
+
+  ul{ padding-left: 1.4rem; }
+  li{ margin: 0.3rem 0; }
+
+  .note{
+    background: var(--note-bg);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .quote{
+    background: var(--quote-bg);
+    border-left: 4px solid var(--link);
+    padding: 1.2rem 1.4rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    border-radius: 10px;
+  }
+
+  code{
+    background: rgba(148,163,184,0.18);
+    padding: 0.15rem 0.35rem;
+    border-radius: 6px;
+    font-size: 0.92rem;
+  }
+
+  .image{
+    text-align: center;
+    margin: 2rem 0;
+  }
+  .image img{
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+  }
+  .image p{
+    margin-top: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-style: italic;
+	text-align: center;
+  }
+
+  img{
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+  }
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+  th, td{
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th{
+    background: rgba(148,163,184,0.12);
+    font-weight: 600;
+  }
+
+  /* Definition / Theorem / Example boxes (ready to use) */
+  .callout{
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+    margin: 1.5rem 0;
+    background: rgba(148,163,184,0.08);
+  }
+  .callout-title{
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+  .definition{ border-left: 5px solid var(--accent); }
+  .theorem{ border-left: 5px solid var(--accent2); }
+  .example{ border-left: 5px solid var(--link); }
+
+  a{ color: var(--link); text-decoration: none; }
+  a:hover{ text-decoration: underline; }
+
+  footer{
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 1.5rem 0 2rem;
+  }
+
+  @media (max-width: 980px){
+    .article-wrapper{ margin: 1.5rem; }
+    .content-shell{ grid-template-columns: 1fr; }
+    .toc{ position: relative; top: auto; }
+  }
+
+  @media (max-width: 600px){
+    .hero{ padding: 2.2rem 1.3rem 1.9rem; }
+    .hero h1{ font-size: 1.7rem; }
+    .content-shell{ padding: 1.4rem 1.3rem 2.2rem; }
+  }
+  @media (max-width: 980px){
+	  .toc{
+		position: relative;
+		top: auto;
+		left: auto;
+		width: auto;
+		max-height: none;
+		overflow: visible;
+		margin-bottom: 1rem;
+	  }
+
+	  .content-shell{
+		padding-left: 1.3rem;  /* normal padding on mobile */
+	  }
+	}
+  .toc-h3{ margin-left: 0.7rem; }
+  .toc-h3 a{ font-size: 0.90rem; }
+
+</style>
+</head>
+<body>
+  <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+  <div id="top"></div>
+
+  <div class="article-wrapper">
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-text">
+          <h1>Birth of Attention Mechanism</h1>
+		<p>The Evolution of Attention in Sequence-to-Sequence Models.</p>
+        <p>Part of the Transformers & Attention series.</p>
+        </div>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span class="toggle-icon" aria-hidden="true">🌙</span>
+        </button>
+      </div>
+    </section>
+
+    <div class="content-shell">
+      <nav class="toc" aria-label="On this page">
+  <div class="toc-title">On this page</div>
+  <ul>
+    <li class="toc-top"><a href="#top">↑ Back to top</a></li><li class="toc-h3"><a href="#lets-see-the-decoder-in-detail">Let’s see the decoder in detail.</a></li><li class="toc-h3"><a href="#what-goes-into-the-bottom-of-the-decoder-rnn-unit">What goes into the bottom of the decoder RNN unit?</a></li><li class="toc-h3"><a href="#problem-with-seq2seq">Problem with Seq2Seq</a></li><li class="toc-h3"><a href="#to-solve-this-problem-attention-is-originated-for-seq2seq">To Solve this Problem: Attention is originated for Seq2Seq</a></li><li class="toc-h3"><a href="#improved-encoder-decoder-architecture-with-attention">Improved Encoder-Decoder Architecture with Attention</a></li><li class="toc-h3"><a href="#context-vector">Context Vector</a></li><li class="toc-h3"><a href="#calculating-attention-weights">Calculating Attention Weights</a></li>
+  </ul>
+</nav>
+      <main class="article-content">
+        <p>
+		The onset of ChatGPT and many other open-source LLMs have revolutionized the world and the way work happens in all sorts of industries. But very few of us know that 
+		transformer-based models are the mother of all these magic tools- including BERT, GPT, and all the buzzwords around large language models.
+		<br><br>
+		I have struggled to understand the underlying concept and the working principle of Transformer, and I believe many struggle in the same way.I am going to publish a series of 
+		articles on the Transformer to simplify the concept and break down things into small pieces. I believe this will help many to understand these complex concepts easily and 
+		help them to break into this domain. 
+		<br><br>
+		To understand the transformer architecture, first, we have to understand the attention mechanism- the main component of transformer architecture 
+		and the concept of self-attention, and finally, the full Transformer Architecture. Maintaining the conceptual logic above, the following are the three articles that 
+		I am going to publish. The first article in the series is “The Birth of Attention Mechanism”.The second article in the series is “Self-Attention”, and the third article is “Transformer”
+		<br><br>
+		We are going to understand the attention mechanism in the context of language translation using seq2seq (encoder-decoder) architecture.
+		In the example given below in Fig.1, a Hindi sentence “मुझे खाना पसंद है” is fed into an encoder which has been translated(decoded) by 
+		a decoder into English as “I love to eat”. 
+		<br><br>
+		The encoder is used to ingest the input. It simply computes 
+		all the <b>h of T’s </b>(i.e. h(1), h(2), …) at every time step of the input and gives one final hidden state vector, 
+		which we'll call <b>h(T)</b>, assuming that the input sequence has a length of <b>T</b>.  
+		<br><br>
+		Here, h(T) is the output of the encoder, which is also the input to the decoder. 
+		We can think of h(T) as a vector, which is a compressed representation of the input sequence.
+		<br><br>
+		  <center><b>h(T): A compressed representation of the input &rarr; “Thought Vector”. </b></center>
+		</p>
+        
+        <div class="image">
+            <img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/birth_of_attention_mechanism/enc_dec_rnn.png"
+			alt="Figure 1" 
+			width="800" height="400">
+            <p>Figure 1</p>
+        </div>
+		
+	
+		
+		
+		
+        <h3 id="lets-see-the-decoder-in-detail">Let’s see the decoder in detail.</h3>
+        <p>
+		Every RNN unit has two sources of input data, the first being the actual input and the second being the previous head state.
+		The decoder is also an RNN but a different RNN from the encoder. In this diagram, the inputs go along the bottom of 
+		the RNN unit while the previous head state comes through the left. For a normal RNN, the initial hidden state is 
+		usually just a vector of zeros, or maybe some trainable but fixed vector. In this case, for the decoder, the initial
+		hidden state actually comes from the output of the encoder, which is h(T). Thus, the job of the decoder is to 
+		decompress the compressed representation of the input. 
+		</p>
+                
+		<h3 id="what-goes-into-the-bottom-of-the-decoder-rnn-unit">What goes into the bottom of the decoder RNN unit?  </h3>
+        <p>
+		At the beginning, there's a special token called  &lt;SOS&gt;  which indicates the start of a sentence or sequence. 
+		The decoder RNN acts like a text generation tool, similar to how forecasts are made in time series analysis, 
+		where it predicts the next element based on previous ones, such a model is also known as <b> an autoregressive model 
+		or causal model </b>. So, starting with the &lt;SOS&gt; token and an initial hidden state, we predict the first word of 
+		the translated sequence. After getting this first word, we put it back into the decoder as input, using it to 
+		predict the second word in the sequence. We keep repeating this process until we've generated the entire translated 
+		sequence. To know when to stop, we watch for the special end token produced by our model, signaling that the translation 
+		is complete.<br><br>Note that, we need a lot of data sets containing paired Hindi sentences and equivalent English sentences 
+		to train the model, and only after the model performs the translation as shown in the diagram above.
+		</p>
+		<h3 id="problem-with-seq2seq"> <center>Problem with Seq2Seq </center></h3>
+		<ol><b>
+		<li>Every input sequence is converted using an encoder RNN into a single vector. 
+		Here's the problem - What if the input sentence is very long? 
+		The final encoder state h(T) always has the same size and has to remember the whole input.</li><br>
+		<li>Is this how we translate text as humans? No! More likely, we focus on a few words at a time.</li>
+		</b></ol>
+		<h3 id="to-solve-this-problem-attention-is-originated-for-seq2seq"> <center>To Solve this Problem: Attention is originated for Seq2Seq</center></h3>
+		
+		 <div class="image">
+            <img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/birth_of_attention_mechanism/attention_def.png"
+			alt="Figure" 
+			width="570" height="200">
+        </div>
+		
+		<p>
+		Let’s try to understand this attention concept with a simple example, where the input: <b>“मेँ   खेलने जा रहा हूँ “ </b>is fed into 
+		an encoder and translated into <b> “I am going to play” </b> as an output from the decoder as shown in fig.2 below. 
+		In this figure <b>‘i/p’</b> at bottom represents input sequence and <b>‘o/p’ </b>at top rerpesents output sequece.
+		<br><br> 
+		Here, the list '\( t_1 \)'contains the values for attention that <b> output at time step 1  should pay attention to all input 
+		sequences </b>. The list <b>' \( t_2 \)' </b> contains the values for attention that <b>output at time step 2 should pay attention to all 
+		input sequences </b> and similarly other lists are also representing attention values for input sequences for different 
+		output at different time steps.		
+		</p>
+		
+		 <div class="image">
+            <img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/birth_of_attention_mechanism/attention_values.png" 
+			alt="Figure 2" 
+			width="500" height="400">
+            <p>Figure 2</p>
+        </div>
+		
+		<p>
+		Let’s understand the attention values inside list 't1'. When we're aiming to generate the first word 'I' in our output, 
+		what we're actually doing is figuring out the likelihood of each input word being the one we should focus on. At this stage,
+		it's fine if we don't know the translations for 'खेलने' or 'जा रहा' or 'हूँ', as long as we know the translation for 'मेँ' because that's 
+		the word we need to generate first. So, we can simplify things by saying that, at this point, we only need to pay attention 
+		to the first word in the input and can ignore everything else. This is the reason the attention value is 1 
+		for the first input (मेँ) and 0 for all other input sequences. <br><br>
+		What about the second time step word “am” in output? We just need to focus on the last word हूँ in the input, 
+		and thus, the list ‘t2’ contains attention value 1 at last and 0 for all other input sequences.<br><br>
+		
+		What about the third time step word “going” in output? Is it always going to be that we only need to focus on one word at a time? 
+		No. We will focus on two input sequences ‘जा ' and 'रहा’ and ignore everything else. This is the reason, 
+		the list t3 contains attention values 0.5 and 0.5 at respective time 
+		step positions of ‘जा ' and 'रहा’ and the remaining all are zero. Similarly, for the remaining time step. <br><br>
+		
+		Is this the encoder-decoder architecture doing, that we saw previously in Fig.1? No! Every time step 
+		focuses on the encoding of the entire sentence (i.e. final h(T)) 
+		because that is the encoding that we are feeding to every time step. This is the problem we need to fix.<br><br>
+		<b>We need to learn to pay attention to certain important parts of the sentence. Ideally, at each time-step, 
+		we should feed only the relevant information i.e. encodings of relevant words to the decoder.</b>
+		</p>
+		
+		<h3 id="improved-encoder-decoder-architecture-with-attention"> <center>Improved Encoder-Decoder Architecture with Attention </center></h3>
+		
+		<p>
+		
+		Let’s see how to improve the previous encoder-decoder architecture with the concept of Attention.<br><br>
+		
+		In the given Fig.3 below, the decoder is drawn on top of the encoder and instead of feeding only 
+		the last hidden state of the encoder to the decoder all hidden states are fed into the decoder at each time step 
+		with some weightage noted by alpha. For the sake of simplicity, connection for only output at time state t=2 and t=4 have shown.
+		<br><br>
+		
+		A weighted combination of each output is taken from the encoder cells (i.e., vector of the same shape) and fed
+		into each step cell of the decoder. Assume for the time being that, we got these alpha’s 
+		(i.e. attention weights for each hidden state from the encoder) from some magic, we will figure out how to calculate it.
+		<br><br>
+		
+		<b>For output at the time state t=2 i.e. ‘Love’,</b><br>
+		\(α_{2,1}\) : is the weight of attention that it should pay to input at time state 1<br>
+		\(α_{2,2}\) : is the weight of attention that it should pay to input at time state 2<br>
+		\(α_{2,3}\) : is the weight of attention that it should pay to input at time state 3<br>
+		\(α_{2,4}\) : is the weight of attention that it should pay to input at time state 4<br><br>
+		
+		<b>Similarly, for output at the time state t=4 i.e. ‘eat’,,</b><br>
+		\(α_{4,1}\) : is the weight of attention that it should pay to input at time state 1<br>
+		\(α_{4,2}\) : is the weight of attention that it should pay to input at time state 2<br>
+		\(α_{4,3}\) : is the weight of attention that it should pay to input at time state 3<br>
+		\(α_{4,4}\) : is the weight of attention that it should pay to input at time state 4
+	
+		</p>
+		
+		 <div class="image">
+            <img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/birth_of_attention_mechanism/rnn_with_attention.png" 
+			alt="Figure 3" 
+			width="450" height="725">
+            <p>Figure 3</p>
+        </div>
+		
+		<h3 id="context-vector"> <center>Context Vector</center></h3>
+		<p>
+		
+		Now, defining weighted combination as a context vector, say for output at time step 4:<br><br>
+		
+		<b>\( C(4) = α_{4,1} * h(1)+ α_{4,2} * h(2) + α_{4,3} * h(3)+  α_{4,4} * h(4) \)</b> <br><br>
+		
+		Denoting:<br>
+		Input time step by j=1, 2, ..., T <br>
+		Output time step by i =1,2, ..., t <br>
+		 We can generalize the above equation as a <b>Context vector: </b>\( C(i)=\sum_{j=1}^{T_x} \alpha_{i,j}h(j) \)
+		 <br><br>
+		 Here, the context vector is simply the weighted sum of h’s where the weights are the alphas.
+		 So, this is the basic idea behind attention. We have weights from every input to every output, 
+		 which tells us how much each output should pay attention to which input.
+		</p>
+		<h3 id="calculating-attention-weights"> <center>Calculating Attention Weights</center></h3>
+		
+		<p>
+		 Before calculating alphas, let’s introduce a term called alignment score noted by \( e_{i,j} \) and defined 
+		as: at \( i^{th} \) time step of decoder, how important is the \( j^{th} \) word in the input. 
+		This should depend on or should be a function of jth word and whatever has happened in the decoder so far. 
+		Note, \(S_1, S_2…, S_t \)   are decoder side hidden states.
+		<br><br>
+		<b> <center>score: \( e_{i,j} = f( S_{i-1}, h_j ) \)</center> </b>
+		<br><br>
+		We are interested in \( e_(i,j) \)  for all the input words. For \( j^{th} \) input word, we are interested in knowing how
+		important it is for the ith time-step output of the decoder. <b>There are several ways
+		this function can be defined and no need to know at this moment but the intuition that it depends on\(  S_{i-1} \),and  \( h_j \) 
+		is sufficient.</b><br><br>
+		Now across all the input words, we want the sum of this score value to be one. We don’t want some arbitrary weights.  
+		It is just like probability distribution over what word is important by how much. We can achieve this by taking <b>SoftMax of the score.</b>  
+		<br><br>
+		<b> <center>\( \alpha_{i,j} = \frac{ \exp(e_{i,j})}{\sum_{k=1}^{T} \exp(e_{i,k})}  \)</center> </b>
+		<br><br>
+		
+		<b>Attention Weight, \( α_{i,j} \) </b>denotes the probability of focusing on the jth word to produce ith output word. 
+		</p>
+      </main>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Rami RK — Attention Notes</p>
+  </footer>
+
+  <script>
+(function() {
+      const bar = document.getElementById('progressBar');
+      const onScroll = () => {
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const scrollHeight = doc.scrollHeight - doc.clientHeight;
+        const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+        bar.style.width = pct + '%';
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
+    (function() {
+      const key = 'rk_theme';
+      const btn = document.getElementById('themeToggle');
+      const icon = btn.querySelector('.toggle-icon');
+
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem(key);
+      const initial = saved ? saved : (prefersDark ? 'dark' : 'light');
+
+      const apply = (mode) => {
+        document.documentElement.dataset.theme = mode;
+        icon.textContent = mode === 'dark' ? '☀️' : '🌙';
+        localStorage.setItem(key, mode);
+      };
+
+      apply(initial);
+
+      btn.addEventListener('click', () => {
+        const current = document.documentElement.dataset.theme || 'light';
+        apply(current === 'dark' ? 'light' : 'dark');
+      });
+    })();
+
+    (function() {
+      const links = Array.from(document.querySelectorAll('.toc a'));
+      const sections = links
+        .map(a => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+
+      if (!('IntersectionObserver' in window) || sections.length === 0) return;
+
+      const setActive = (id) => {
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      };
+
+      const obs = new IntersectionObserver((entries) => {
+        const visible = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible && visible.target && visible.target.id) setActive(visible.target.id);
+      }, {
+        rootMargin: '0px 0px -70% 0px',
+        threshold: [0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
+      });
+
+      sections.forEach(s => obs.observe(s));
+    })();
+</script>
+</body>
+</html>
