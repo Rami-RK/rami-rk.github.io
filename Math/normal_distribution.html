@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Normal Distribution | Rami RK</title>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+:root{
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --muted: #6b7280;
+    --border: #e1e7f5;
+    --shadow: 0 18px 45px rgba(0,0,0,0.12);
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.08);
+    --accent: #667eea;
+    --accent2: #764ba2;
+    --link: #2980b9;
+    --note-bg: #f1f5ff;
+    --quote-bg: #f8f9fb;
+  }
+
+  :root[data-theme="dark"]{
+    --bg: #0b1220;
+    --card: #0f172a;
+    --text: #e5e7eb;
+    --muted: #a1a1aa;
+    --border: rgba(255,255,255,0.10);
+    --shadow: 0 18px 45px rgba(0,0,0,0.55);
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.40);
+    --accent: #7c8cff;
+    --accent2: #a879ff;
+    --link: #7dd3fc;
+    --note-bg: rgba(124,140,255,0.10);
+    --quote-bg: rgba(125,211,252,0.08);
+	--toc-top: 260px;
+  }
+
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+  }
+	 html {
+	  scroll-behavior: smooth;
+	}
+
+  .progress-bar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    z-index: 9999;
+  }
+
+  .article-wrapper{
+    max-width: 980px;
+    margin: 3rem auto;
+    background: var(--card);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .hero{
+    padding: 2.6rem 2.2rem 2.1rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+  }
+
+  .hero-top{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .hero h1{
+    margin: 0 0 0.5rem 0;
+    font-size: 2.2rem;
+    line-height: 1.25;
+  }
+  .hero p{
+    margin: 0.2rem 0;
+    opacity: 0.9;
+  }
+
+  .theme-toggle{
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.14);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.5rem 0.7rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.12s ease, background 0.12s ease;
+    flex: 0 0 auto;
+  }
+  .theme-toggle:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.18); }
+  .theme-toggle:active{ transform: translateY(0px); }
+
+	.content-shell{
+	  display: block;
+	  padding: 2rem 2.2rem 2.6rem;
+
+	  /* push content right to make space for fixed TOC */
+	  padding-left: calc(250px + 2.2rem + 18px);
+	}
+
+
+  .toc{
+	  position: fixed;
+	  top: var(--toc-top, 260px);                 /* leaves space for the progress bar/header area */
+	  left: max(16px, calc((100vw - 980px)/2));  /* aligns with your centered card */
+	  width: 250px;
+
+	  max-height: calc(100vh - 90px);
+	  overflow: auto;
+
+	  background: rgba(255,255,255,0.55);
+	  border: 1px solid var(--border);
+	  border-radius: 14px;
+	  padding: 1rem 1rem;
+	  box-shadow: var(--shadow-soft);
+	  backdrop-filter: blur(8px);
+	  z-index: 50;
+  }
+  :root[data-theme="dark"] .toc{
+    background: rgba(15,23,42,0.65);
+  }
+	 .toc-top a {
+	  font-weight: 600;
+	  color: var(--accent);
+	}
+
+	.toc-top a:hover {
+	  text-decoration: underline;
+	}
+
+  
+  .toc-title{
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+  }
+  .toc ul{
+    margin: 0.2rem 0 0;
+    padding-left: 1.1rem;
+  }
+  .toc a{
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+  .toc a:hover{ text-decoration: underline; }
+  .toc a.active{ color: var(--text); font-weight: 600; }
+
+  .article-content{ min-width: 0; }
+
+  h2{
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.4rem;
+    color: var(--text);
+    border-left: 4px solid var(--accent);
+    padding-left: 0.6rem;
+  }
+  h3{
+    margin-top: 1.6rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+    color: var(--text);
+    opacity: 0.9;
+  }
+  p{ margin: 0.4rem 0; text-align: justify; }
+
+  ul{ padding-left: 1.4rem; }
+  li{ margin: 0.3rem 0; }
+
+  .note{
+    background: var(--note-bg);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .quote{
+    background: var(--quote-bg);
+    border-left: 4px solid var(--link);
+    padding: 1.2rem 1.4rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    border-radius: 10px;
+  }
+
+  code{
+    background: rgba(148,163,184,0.18);
+    padding: 0.15rem 0.35rem;
+    border-radius: 6px;
+    font-size: 0.92rem;
+  }
+
+  .image{
+    text-align: center;
+    margin: 2rem 0;
+  }
+  .image img{
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+  }
+  .image p{
+    margin-top: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-style: italic;
+	text-align: center;
+  }
+
+  img{
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+  }
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+  th, td{
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th{
+    background: rgba(148,163,184,0.12);
+    font-weight: 600;
+  }
+
+  /* Definition / Theorem / Example boxes (ready to use) */
+  .callout{
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+    margin: 1.5rem 0;
+    background: rgba(148,163,184,0.08);
+  }
+  .callout-title{
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+  .definition{ border-left: 5px solid var(--accent); }
+  .theorem{ border-left: 5px solid var(--accent2); }
+  .example{ border-left: 5px solid var(--link); }
+
+  a{ color: var(--link); text-decoration: none; }
+  a:hover{ text-decoration: underline; }
+
+  footer{
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 1.5rem 0 2rem;
+  }
+
+  @media (max-width: 980px){
+    .article-wrapper{ margin: 1.5rem; }
+    .content-shell{ grid-template-columns: 1fr; }
+    .toc{ position: relative; top: auto; }
+  }
+
+  @media (max-width: 600px){
+    .hero{ padding: 2.2rem 1.3rem 1.9rem; }
+    .hero h1{ font-size: 1.7rem; }
+    .content-shell{ padding: 1.4rem 1.3rem 2.2rem; }
+  }
+  @media (max-width: 980px){
+	  .toc{
+		position: relative;
+		top: auto;
+		left: auto;
+		width: auto;
+		max-height: none;
+		overflow: visible;
+		margin-bottom: 1rem;
+	  }
+
+	  .content-shell{
+		padding-left: 1.3rem;  /* normal padding on mobile */
+	  }
+	}
+  .toc-h3{ margin-left: 0.7rem; }
+  .toc-h3 a{ font-size: 0.90rem; }
+
+  .figure-placeholder{
+    width: 100%;
+    min-height: 240px;
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: rgba(148,163,184,0.06);
+  }
+
+</style>
+</head>
+<body>
+  <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+  <div id="top"></div>
+
+  <div class="article-wrapper">
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-text">
+          <h1>Normal Distribution</h1>
+			<p>From Histogram to Normal Distribution.</p>
+			<p>Part of the Random Variable and Distributions series.</p>
+        </div>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span class="toggle-icon" aria-hidden="true">🌙</span>
+        </button>
+      </div>
+    </section>
+
+    <div class="content-shell">
+		<nav class="toc" aria-label="On this page">
+		  <div class="toc-title">On this page</div>
+		  <ul>
+			<li class="toc-top"><a href="#top">↑ Back to top</a></li>
+			<li class="toc-h3"><a href="#standard-normal">Standard Normal</a></li>
+			<li class="toc-h3"><a href="#normal-random-variable">Normal Random Variable</a></li>
+			<li class="toc-h3"><a href="#role-of-sigma">Role of Sigma</a></li>
+			<li class="toc-h3"><a href="#examples-of-normal-distribution">Examples of Normal Distribution</a></li>
+			<li class="toc-h3"><a href="#how-does-it-fit-into-learning-aiml?">How does it fit into learning AIML?</a></li>
+		  </ul>
+		</nav>
+      <main class="article-content">
+        <p>Let's continue with the case study of shaft length that we saw in the continuous distribution explanation. We were given lengths of 100 samples of shafts with a manufacturing tolerance of 0.1 mm, meaning the actual length will be within the range of 100 ± 0.1 mm. We divided the range [99.90, 100.10] into several equal segments and plotted the number of length values that reside in these segments. We had a bar-like graph called a histogram. It shows the frequency of the values that occur in different segments. We further modified it by dividing the frequency within each segment by the total sample count, which is 100. The final plot is shown below:</p>
+
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/histogram.png" 
+			alt="Figure 1" 
+			width="850" height="600">
+			<p>Figure 1</p>
+		</div>
+
+<p>We can approximate this distribution with the bell-shaped curve shown below, and we will call this distribution as following Normal distribution.</p>
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/histogram_with_bell_curve.png" 
+			alt="Figure 2" 
+			width="850" height="600">
+			<p>Figure 2</p>
+		</div>
+<p>Now observe that most of the sample lengths are centered around a mean of approximately 100 mm and spread on both sides almost symmetrically. The ideal Normal distribution assumes a bell-shaped curve that is symmetrical around the mean value with a certain variance.</p>
+<p>Normal random variables, also often called Gaussian random variables, are perhaps the most important ones in probability theory. They are prevalent in applications for two reasons: they have useful analytical properties, and they are the most common model for random noise. In general, they are a good model of noise or randomness whenever that noise is due to the addition of many small independent noise terms, and this is a very common situation in the real world.</p>
+<p>We define normal random variables by specifying their PDFs as they are continuous distributions. We start with the simplest case, known as standard normal. The standard normal is denoted using the shorthand notation given below, and we will see shortly why this notation is used.</p>
+<div class="note">
+    <h3 id="standard-normal">Standard Normal</h3>
+    <p>\[ \mathcal{N}(0,1): \quad f_x(x) = \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}} \]</p>
+</div>
+<p>This PDF is defined for all values of x, meaning x can be any real number i.e. this random variable can take values anywhere on the real line. Let us try to understand this formula.</p>
+<p>It includes the exponential of \(-\frac{x^2}{2}\) (negative x squared over 2). If we are to plot the function \(\frac{x^2}{2}\) , it has a shape of the form shown below left, and it is centered at zero.</p>
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/standard_normal_distribution.png" 
+			alt="Figure 3" 
+			width="850" height="600">
+			<p>Figure 3</p>
+		</div>
+<p>But then we take the negative exponential of this function. When you take the negative exponential, the value becomes small whenever \( \frac{x^2}{2} \)is large. Therefore, the negative exponential equals 1 when x is 0. As x increases and \(x^2\) also increases, the negative exponential decreases. Thus, we obtain a shape like the one shown on the top right in red colour, which is symmetrical on both sides.</p>
+<p>finally, there is the constant --> \(\frac{1}{\sqrt{2\pi}}\): Where is this constant coming from? Well, there is a useful but somewhat complex calculus exercise that shows that the integral from minus infinity to plus infinity of \( e^{-\frac{x^2}{2}} \) is equal to \(\sqrt{2\pi}\) .</p>
+
+I.e. \( \int_{-\infty}^{+\infty} e^{-\frac{x^2}{2}} \, dx = \sqrt{2\pi} \)
+
+<p>Now, we need a PDF that integrates to 1, meaning the area under the PDF curve should be 1. To achieve this, we include this constant in front of the expression so that the integral equals 1. This explains the presence of this particular constant.</p>
+<p>What is the mean of this random variable?</p>
+<p>Since x2 is symmetric around 0, and for this reason, the PDF itself is symmetric around 0. Therefore, by symmetry, the mean has to be equal to 0 or expectation: E[X]=0. This explains the entry zero in first position of standard normal notation: N (0,1).</p>
+<p>How about the variance?</p>
+<p>To calculate the variance, you need to solve a calculus problem involving integration by parts. After completing the calculation, you find that the variance is equal to 1or var(X)=1. This explains the entry one in the notation of standard normal: N (0,1).</p>
+<p>General Normal (Gaussian) random variables</p>
+<p>Let us now define general normal random variables. General normal random variables are specified their corresponding PDF as given below, which is more complex, and involves two parameters: \(\mu\), and \(\sigma^2\) , where sigma is a positive parameter, 𝞼>0.</p>
+<div class="note">
+    <h3 id="normal-random-variable">Normal Random Variable</h3>
+    <p>\[ \mathcal{N}(\mu, \sigma^2): \quad f_x(x) = \frac{1}{\sigma \sqrt{2\pi}} \, e^{-\frac{(x-\mu)^2}{2\sigma^2}} \]</p>
+</div>
+
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/normal_distribution.png" 
+			alt="Figure 4" 
+			width="850" height="600">
+			<p>Figure 4</p>
+		</div>
+<p>Once again, it will have a bell shape, but this bell is no longer symmetric around 0, and its width can be controlled.</p>
+<p>To understand the form of this PDF, let's first focus on the exponent, just as we did with the standard normal case. The exponent is quadratic and is centered at x=μ. It vanishes when x=μ and becomes positive elsewhere. The curve is shown below in red. Taking the negative exponential of this quadratic results in a function that is highest at x=μ and decreases as we move further away from μ shown by purple colour.</p>
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/normal_distribution2.png" 
+			alt="Figure 5" 
+			width="850" height="600">
+			<p>Figure 5</p>
+		</div>
+<p><strong>What is the mean of this random variable?</strong></p>
+<p>Since the exponent term is symmetric around μ, the PDF is also symmetric around μ, and therefore, the mean is also equal to μ, i.e. E[X]= μ.</p>
+<p><strong>What about the variance?</strong></p>
+<p>It turns out-- and this is a calculus exercise that we will omit-- that the variance of this PDF is equal to  \(\sigma^2\), i.e. var(x) = \(\sigma^2\).</p>
+<p>This explains the notation: \( \mathcal{N}(\mu, \sigma^2) \) ,   which indicates that we are dealing with a normal distribution with a mean of \(\mu\),  and a variance of \(\sigma^2\)</p>
+<h3 id="role-of-sigma">Role of Sigma</h3>
+<p>We mentioned that in a general normal distribution, the width of the bell curve can be controlled, and this is the role of σ in the PDF. The figure below shows three normal curves with the same mean value of 0.5 but different σ values of 0.25, 0.5, and 0.75, respectively. We can clearly see that as σ increases, the width of the curve also increases.</p>
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/role_of_sigma.png" 
+			alt="Figure 6" 
+			width="850" height="600">
+			<p>Figure 6</p>
+		</div>
+<h3 id="examples-of-normal-distribution"> Examples of Normal Distribution</h3>
+<p>Many processes in nature result in events that follow a normal distribution. Height, weight, Test Scores, and even Measurement Errors are modeled by the normal distribution. In general, variables that can be modeled as a sum of many independent processes always follow normal distributions.</p>
+<p>However, not all natural processes follow a normal distribution; some may follow other distributions depending on the underlying factors and their interactions viz. Earthquakes, Population Growth, Disease Outbreaks etc don’t follow normal distributions.</p>
+
+<h3 id="how-does-it-fit-into-learning-aiml?"> How does it fit into learning AIML?</h3>
+<p>Many machine learning algorithms have underlying assumptions of normal distributions. For example, Linear Regression and Logistic Regression assume normally distributed residuals and log-odds, respectively, for accurate inference. Gaussian Naive Bayes relies on the normal distribution for feature classification. The Central Limit Theorem supports using the normal distribution for sampling means. Techniques such as z-score normalization in feature scaling, and Gaussian Mixture Models for clustering often assume normality.</p>
+<p>Additionally, neural networks use the normal distribution for weight initialization and batch normalization, while anomaly detection utilizes Gaussian models to identify deviations from normal behavior.</p>
+<p>Thus, the normal distribution is pervasive in AI and ML, often operating behind the scenes.</p>
+      </main>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Rami RK — Notes</p>
+  </footer>
+
+  <script>
+(function() {
+      const bar = document.getElementById('progressBar');
+      const onScroll = () => {
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const scrollHeight = doc.scrollHeight - doc.clientHeight;
+        const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+        bar.style.width = pct + '%';
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
+    (function() {
+      const key = 'rk_theme';
+      const btn = document.getElementById('themeToggle');
+      const icon = btn.querySelector('.toggle-icon');
+
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem(key);
+      const initial = saved ? saved : (prefersDark ? 'dark' : 'light');
+
+      const apply = (mode) => {
+        document.documentElement.dataset.theme = mode;
+        icon.textContent = mode === 'dark' ? '☀️' : '🌙';
+        localStorage.setItem(key, mode);
+      };
+
+      apply(initial);
+
+      btn.addEventListener('click', () => {
+        const current = document.documentElement.dataset.theme || 'light';
+        apply(current === 'dark' ? 'light' : 'dark');
+      });
+    })();
+
+    (function() {
+      const links = Array.from(document.querySelectorAll('.toc a'));
+      const sections = links
+        .map(a => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+
+      if (!('IntersectionObserver' in window) || sections.length === 0) return;
+
+      const setActive = (id) => {
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      };
+
+      const obs = new IntersectionObserver((entries) => {
+        const visible = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible && visible.target && visible.target.id) setActive(visible.target.id);
+      }, {
+        rootMargin: '0px 0px -70% 0px',
+        threshold: [0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
+      });
+
+      sections.forEach(s => obs.observe(s));
+    })();
+</script>
+</body>
+</html>
