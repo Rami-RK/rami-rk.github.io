@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Continuous Distribution & PDF | Rami RK</title>
+
+  <!-- MathJax for equation rendering -->
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+  :root{
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --muted: #6b7280;
+    --border: #e1e7f5;
+    --shadow: 0 18px 45px rgba(0,0,0,0.12);
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.08);
+    --accent: #667eea;
+    --accent2: #764ba2;
+    --link: #2980b9;
+    --note-bg: #f1f5ff;
+    --quote-bg: #f8f9fb;
+  }
+
+  :root[data-theme="dark"]{
+    --bg: #0b1220;
+    --card: #0f172a;
+    --text: #e5e7eb;
+    --muted: #a1a1aa;
+    --border: rgba(255,255,255,0.10);
+    --shadow: 0 18px 45px rgba(0,0,0,0.55);
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.40);
+    --accent: #7c8cff;
+    --accent2: #a879ff;
+    --link: #7dd3fc;
+    --note-bg: rgba(124,140,255,0.10);
+    --quote-bg: rgba(125,211,252,0.08);
+	--toc-top: 260px;
+  }
+
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+  }
+	 html {
+	  scroll-behavior: smooth;
+	}
+
+  .progress-bar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    z-index: 9999;
+  }
+
+  .article-wrapper{
+    max-width: 980px;
+    margin: 3rem auto;
+    background: var(--card);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .hero{
+    padding: 2.6rem 2.2rem 2.1rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+  }
+
+  .hero-top{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .hero h1{
+    margin: 0 0 0.5rem 0;
+    font-size: 2.2rem;
+    line-height: 1.25;
+  }
+  .hero p{
+    margin: 0.2rem 0;
+    opacity: 0.9;
+  }
+
+  .theme-toggle{
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.14);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.5rem 0.7rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.12s ease, background 0.12s ease;
+    flex: 0 0 auto;
+  }
+  .theme-toggle:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.18); }
+  .theme-toggle:active{ transform: translateY(0px); }
+
+	.content-shell{
+	  display: block;
+	  padding: 2rem 2.2rem 2.6rem;
+
+	  /* push content right to make space for fixed TOC */
+	  padding-left: calc(250px + 2.2rem + 18px);
+	}
+
+
+  .toc{
+	  position: fixed;
+	  top: var(--toc-top, 260px);                 /* leaves space for the progress bar/header area */
+	  left: max(16px, calc((100vw - 980px)/2));  /* aligns with your centered card */
+	  width: 250px;
+
+	  max-height: calc(100vh - 90px);
+	  overflow: auto;
+
+	  background: rgba(255,255,255,0.55);
+	  border: 1px solid var(--border);
+	  border-radius: 14px;
+	  padding: 1rem 1rem;
+	  box-shadow: var(--shadow-soft);
+	  backdrop-filter: blur(8px);
+	  z-index: 50;
+  }
+  :root[data-theme="dark"] .toc{
+    background: rgba(15,23,42,0.65);
+  }
+	 .toc-top a {
+	  font-weight: 600;
+	  color: var(--accent);
+	}
+
+	.toc-top a:hover {
+	  text-decoration: underline;
+	}
+
+  
+  .toc-title{
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+  }
+  .toc ul{
+    margin: 0.2rem 0 0;
+    padding-left: 1.1rem;
+  }
+  .toc a{
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+  .toc a:hover{ text-decoration: underline; }
+  .toc a.active{ color: var(--text); font-weight: 600; }
+
+  .article-content{ min-width: 0; }
+
+  h2{
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.4rem;
+    color: var(--text);
+    border-left: 4px solid var(--accent);
+    padding-left: 0.6rem;
+  }
+  h3{
+    margin-top: 1.6rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+    color: var(--text);
+    opacity: 0.9;
+  }
+  p{ margin: 0.4rem 0; text-align: justify; }
+
+  ul{ padding-left: 1.4rem; }
+  li{ margin: 0.3rem 0; }
+
+  .note{
+    background: var(--note-bg);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .quote{
+    background: var(--quote-bg);
+    border-left: 4px solid var(--link);
+    padding: 1.2rem 1.4rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    border-radius: 10px;
+  }
+
+  code{
+    background: rgba(148,163,184,0.18);
+    padding: 0.15rem 0.35rem;
+    border-radius: 6px;
+    font-size: 0.92rem;
+  }
+
+  .image{
+    text-align: center;
+    margin: 2rem 0;
+  }
+  .image img{
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+  }
+  .image p{
+    margin-top: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-style: italic;
+	text-align: center;
+  }
+
+  img{
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+  }
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+  th, td{
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th{
+    background: rgba(148,163,184,0.12);
+    font-weight: 600;
+  }
+
+  /* Definition / Theorem / Example boxes (ready to use) */
+  .callout{
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+    margin: 1.5rem 0;
+    background: rgba(148,163,184,0.08);
+  }
+  .callout-title{
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+  .definition{ border-left: 5px solid var(--accent); }
+  .theorem{ border-left: 5px solid var(--accent2); }
+  .example{ border-left: 5px solid var(--link); }
+
+  a{ color: var(--link); text-decoration: none; }
+  a:hover{ text-decoration: underline; }
+
+  footer{
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 1.5rem 0 2rem;
+  }
+
+  @media (max-width: 980px){
+    .article-wrapper{ margin: 1.5rem; }
+    .content-shell{ grid-template-columns: 1fr; }
+    .toc{ position: relative; top: auto; }
+  }
+
+  @media (max-width: 600px){
+    .hero{ padding: 2.2rem 1.3rem 1.9rem; }
+    .hero h1{ font-size: 1.7rem; }
+    .content-shell{ padding: 1.4rem 1.3rem 2.2rem; }
+  }
+  @media (max-width: 980px){
+	  .toc{
+		position: relative;
+		top: auto;
+		left: auto;
+		width: auto;
+		max-height: none;
+		overflow: visible;
+		margin-bottom: 1rem;
+	  }
+
+	  .content-shell{
+		padding-left: 1.3rem;  /* normal padding on mobile */
+	  }
+	}
+
+  
+  
+
+  .toc-h3{ margin-left: 0.7rem; }
+  .toc-h3 a{ font-size: 0.90rem; }
+</style>
+
+</head>
+<body>
+  <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+  <div id="top"></div>
+
+  <div class="article-wrapper">
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-text">
+          <h1>Continuous Distribution & PDF</h1>
+        </div>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span class="toggle-icon" aria-hidden="true">🌙</span>
+        </button>
+      </div>
+    </section>
+
+    <div class="content-shell">
+      <nav class="toc" aria-label="On this page">
+  <div class="toc-title">On this page</div>
+  <ul>
+    <li class="toc-top"><a href="#top">↑ Back to top</a></li><li class="toc-h3"><a href="#we-can-also-determine-the-probability-of-x-over-a-finite-interval-a-b-as">We can also determine the probability of X over a finite interval [ a, b] as:</a></li><li class="toc-h3"><a href="#a-pdf-must-be-nonnegative-ie-and-satisfies-the-following-condition">A pdf must be nonnegative, i.e.   and satisfies the following condition:</a></li><li class="toc-h3"><a href="#soln">Soln:</a></li>
+  </ul>
+</nav>
+      <main class="article-content">
+        <p>We have discussed about discrete distributions in previous article and in discrete distributions, the events always form a list. For example, if I roll a die, I could get 1, 2, 3, 4, 5, or 6. I could also think of the number of books in a library; it can be 1, 2, 3, a thousand, etc., but I can always make a list of it.</p>
+<p>What is something that cannot be listed? An interval. For example, if my random variable is the actual length of a manufactured shaft, that cannot be listed. Because the nominal length of the shaft is 100 mm, but it could also be 99.91 mm, or 100.01 mm, or 100.001 mm. Actually, it depends on the precision of the measuring device and up to what decimal digits we are measuring the accuracy, resulting in infinitely many values. However, we can define an interval and say that the shaft length lies between 99.90 mm and 100.10 mm.</p>
+<p>So, when your events are a list, you have a discrete distribution. And when your events are an interval, you have a continuous distribution. Let’s elaborate more on that.</p>
+<p>So, imagine you're measuring the length of different shafts and you're trying to find the probability that a shaft will have a specific length. Let's say the length could be exactly 99.90 mm, 100.00 mm, or 100.10 mm, for example.  And we can try to plot the probabilities, say like this, where the heights of the bars are the probabilities that the length is exactly 99.90 mm, 100.00 mm, or 100.10 mm.</p>
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/probability_bar.png" 
+			alt="Figure 1" 
+			width="850" height="600">
+			<p>Figure 1</p>
+		</div>
+<p>But it can also be 99.91 mm, or 100.05 mm. And you can quickly see that there are infinitely many values the length could take, as values with three or more decimal places are also possible. These values lie everywhere between the ones you already have, both to the left and to the right.</p>
+<p>Since height of the bars are representing probabilities the sum of the heights of all of them has to be equal to 1. But you can quickly see that by adding more and more and more of them, they have to get smaller and smaller and eventually become 0. So, what did we do wrong here? Well, we did nothing wrong. The answer is that this distribution is fundamentally different, as it's not discrete, but it is continuous. So this approach will not really work.</p>
+<p>To try to understand this, think of how you would answer the following question: what is the probability that the length will be exactly 100.00 mm to the dot? It is encouraged to think about this. The answer is zero, because there are simply too many values for the length. There's actually uncountably many of them; it's a whole interval. And we're forced to say that the probability that the length is exactly 100.00 and forever 0 mm is 0. So, we need to describe this problem in a slightly different way.</p>
+<p>Instead of asking what is the probability of the length being a fixed value, let's think of it in terms of ranges. So, we're thinking of what's the probability that the length falls within a certain range, say between 99.90 and 99.95 mm. And for that, we can have a probability, and we can put it as the height of this red bar over here. Then we can think of the probability that the length falls between 99.95 and 100.00 mm. And that's this other height, or between 100.00 and 100.05 mm, and so on</p>
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/probability_bar_range.png" 
+			alt="Figure 2" 
+			width="850" height="600">
+			<p>Figure 2</p>
+		</div>
+<p>And let's assume that we are only considering lengths between 99.90 and 100.10 mm. And now we have a discrete probability distribution, where the areas, so the sum of the heights of these bars, adds up to 1. And notice that the majority of the lengths fall between 99.95 and 100.00 mm, or between 100.00 and 100.05 mm; not many of them go all the way to 100.10 mm, and that's what this probability distribution is telling us.</p>
+<p>Now imagine that we want a little more information, so we make these ranges a little more granular, so we make them 0.01 mm instead. And now we have this distribution over here, where we now know the probability that the length is between 99.90 and 99.91 mm, between 99.91 and 99.92 mm, all the way to between 100.09 and 100.10 mm.</p>
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/grannular_probability_bar.png" 
+			alt="Figure 3" 
+			width="850" height="600">
+			<p>Figure 3</p>
+		</div>
+		<p>And if we want to make them still more granular, we can make the ranges even smaller, like 0.005 mm. And now we have all this information between 99.90 and 99.905 mm, between 99.905 and 99.91 mm, all the way to between 100.095 and 100.10 mm. And we can continue splitting these ranges and getting discrete distributions. And if we were to do this infinitely many times, then what we get is this: a continuous distribution. Imagine just a bunch of very, very skinny bars, infinitely many of them, that become just a curve.</p>
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/continuous_distribution.png" 
+			alt="Figure 4" 
+			width="850" height="600">
+			<p>Figure 4</p>
+		</div>	
+<p>Now, in the discrete distribution, we had that the sum of heights has to be equal to 1. The sum of heights was the same as saying the blue area. So, in the continuous distribution, we have the same condition: the area under the curve is equal to 1. And that is a continuous probability distribution.</p>
+<p>Probability Density Function</p>
+<p>Let’s continue with same example of shaft length but with more concrete values and samples with length measurements. The nominal length of a shaft is 100 mm, with manufacturing tolerance is 0.1 mm, the actual length will be within the range of 100 ± 0.1 mm. The length measured vary from 99.90 mm to100.10 mm. 100 sample measurements of the length are given in Table. It ranges from 99.90 mm to100.10 mm, certain values occur more frequently than others. The values around the nominal length 100 mm occur with a higher chance than the values near both endpoints.</p>
+<p>Table: Length of 100 Samples of shaft</p>
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/shaft_data.png" 
+			alt="Figure" 
+			width="850" height="600">
+		</div>
+
+<p>If we divide the range [99.90, 100.10] into several equal segments and plot the number of values of the length that reside the segments, we will have a bar-like graph. This type of graph is called a histogram. It shows the frequency of the values that occur in different segments.</p>
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/histogram_with_number_of_samples.png" 
+			alt="Figure 5" 
+			width="850" height="600">
+			<p>Figure 5</p>
+		</div>
+<p>If we plot the number of samples (measurements) divided by the total number of measurements, we obtain a variant of the last histogram. As shown in Fig. below, the vertical axis represents the number of measurements within each segment divided by the total number of measurements (100).</p>
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/histogram.png" 
+			alt="Figure 6" 
+			width="850" height="600">
+			<p>Figure 6</p>
+		</div>
+<p>If we have more samples and use more intervals to divide the range of the length, the bars in the last Fig. will approach a smooth curve as shown in Fig. below. This curve is called a probability density function (pdf).</p>
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/probability_desnsity_fn.png" 
+			alt="Figure 6" 
+			width="850" height="600">
+			<p>Figure 6</p>
+		</div>
+<p>The pdf captures the chance property of a random variable as shown in Fig. below and fully describes a random variable.</p>
+<ul>
+<li>f (x) is used the denote a probability density function of random variable X, where x is a realization (a specific value) of X.</li>
+<li>The significance of the pdf is that f (x)dx is the probability that the random variable X is in the interval [x, x + dx] (see Fig below), written as:</li>
+</ul>
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/continuous_distribution_def.png" 
+			alt="Figure 7" 
+			width="850" height="600">
+			<p>Figure 7</p>
+		</div>
+<h3 id="we-can-also-determine-the-probability-of-x-over-a-finite-interval-a-b-as">We can also determine the probability of X over a finite interval [ a, b] as:</h3>
+<p>, also shown in figure above, which is the area underneath the curve of f (x) from x = a to x = b.</p>
+<h3 id="a-pdf-must-be-nonnegative-ie-and-satisfies-the-following-condition">A pdf must be nonnegative, i.e.   and satisfies the following condition:</h3>
+<div class="image">
+  <img src="figure" alt="figure">
+  <p>figure</p>
+</div>
+<p>Determine the probability that the rod's length is between 99.5 mm and 100.5 mm.</p>
+<h3 id="soln">Soln:</h3>
+<p>The probability is the area under the pdf curve between the specified limits as given.</p>
+<p>P (99.5 ≤ X ≤ 100.) = f(x) dx = f(x) × (100.5 − 99.5)</p>
+<p>Since f(x) = 1/2</p>
+<p>P (99.5 ≤ X ≤ 100.) = f(x) dx = f(x) × (100.5 − 99.5) = (1/2) ×1 =0.5</p>
+<p>Conclusion: There is a 50% probability that a randomly selected rod will have a length between 99.5 mm and 100.5 mm.</p>
+<p>One observation: In this example the density function remains constant for the specified ranges, for example PDF value is half for 99 ≤x ≤101. This is an example of uniform distribution, a type of continuous distribution.</p>
+<p>Normal distribution, Exponential Distribution, and Uniform Distribution are examples of Continuous Probability Distributions. In the next article, we will focus on learning about the Normal distribution.</p>
+      </main>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Rami RK — Probability Notes</p>
+  </footer>
+
+  <script>
+    (function() {
+      const bar = document.getElementById('progressBar');
+      const onScroll = () => {
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const scrollHeight = doc.scrollHeight - doc.clientHeight;
+        const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+        bar.style.width = pct + '%';
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
+    (function() {
+      const key = 'rk_theme';
+      const btn = document.getElementById('themeToggle');
+      const icon = btn.querySelector('.toggle-icon');
+
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem(key);
+      const initial = saved ? saved : (prefersDark ? 'dark' : 'light');
+
+      const apply = (mode) => {
+        document.documentElement.dataset.theme = mode;
+        icon.textContent = mode === 'dark' ? '☀️' : '🌙';
+        localStorage.setItem(key, mode);
+      };
+
+      apply(initial);
+
+      btn.addEventListener('click', () => {
+        const current = document.documentElement.dataset.theme || 'light';
+        apply(current === 'dark' ? 'light' : 'dark');
+      });
+    })();
+
+    (function() {
+      const links = Array.from(document.querySelectorAll('.toc a'));
+      const sections = links
+        .map(a => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+
+      if (!('IntersectionObserver' in window) || sections.length === 0) return;
+
+      const setActive = (id) => {
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      };
+
+      const obs = new IntersectionObserver((entries) => {
+        const visible = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible && visible.target && visible.target.id) setActive(visible.target.id);
+      }, {
+        rootMargin: '0px 0px -70% 0px',
+        threshold: [0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
+      });
+
+      sections.forEach(s => obs.observe(s));
+    })();
+  </script>
+</body>
+</body>
+</html>
