@@ -306,23 +306,6 @@
 	  }
 	}
 
-  
-  
-
-.figure-placeholder{
-  width:100%;
-  min-height:220px;
-  border:2px dashed var(--border);
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--muted);
-  font-weight:700;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  margin:2rem 0;
-}
 </style>
 
 </head>
@@ -350,43 +333,58 @@
 <nav class="toc">
   <div class="toc-title">On this page</div>
   <ul>
-    <li class='toc-top'><a href='#top'>↑ Back to top</a></li><li class='toc-h3'><a href='#lets-see-another-example-of-rolling-a-fair-six-sided-die'>Let’s see another example of rolling a fair six-sided die:</a></li><li class='toc-h3'><a href='#lets-see-another-example-of-3-fair-coin-toss'>Let’s see another example of 3 fair coin toss:</a></li><li class='toc-h3'><a href='#examine-possible-outcomes'>Examine possible outcomes:</a></li><li class='toc-h3'><a href='#amount-of-rainfall-in-a-day'>Amount of Rainfall in a Day:</a></li><li class='toc-h3'><a href='#speed-of-a-car-on-a-highway'>Speed of a Car on a Highway:</a></li><li class='toc-h3'><a href='#blood-pressure-measurement'>Blood Pressure Measurement:</a></li><li class='toc-h3'><a href='#probability-mass-function-pmf'>Probability Mass Function (PMF):</a></li><li class='toc-h3'><a href='#types'>Types:</a></li>
+    <li class='toc-top'><a href='#top'>↑ Back to top</a></li>
+	<li class='toc-h3'><a href='#lets-see-another-example-of-rolling-a-fair-six-sided-die'>Let’s see another example of rolling a fair six-sided die:</a></li><li class='toc-h3'><a href='#lets-see-another-example-of-3-fair-coin-toss'>Let’s see another example of 3 fair coin toss:</a></li>
+	<li class='toc-h3'><a href='#other-type-of-random-variable'>Examples of other type of random variables:</a></li>
+	<li class='toc-h3'><a href='#terminologies'>Terminologies</a></li>
   </ul>
 </nav>
 
     <main class="article-content">
-      <p>We will see the formal definition of random variables later. First, let's start with a simple experiment of tossing a coin.</p>
-<p>Tossing a coin results in either a head or a tail. Here, each possible outcome (getting a head or getting a tail) is an event. For a fair coin, the probability of getting a head or a tail is one-half.</p>
-<p>P(H) = 0.5 and P(T) = 0.5</p>
-<p>Let's take a variable X and call it the number of heads. When we flip a coin, if we obtain heads, we get 1 head, and if we obtain tails, we get 0 heads.</p>
-<p>X= Number of heads</p>
+		<p>We will see the formal definition of random variables later. First, let's start with a simple <b>experiment</b> of tossing a coin.</p>
+		<p>Tossing a coin results in either a head or a tail. Here, each possible outcome (getting a head or getting a tail) is an <b>event</b>. 
+		For a fair coin, the probability of getting a head or a tail is one-half.</p>
+		<p>\( P(H) = 0.5 \) and \(P(T) = 0.5 \)</p>
+		<p>Let's take a variable \(X\) and call it the number of heads. When we flip a coin, if we obtain heads, we get 1 head, and if we obtain tails, we get 0 heads.</p>
+		<p><strong>X= Number of heads</strong></p>
+		<p>Now writing the same probability of getting tail and head in this new framing of X as illustrated in Fig.1:</p>
 
 	    <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/coin_flip.png" 
-			alt="Figure 2" 
+			alt="Figure 1" 
 			width="850" height="600">
-			<p>Figure 2</p>
+			<p>Figure 1</p>
 		</div>
 
-<p>Now writing the same probability of getting tail and head in this new framing of X:</p>
-<p>The probability of X = 1 is the same as the probability of obtaining heads: P(X=1) = 0.5</p>
-<p>The probability of X = 0 is the same as the probability of obtaining tails: P(X=0) = 0.5</p>
-<p>Here, X is a random variable as it can take either the value 1 or 0 randomly, with each value occurring roughly half of the time. Symbolically all possible outcomes/values that random variable can take are denoted by small x, so x1 = 1, x2 = 0. We can simply write X= {x1, x2} = {1,0}. Here, there are only two values are in sample space, Ω = {1,0}.</p>
-<p>Note: P (X= x) is read as "the probability that the random variable X equals x​" and P (X = x) = ½ for either x = 0 or 1.</p>
-<p>In simpler terms, a random variable X assigns a real number to each outcome in the sample space Ω.</p>
+
+<p>The probability of \(X = 1\) is the same as the probability of obtaining heads: \(P(X=1) = 0.5\)</p>
+<p>The probability of \(X = 0\) is the same as the probability of obtaining tails: \(P(X=0) = 0.5\)</p>
+<p>Here, <b>X</b> is a random variable as it can take either the value 1 or 0 randomly, with each value occurring 
+	roughly half of the time. Symbolically all possible outcomes/values that random variable can take are denoted by 
+	small \(x\), so \(x_1 = 1, x_2 = 0\). We can simply write \( X = \{x_1, x_2\} = \{1, 0\} \). There are only two values in 
+	<b>sample space</b>, \( Ω = \{1, 0\} \).</p>
+<p><b>Note:</b> \(P (X= x)\) is read as <b>"the probability that the random variable \(X\) equals \(x​\)" </b>and 
+	\(P (X = x) = 1/2 \) for either \(x = 0\) or \(1\).</p>
+<p><strong>In simpler terms, a random variable X assigns a real number to each outcome in the sample space \(Ω\).</strong></p>
 <h3 id='lets-see-another-example-of-rolling-a-fair-six-sided-die'>Let’s see another example of rolling a fair six-sided die:</h3>
-<p>The sample space consists of all possible outcomes when rolling a six-sided die: Ω = {1,2,3,4,5,6}.</p>
-<p>Since the die is fair, each outcome is equally likely. Thus, the probability distribution of the random variable X is P (X = x) = 1/6 for x ∈ {1,2,3,4,5,6}.</p>
+<p>The sample space consists of all possible outcomes when rolling a six-sided die:\( Ω = \{1,2,3,4,5,6\}\).</p>
+<p>Since the die is fair, each outcome is equally likely. Thus, the probability distribution of the random variable \(X\) is \(P (X = x) = 1/6 \)
+	for \(x ∈ \{1,2,3,4,5,6\}.\)</p>
 <h3 id='lets-see-another-example-of-3-fair-coin-toss'>Let’s see another example of 3 fair coin toss:</h3>
-<p>Define a random variable, X = Number of heads in 3-coin tosses</p>
+<p>Define a random variable, X = Number of heads in 3-coin tosses.</p>
 <h3 id='examine-possible-outcomes'>Examine possible outcomes:</h3>
-<p>All three coins land on the tail: (ttt)  Number of heads (x) =0</p>
-<p>At least one coin lands on the head and it can happen in 3 ways: (tth, tht, htt) Number of heads (x)=1</p>
-<p>Two coins land on the head and it can happen in 3 ways: (thh, hth, hht) Number of heads (x)= 2</p>
-<p>All three coins land on the head: (hhh)  Number of heads(x) =3</p>
-<p>Sample space, Ω = {ttt, tth, tht, htt, thh, hth, hht, hhh };  | Ω | = 8</p>
-<p>Since the events are equiprobable, P(X= x) = p = 1/8 for x € {0,1,2,3}</p>
-<p>See the table below along with the histogram plot:</p>
+<ul>
+    <li>All three coins land on the tail: \((ttt)\) Number of heads \((x) = 0\)</li>
+    <li>At least one coin lands on the head and it can happen in 3 ways: \((tth, tht, htt)\) Number of heads \((x) = 1\)</li>
+    <li>Two coins land on the head and it can happen in 3 ways:\((thh, hth, hht)\) Number of heads \((x) = 2\)</li>
+    <li>All three coins land on the head: \((hhh)\) Number of heads \((x) = 3\)</li>
+</ul>
+<p>Sample space, \(Ω = \{ttt, tth, tht, htt, thh, hth, hht, hhh \};  | Ω | = 8\)</p>
+<p>Since all outcomes in the sample space are equiprobable(each with probability 1/8), the probability of a 
+	particular value of the random variable \( X \)depends on how many outcomes produce that value. Hence:</p>
+	<p>\( P(X = 0) = \frac{1}{8}, \, P(X = 1) = \frac{3}{8}, \, P(X = 2) = \frac{3}{8}, \, P(X = 3) = \frac{1}{8} \)</p>
+
+<p><b>See the table below along with the histogram plot in Fig. 2 below:</b></p>
 
 	    <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/output_as_histogram.png" 
@@ -395,41 +393,60 @@
 			<p>Figure 2</p>
 		</div>
 
-<p>We have seen the three examples of random variables above, all of which are Discrete random variables. However, there are other types of random variables as well.</p>
-<p>For example,</p>
+<p><strong>We have seen the three examples of random variables above, all of which are <span style="color: green"> Discrete random variables</span>. However, there are other 
+	types of random variables as well.</strong></p>
+<h3 id='other-type-of-random-variable'>Examples of other type of random variables:</h3>
 <h3 id='amount-of-rainfall-in-a-day'>Amount of Rainfall in a Day:</h3>
 <p>The amount of rainfall in a day in a specific location is a continuous random variable. It can take any non-negative real value, from 0 mm on a dry day to several `mm` on a rainy day.</p>
 <h3 id='speed-of-a-car-on-a-highway'>Speed of a Car on a Highway:</h3>
 <p>The speed of a car traveling on a highway is a continuous random variable. The speed can vary continuously over a range, such as between 0 km/h and the maximum speed limit, and can take any value within that range depending on traffic conditions and driver behaviour.</p>
 <h3 id='blood-pressure-measurement'>Blood Pressure Measurement:</h3>
 <p>The systolic blood pressure of a person is a continuous random variable. It can vary based on a person’s health, activity level, and other factors, and can take any value within a typical range, such as between 90 mmHg and 180 mmHg.</p>
-<p>All of the above are examples of continuous random variables.</p>
-<p>Let’s compare both side by side.</p>
+<p><b>All of the above are examples of <span style="color: green"> Continuous random variables.</span></b></p>
+<p style="text-align: center;"><b>Let’s compare both side by side.</b></p>
 
 
 	    <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/contineous_and_discrete.png" 
-			alt="Figure 2" 
+			alt="Figure 3" 
 			width="850" height="600">
-			<p>Figure 2</p>
+			<p>Figure 3</p>
 		</div>
 
+<p><b>So, the values that a discrete random variable can take can be put in a list as 1, 2, 3, 4, 5, etc. Whereas the values that a 
+	continuous random variable takes cannot be put in a list because it's an entire interval.</b></p>
+<h3>What is the difference between these random variables and the ones seen in algebra and calculus?</h3>
+<p>The variables in algebra and calculus are deterministic, whereas the ones here are random. What is deterministic? 
+	For example, in algebra if \(x = 2\), or in the case of function \(f(x) = x^2\) the input always takes the same value. 
+	Once it's defined, it is fixed forever. However, a random variable is not like that. It can assume many values and 
+	is associated with an uncertain outcome. So deterministic variables are associated with a fixed outcome and random 
+	variables with an uncertain outcome, which is the primary distinction.</p>
 
+<h3 id='terminologies'>Terminologies</h3>
 
-<p>So, the values that a discrete random variable can take can be put in a list as 1, 2, 3, 4, 5, etc. Whereas the values that a continuous random variable takes cannot be put in a list because it's an entire interval.</p>
-<p>What is the difference between these random variables and the ones seen in algebra and calculus?</p>
-<p>The variables in algebra and calculus are deterministic, whereas the ones here are random. What is deterministic? For example, in algebra if x = 2, or in the case of function f(x) = x2 the input always takes the same value. Once it's defined, it is fixed forever. However, a random variable is not like that. It can assume many values and is associated with an uncertain outcome. So deterministic variables are associated with a fixed outcome and random variables with an uncertain outcome, which is the primary distinction.</p>
-<p>Now there are a few associated terminologies that we have to understand like Probability Mass Function (PMF), Probability Function (PF), Probability density function (PDF)</p>
-<h3 id='probability-mass-function-pmf'>Probability Mass Function (PMF):</h3>
-<p>Definition: The probability mass function (PMF) applies to discrete random variables. It provides the probability that a discrete random variable is exactly equal to some value.</p>
-<p>Mathematical Representation: P (X= xi) =p(xi), where p(xi) is the probability that the random variable X takes the value xi​.</p>
-<p>Ex. For a fair six-sided die: P (X = x) = 1/6 for x ∈ {1,2,3,4,5,6}.</p>
-<p>2.  Probability Function</p>
-<p>Definition: The term "probability function" is sometimes used interchangeably with "probability mass function" or "probability density function" (for continuous random variables), depending on the context. Generally, it refers to any function that gives the probability of occurrence of different possible outcomes of an experiment.</p>
-<h3 id='types'>Types:</h3>
-<p>For Discrete Variables: The probability function is the PMF.</p>
-<p>For Continuous Variables: The probability function is the Probability Density Function (PDF).</p>
-<p>Details of probability density function will be covered later.</p>
+</p>Now there are a few associated <b>terminologies</b> that we have to understand like <b>Probability Mass Function (PMF), 
+	Probability Function (PF), Probability density function (PDF).</b></P>
+
+		
+<ol>
+    <li><b>Probability Mass Function (PMF)</b></li>
+		<p><b>Definition:</b> The probability mass function (PMF) applies to discrete random variables. It provides the probability that a discrete random variable is exactly equal to some value.</p>
+		<p><b>Mathematical Representation:</b>\(P (X= x_i) = p(x_i)\), where \( p(x_i)\) is the probability that the 
+			random variable \(X\) takes the value \(x_i\)​.</p>
+		<p>Ex. For a fair six-sided die: \( P (X = x) = 1/6 \) for \(x ∈ \{1,2,3,4,5,6\}.\)</p>
+    <li><b>Probability Function</b></li>
+		<p><b>Definition:</b> The term "probability function" is sometimes used interchangeably with "probability mass function" or "probability density function" (for continuous random variables), depending on the context. Generally, it refers to any function that gives the probability of occurrence of different possible outcomes of an experiment.</p>
+		<p><b>Types:</b></p>
+
+			<ol>
+				<li><b>For Discrete Variables:</b> The probability function is the PMF.</li>
+				
+				<li><b>For Continuous Variables:</b> The probability function is the Probability Density Function (PDF).</li>
+
+			</ol>
+</ol>
+
+<p>Details of probability density function will be covered in other part.</p>
     </main>
   </div>
 </div>
