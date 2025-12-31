@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Variables | Rami RK</title>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  :root{
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --muted: #6b7280;
+    --border: #e1e7f5;
+    --shadow: 0 18px 45px rgba(0,0,0,0.12);
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.08);
+    --accent: #667eea;
+    --accent2: #764ba2;
+    --link: #2980b9;
+    --note-bg: #f1f5ff;
+    --quote-bg: #f8f9fb;
+  }
+
+  :root[data-theme="dark"]{
+    --bg: #0b1220;
+    --card: #0f172a;
+    --text: #e5e7eb;
+    --muted: #a1a1aa;
+    --border: rgba(255,255,255,0.10);
+    --shadow: 0 18px 45px rgba(0,0,0,0.55);
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.40);
+    --accent: #7c8cff;
+    --accent2: #a879ff;
+    --link: #7dd3fc;
+    --note-bg: rgba(124,140,255,0.10);
+    --quote-bg: rgba(125,211,252,0.08);
+	--toc-top: 260px;
+  }
+
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+  }
+	 html {
+	  scroll-behavior: smooth;
+	}
+
+  .progress-bar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    z-index: 9999;
+  }
+
+  .article-wrapper{
+    max-width: 980px;
+    margin: 3rem auto;
+    background: var(--card);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .hero{
+    padding: 2.6rem 2.2rem 2.1rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+  }
+
+  .hero-top{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .hero h1{
+    margin: 0 0 0.5rem 0;
+    font-size: 2.2rem;
+    line-height: 1.25;
+  }
+  .hero p{
+    margin: 0.2rem 0;
+    opacity: 0.9;
+  }
+
+  .theme-toggle{
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.14);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.5rem 0.7rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.12s ease, background 0.12s ease;
+    flex: 0 0 auto;
+  }
+  .theme-toggle:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.18); }
+  .theme-toggle:active{ transform: translateY(0px); }
+
+	.content-shell{
+	  display: block;
+	  padding: 2rem 2.2rem 2.6rem;
+
+	  /* push content right to make space for fixed TOC */
+	  padding-left: calc(250px + 2.2rem + 18px);
+	}
+
+
+  .toc{
+	  position: fixed;
+	  top: var(--toc-top, 260px);                 /* leaves space for the progress bar/header area */
+	  left: max(16px, calc((100vw - 980px)/2));  /* aligns with your centered card */
+	  width: 250px;
+
+	  max-height: calc(100vh - 90px);
+	  overflow: auto;
+
+	  background: rgba(255,255,255,0.55);
+	  border: 1px solid var(--border);
+	  border-radius: 14px;
+	  padding: 1rem 1rem;
+	  box-shadow: var(--shadow-soft);
+	  backdrop-filter: blur(8px);
+	  z-index: 50;
+  }
+  :root[data-theme="dark"] .toc{
+    background: rgba(15,23,42,0.65);
+  }
+	 .toc-top a {
+	  font-weight: 600;
+	  color: var(--accent);
+	}
+
+	.toc-top a:hover {
+	  text-decoration: underline;
+	}
+
+  
+  .toc-title{
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+  }
+  .toc ul{
+    margin: 0.2rem 0 0;
+    padding-left: 1.1rem;
+  }
+  .toc a{
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+  .toc a:hover{ text-decoration: underline; }
+  .toc a.active{ color: var(--text); font-weight: 600; }
+
+  .article-content{ min-width: 0; }
+
+  h2{
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.4rem;
+    color: var(--text);
+    border-left: 4px solid var(--accent);
+    padding-left: 0.6rem;
+  }
+  h3{
+    margin-top: 1.6rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+    color: var(--text);
+    opacity: 0.9;
+  }
+  p{ margin: 0.4rem 0; text-align: justify; }
+
+  ul{ padding-left: 1.4rem; }
+  li{ margin: 0.3rem 0; }
+
+  .note{
+    background: var(--note-bg);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .quote{
+    background: var(--quote-bg);
+    border-left: 4px solid var(--link);
+    padding: 1.2rem 1.4rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    border-radius: 10px;
+  }
+
+  code{
+    background: rgba(148,163,184,0.18);
+    padding: 0.15rem 0.35rem;
+    border-radius: 6px;
+    font-size: 0.92rem;
+  }
+
+  .image{
+    text-align: center;
+    margin: 2rem 0;
+  }
+  .image img{
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+  }
+  .image p{
+    margin-top: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-style: italic;
+	text-align: center;
+  }
+
+  img{
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+  }
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+  th, td{
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th{
+    background: rgba(148,163,184,0.12);
+    font-weight: 600;
+  }
+
+  /* Definition / Theorem / Example boxes (ready to use) */
+  .callout{
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+    margin: 1.5rem 0;
+    background: rgba(148,163,184,0.08);
+  }
+  .callout-title{
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+  .definition{ border-left: 5px solid var(--accent); }
+  .theorem{ border-left: 5px solid var(--accent2); }
+  .example{ border-left: 5px solid var(--link); }
+
+  a{ color: var(--link); text-decoration: none; }
+  a:hover{ text-decoration: underline; }
+
+  footer{
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 1.5rem 0 2rem;
+  }
+
+  @media (max-width: 980px){
+    .article-wrapper{ margin: 1.5rem; }
+    .content-shell{ grid-template-columns: 1fr; }
+    .toc{ position: relative; top: auto; }
+  }
+
+  @media (max-width: 600px){
+    .hero{ padding: 2.2rem 1.3rem 1.9rem; }
+    .hero h1{ font-size: 1.7rem; }
+    .content-shell{ padding: 1.4rem 1.3rem 2.2rem; }
+  }
+  @media (max-width: 980px){
+	  .toc{
+		position: relative;
+		top: auto;
+		left: auto;
+		width: auto;
+		max-height: none;
+		overflow: visible;
+		margin-bottom: 1rem;
+	  }
+
+	  .content-shell{
+		padding-left: 1.3rem;  /* normal padding on mobile */
+	  }
+	}
+
+  
+  
+
+.figure-placeholder{
+  width:100%;
+  min-height:220px;
+  border:2px dashed var(--border);
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--muted);
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  margin:2rem 0;
+}
+</style>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<div id="top"></div>
+
+<div class="article-wrapper">
+  <section class="hero">
+    <div class="hero-top">
+      <div class="hero-text">
+        <h1>Random Variables</h1>
+		<p>Building the intuition of random variables, starting with a coin toss.</p>
+        <p>Part of the Random Variable & Distribution series.</p>
+      </div>
+      <button class="theme-toggle" id="themeToggle">
+        <span class="toggle-icon">🌙</span>
+      </button>
+    </div>
+  </section>
+
+  <div class="content-shell">
+    
+<nav class="toc">
+  <div class="toc-title">On this page</div>
+  <ul>
+    <li class='toc-top'><a href='#top'>↑ Back to top</a></li><li class='toc-h3'><a href='#lets-see-another-example-of-rolling-a-fair-six-sided-die'>Let’s see another example of rolling a fair six-sided die:</a></li><li class='toc-h3'><a href='#lets-see-another-example-of-3-fair-coin-toss'>Let’s see another example of 3 fair coin toss:</a></li><li class='toc-h3'><a href='#examine-possible-outcomes'>Examine possible outcomes:</a></li><li class='toc-h3'><a href='#amount-of-rainfall-in-a-day'>Amount of Rainfall in a Day:</a></li><li class='toc-h3'><a href='#speed-of-a-car-on-a-highway'>Speed of a Car on a Highway:</a></li><li class='toc-h3'><a href='#blood-pressure-measurement'>Blood Pressure Measurement:</a></li><li class='toc-h3'><a href='#probability-mass-function-pmf'>Probability Mass Function (PMF):</a></li><li class='toc-h3'><a href='#types'>Types:</a></li>
+  </ul>
+</nav>
+
+    <main class="article-content">
+      <p>We will see the formal definition of random variables later. First, let's start with a simple experiment of tossing a coin.</p>
+<p>Tossing a coin results in either a head or a tail. Here, each possible outcome (getting a head or getting a tail) is an event. For a fair coin, the probability of getting a head or a tail is one-half.</p>
+<p>P(H) = 0.5 and P(T) = 0.5</p>
+<p>Let's take a variable X and call it the number of heads. When we flip a coin, if we obtain heads, we get 1 head, and if we obtain tails, we get 0 heads.</p>
+<p>X= Number of heads</p>
+
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/coin_flip.png" 
+			alt="Figure 2" 
+			width="850" height="600">
+			<p>Figure 2</p>
+		</div>
+
+<p>Now writing the same probability of getting tail and head in this new framing of X:</p>
+<p>The probability of X = 1 is the same as the probability of obtaining heads: P(X=1) = 0.5</p>
+<p>The probability of X = 0 is the same as the probability of obtaining tails: P(X=0) = 0.5</p>
+<p>Here, X is a random variable as it can take either the value 1 or 0 randomly, with each value occurring roughly half of the time. Symbolically all possible outcomes/values that random variable can take are denoted by small x, so x1 = 1, x2 = 0. We can simply write X= {x1, x2} = {1,0}. Here, there are only two values are in sample space, Ω = {1,0}.</p>
+<p>Note: P (X= x) is read as "the probability that the random variable X equals x​" and P (X = x) = ½ for either x = 0 or 1.</p>
+<p>In simpler terms, a random variable X assigns a real number to each outcome in the sample space Ω.</p>
+<h3 id='lets-see-another-example-of-rolling-a-fair-six-sided-die'>Let’s see another example of rolling a fair six-sided die:</h3>
+<p>The sample space consists of all possible outcomes when rolling a six-sided die: Ω = {1,2,3,4,5,6}.</p>
+<p>Since the die is fair, each outcome is equally likely. Thus, the probability distribution of the random variable X is P (X = x) = 1/6 for x ∈ {1,2,3,4,5,6}.</p>
+<h3 id='lets-see-another-example-of-3-fair-coin-toss'>Let’s see another example of 3 fair coin toss:</h3>
+<p>Define a random variable, X = Number of heads in 3-coin tosses</p>
+<h3 id='examine-possible-outcomes'>Examine possible outcomes:</h3>
+<p>All three coins land on the tail: (ttt)  Number of heads (x) =0</p>
+<p>At least one coin lands on the head and it can happen in 3 ways: (tth, tht, htt) Number of heads (x)=1</p>
+<p>Two coins land on the head and it can happen in 3 ways: (thh, hth, hht) Number of heads (x)= 2</p>
+<p>All three coins land on the head: (hhh)  Number of heads(x) =3</p>
+<p>Sample space, Ω = {ttt, tth, tht, htt, thh, hth, hht, hhh };  | Ω | = 8</p>
+<p>Since the events are equiprobable, P(X= x) = p = 1/8 for x € {0,1,2,3}</p>
+<p>See the table below along with the histogram plot:</p>
+
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/output_as_histogram.png" 
+			alt="Figure 2" 
+			width="850" height="600">
+			<p>Figure 2</p>
+		</div>
+
+<p>We have seen the three examples of random variables above, all of which are Discrete random variables. However, there are other types of random variables as well.</p>
+<p>For example,</p>
+<h3 id='amount-of-rainfall-in-a-day'>Amount of Rainfall in a Day:</h3>
+<p>The amount of rainfall in a day in a specific location is a continuous random variable. It can take any non-negative real value, from 0 mm on a dry day to several `mm` on a rainy day.</p>
+<h3 id='speed-of-a-car-on-a-highway'>Speed of a Car on a Highway:</h3>
+<p>The speed of a car traveling on a highway is a continuous random variable. The speed can vary continuously over a range, such as between 0 km/h and the maximum speed limit, and can take any value within that range depending on traffic conditions and driver behaviour.</p>
+<h3 id='blood-pressure-measurement'>Blood Pressure Measurement:</h3>
+<p>The systolic blood pressure of a person is a continuous random variable. It can vary based on a person’s health, activity level, and other factors, and can take any value within a typical range, such as between 90 mmHg and 180 mmHg.</p>
+<p>All of the above are examples of continuous random variables.</p>
+<p>Let’s compare both side by side.</p>
+
+
+	    <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/contineous_and_discrete.png" 
+			alt="Figure 2" 
+			width="850" height="600">
+			<p>Figure 2</p>
+		</div>
+
+
+
+<p>So, the values that a discrete random variable can take can be put in a list as 1, 2, 3, 4, 5, etc. Whereas the values that a continuous random variable takes cannot be put in a list because it's an entire interval.</p>
+<p>What is the difference between these random variables and the ones seen in algebra and calculus?</p>
+<p>The variables in algebra and calculus are deterministic, whereas the ones here are random. What is deterministic? For example, in algebra if x = 2, or in the case of function f(x) = x2 the input always takes the same value. Once it's defined, it is fixed forever. However, a random variable is not like that. It can assume many values and is associated with an uncertain outcome. So deterministic variables are associated with a fixed outcome and random variables with an uncertain outcome, which is the primary distinction.</p>
+<p>Now there are a few associated terminologies that we have to understand like Probability Mass Function (PMF), Probability Function (PF), Probability density function (PDF)</p>
+<h3 id='probability-mass-function-pmf'>Probability Mass Function (PMF):</h3>
+<p>Definition: The probability mass function (PMF) applies to discrete random variables. It provides the probability that a discrete random variable is exactly equal to some value.</p>
+<p>Mathematical Representation: P (X= xi) =p(xi), where p(xi) is the probability that the random variable X takes the value xi​.</p>
+<p>Ex. For a fair six-sided die: P (X = x) = 1/6 for x ∈ {1,2,3,4,5,6}.</p>
+<p>2.  Probability Function</p>
+<p>Definition: The term "probability function" is sometimes used interchangeably with "probability mass function" or "probability density function" (for continuous random variables), depending on the context. Generally, it refers to any function that gives the probability of occurrence of different possible outcomes of an experiment.</p>
+<h3 id='types'>Types:</h3>
+<p>For Discrete Variables: The probability function is the PMF.</p>
+<p>For Continuous Variables: The probability function is the Probability Density Function (PDF).</p>
+<p>Details of probability density function will be covered later.</p>
+    </main>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 Rami RK — Probability Notes</p>
+</footer>
+
+<script>
+    (function() {
+      const bar = document.getElementById('progressBar');
+      const onScroll = () => {
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const scrollHeight = doc.scrollHeight - doc.clientHeight;
+        const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+        bar.style.width = pct + '%';
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
+    (function() {
+      const key = 'rk_theme';
+      const btn = document.getElementById('themeToggle');
+      const icon = btn.querySelector('.toggle-icon');
+
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem(key);
+      const initial = saved ? saved : (prefersDark ? 'dark' : 'light');
+
+      const apply = (mode) => {
+        document.documentElement.dataset.theme = mode;
+        icon.textContent = mode === 'dark' ? '☀️' : '🌙';
+        localStorage.setItem(key, mode);
+      };
+
+      apply(initial);
+
+      btn.addEventListener('click', () => {
+        const current = document.documentElement.dataset.theme || 'light';
+        apply(current === 'dark' ? 'light' : 'dark');
+      });
+    })();
+
+    (function() {
+      const links = Array.from(document.querySelectorAll('.toc a'));
+      const sections = links
+        .map(a => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+
+      if (!('IntersectionObserver' in window) || sections.length === 0) return;
+
+      const setActive = (id) => {
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      };
+
+      const obs = new IntersectionObserver((entries) => {
+        const visible = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible && visible.target && visible.target.id) setActive(visible.target.id);
+      }, {
+        rootMargin: '0px 0px -70% 0px',
+        threshold: [0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
+      });
+
+      sections.forEach(s => obs.observe(s));
+    })();
+  </script>
+</body>
+</body>
+</html>
