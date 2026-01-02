@@ -326,6 +326,8 @@
       <div class="hero-top">
         <div class="hero-text">
           <h1>Continuous Distribution & PDF</h1>
+		  <p>From discrete outcomes to continuous intervals-understanding probability density functions.</p>
+		  <p>Part of the Random Variable & Distribution series.</p>
         </div>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
           <span class="toggle-icon" aria-hidden="true">🌙</span>
@@ -334,12 +336,14 @@
     </section>
 
     <div class="content-shell">
-      <nav class="toc" aria-label="On this page">
-  <div class="toc-title">On this page</div>
-  <ul>
-    <li class="toc-top"><a href="#top">↑ Back to top</a></li><li class="toc-h3"><a href="#we-can-also-determine-the-probability-of-x-over-a-finite-interval-a-b-as">We can also determine the probability of X over a finite interval [ a, b] as:</a></li><li class="toc-h3"><a href="#a-pdf-must-be-nonnegative-ie-and-satisfies-the-following-condition">A pdf must be nonnegative, i.e.   and satisfies the following condition:</a></li><li class="toc-h3"><a href="#soln">Soln:</a></li>
-  </ul>
-</nav>
+		<nav class="toc" aria-label="On this page">
+		<div class="toc-title">On this page</div>
+			<ul>
+			<li class="toc-top"><a href="#top">↑ Back to top</a></li>
+			<li><a href="#probability_density">Probability Density Function</a></li>
+			<li><a href="#example">Example</a></li>
+			</ul>
+		</nav>
       <main class="article-content">
         <p>We have discussed about discrete distributions in previous article and in discrete distributions, the events always form a list. For example, if I roll a die, I could get 1, 2, 3, 4, 5, or 6. I could also think of the number of books in a library; it can be 1, 2, 3, a thousand, etc., but I can always make a list of it.</p>
 <p>What is something that cannot be listed? An interval. For example, if my random variable is the actual length of a manufactured shaft, that cannot be listed. Because the nominal length of the shaft is 100 mm, but it could also be 99.91 mm, or 100.01 mm, or 100.001 mm. Actually, it depends on the precision of the measuring device and up to what decimal digits we are measuring the accuracy, resulting in infinitely many values. However, we can define an interval and say that the shaft length lies between 99.90 mm and 100.10 mm.</p>
@@ -377,16 +381,18 @@
 			<p>Figure 4</p>
 		</div>	
 <p>Now, in the discrete distribution, we had that the sum of heights has to be equal to 1. The sum of heights was the same as saying the blue area. So, in the continuous distribution, we have the same condition: the area under the curve is equal to 1. And that is a continuous probability distribution.</p>
-<p>Probability Density Function</p>
+<h3 id="probability_density">Probability Density Function</h3>
 <p>Let’s continue with same example of shaft length but with more concrete values and samples with length measurements. The nominal length of a shaft is 100 mm, with manufacturing tolerance is 0.1 mm, the actual length will be within the range of 100 ± 0.1 mm. The length measured vary from 99.90 mm to100.10 mm. 100 sample measurements of the length are given in Table. It ranges from 99.90 mm to100.10 mm, certain values occur more frequently than others. The values around the nominal length 100 mm occur with a higher chance than the values near both endpoints.</p>
-<p>Table: Length of 100 Samples of shaft</p>
+<p style="text-align: center;"><b>Table: Length of 100 Samples of shaft</b></p>
 	    <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/shaft_data.png" 
 			alt="Figure" 
 			width="850" height="600">
 		</div>
 
-<p>If we divide the range [99.90, 100.10] into several equal segments and plot the number of values of the length that reside the segments, we will have a bar-like graph. This type of graph is called a histogram. It shows the frequency of the values that occur in different segments.</p>
+<p>If we divide the range [99.90, 100.10] into several equal segments and plot the number of values of the length that reside the 
+segments, we will have a bar-like graph. This type of graph is called a <b>histogram</b>. It shows the frequency of the values that occur
+ in different segments.</p>
 	    <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/histogram_with_number_of_samples.png" 
 			alt="Figure 5" 
@@ -409,8 +415,10 @@
 		</div>
 <p>The pdf captures the chance property of a random variable as shown in Fig. below and fully describes a random variable.</p>
 <ul>
-<li>f (x) is used the denote a probability density function of random variable X, where x is a realization (a specific value) of X.</li>
-<li>The significance of the pdf is that f (x)dx is the probability that the random variable X is in the interval [x, x + dx] (see Fig below), written as:</li>
+<li>\(f(x)\) is used the denote a probability density function of random variable \(X\), where \(x\) is a realization (a specific value) 
+of \(X\).</li>
+<li>The significance of the pdf is that \(f(x)dx\) is the probability that the random variable \(X\) is in the interval \([x, x + dx]\)
+ (see Fig below), written as: \( P(x \leq X \leq x + dx) = f(x) \, dx \) </li>
 </ul>
 	    <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/random_variable_and_distribution/continuous_distribution_def.png" 
@@ -418,22 +426,37 @@
 			width="850" height="600">
 			<p>Figure 7</p>
 		</div>
-<h3 id="we-can-also-determine-the-probability-of-x-over-a-finite-interval-a-b-as">We can also determine the probability of X over a finite interval [ a, b] as:</h3>
-<p>, also shown in figure above, which is the area underneath the curve of f (x) from x = a to x = b.</p>
-<h3 id="a-pdf-must-be-nonnegative-ie-and-satisfies-the-following-condition">A pdf must be nonnegative, i.e.   and satisfies the following condition:</h3>
-<div class="image">
-  <img src="figure" alt="figure">
-  <p>figure</p>
-</div>
-<p>Determine the probability that the rod's length is between 99.5 mm and 100.5 mm.</p>
-<h3 id="soln">Soln:</h3>
+<p>We can also determine the probability of \(X\) over a finite interval \([ a, b]\) as: 
+<br>
+\( P(a \leq X \leq b) = \int_a^b f(x) \, dx \) </p>
+<p>, also shown in figure above, which is the area underneath the curve of \(f(x)\) from \(x = a\) to \(x = b.\)</p>
+<p>A pdf must be non-negative, i.e. \( f(x) \geq 0 \) and satisfies the following condition : \( \int_{-\infty}^{+\infty} f(x) \, dx = 1 \)</p>
+
+<h3 id="example">Example</h3> 
+
+<p>Suppose the length of metal rods produced by a manufacturer follows a continuous distribution and probability density function (pdf) 
+is given by: 
+	<br>
+
+	\( 
+	f(x)=
+	\begin{cases}
+	\dfrac{1}{2}, & \text{for } 99 \le x \le 101 \\
+	0, & \text{otherwise}
+	\end{cases}
+	\)
+
+	<br>
+Determine the probability that the rod's length is between 99.5 mm and 100.5 mm.</p>
+<p>>Soln:</p>
 <p>The probability is the area under the pdf curve between the specified limits as given.</p>
-<p>P (99.5 ≤ X ≤ 100.) = f(x) dx = f(x) × (100.5 − 99.5)</p>
-<p>Since f(x) = 1/2</p>
-<p>P (99.5 ≤ X ≤ 100.) = f(x) dx = f(x) × (100.5 − 99.5) = (1/2) ×1 =0.5</p>
-<p>Conclusion: There is a 50% probability that a randomly selected rod will have a length between 99.5 mm and 100.5 mm.</p>
-<p>One observation: In this example the density function remains constant for the specified ranges, for example PDF value is half for 99 ≤x ≤101. This is an example of uniform distribution, a type of continuous distribution.</p>
-<p>Normal distribution, Exponential Distribution, and Uniform Distribution are examples of Continuous Probability Distributions. In the next article, we will focus on learning about the Normal distribution.</p>
+<p>\(P (99.5 ≤ X ≤ 100) = f(x) dx = f(x) × (100.5 − 99.5)\)</p>
+<p>Since \(f(x) = 1/2\)</p>
+<p>\(P (99.5 ≤ X ≤ 100.) = f(x) dx = f(x) × (100.5 − 99.5) = (1/2) ×1 =0.5\)</p>
+<p><b>Conclusion:</b> There is a 50% probability that a randomly selected rod will have a length between 99.5 mm and 100.5 mm.</p>
+<p><b>One observation:</b> In this example the density function remains constant for the specified ranges, for example PDF value is half for 99 ≤x ≤101. This is an example of uniform distribution, a type of continuous distribution.</p>
+<p><b>Normal distribution, Exponential Distribution, and Uniform Distribution are examples of Continuous Probability Distributions. 
+In the next article, we will focus on learning about the Normal distribution.<b></p>
       </main>
     </div>
   </div>
