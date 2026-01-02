@@ -4,20 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Transformer Model Architecture | Rami RK</title>
-  <script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\(', '\)']],
-      displayMath: [['$$', '$$'], ['\[', '\]']],
-      processEscapes: true,
-      processEnvironments: true
-    },
-    options: {
-      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-  };
-</script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
   :root{
     --bg: #f5f7fb;
@@ -73,7 +60,7 @@
   }
 
   .article-wrapper{
-    max-width: 980px;
+    max-width: 1200px;
     margin: 3rem auto;
     background: var(--card);
     border-radius: 20px;
@@ -130,7 +117,7 @@
   .toc{
 	  position: fixed;
 	  top: var(--toc-top, 260px);                 /* leaves space for the progress bar/header area */
-	  left: max(16px, calc((100vw - 980px)/2));  /* aligns with your centered card */
+	  left: max(16px, calc((100vw - 1200px)/2));  /* aligns with your centered card */
 	  width: 250px;
 
 	  max-height: calc(100vh - 90px);
@@ -345,6 +332,8 @@
       <div class="hero-top">
         <div class="hero-text">
           <h1>Transformer Model Architecture</h1>
+		  <p>From encoders to masked attention and decoders - Transformer architecture demystified.</p>
+		 <p>Part of the Transformers & Attention series.</p>
         </div>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
           <span class="toggle-icon" aria-hidden="true">🌙</span>
@@ -353,37 +342,51 @@
     </section>
 
     <div class="content-shell">
-      <nav class="toc" aria-label="On this page">
-  <div class="toc-title">On this page</div>
-  <ul>
-    <li class="toc-top"><a href="#top">↑ Back to top</a></li><li class="toc-h2"><a href="#encoder">Encoder</a></li><li class="toc-h2"><a href="#multi-head-attention">Multi-Head Attention</a></li><li class="toc-h2"><a href="#positional-encoding">Positional Encoding</a></li><li class="toc-h2"><a href="#causal-attentionmasked-attention-in-decoder-block">Causal Attention/Masked Attention in Decoder Block</a></li><li class="toc-h2"><a href="#why-does-multi-head-attention-work">Why does multi-head attention work?</a></li>
-  </ul>
-</nav>
+		<nav class="toc" aria-label="On this page">
+		  <div class="toc-title">On this page</div>
+		  <ul>
+			<li><a href="#top">↑ Back to top</a></li>
+			<li><a href="#encoder">Encoder</a></li>
+			<li><a href="#multi-head-attention">Multi-Head Attention</a></li>
+			<li><a href="#positional-encoding">Positional Encoding</a></li>
+			<li><a href="#causal-or-masked-attention">Causal Attention/Masked Attention in Decoder Block</a></li>
+			<li><a href="#why-does-multi-head-attention-work">Why does multi-head attention work?</a></li>
+		  </ul>
+		</nav>
       <main class="article-content">
-        <p>The Fig.1 given below is showing a Transformer Model Architecture as per the paper “Attention Is All You Need” published in 2017 by A. Vaswani et al. It has two blocks - the left block is Encoder and the right block is Decoder. This transformer-based encoder-decoder architecture operates similarly to the RNN-based encoder-decoder that we saw in the previous translation example but without the presence of an RNN component. Despite this difference, the input-output feeding mechanism to the encoder-decoder remains consistent. Additionally, akin to the RNN model, the decoder functions as a causal model.</p>
+        <p>The Fig.1 given below is showing a Transformer Model Architecture as per the paper <b>“Attention Is All You Need”</b> published in 2017 by A. Vaswani et al. 
+		It has two blocks - the left block is <b>Encoder</b> and the right block is <b>Decoder</b>. This transformer-based encoder-decoder architecture operates similarly to
+		the RNN-based encoder-decoder that we saw in the previous translation example but without the presence of an RNN component. Despite this difference, 
+		the input-output feeding mechanism to the encoder-decoder remains consistent. Additionally, akin to the RNN model, the decoder functions as a causal model.</p>
         <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/tfr_full_archi.png"
 				 alt="Figure 1"
-				 width="600" height="450">
+				 width="900" height="600">
 				 <p>Figure 1</p>
 		</div>
-<p>Figure 1.</p>
-<p>The encoder sends Values(V) and Queries (Q) to the decoder, linking them together to create the entire Transformer system. This connection, known as cross-attention, enables the decoder to pay attention to the encoded information from the input sequence provided by the encoder. With this mechanism, the decoder can concentrate on different sections of the input sequence when producing the output sequence.</p>
-<p>It's important to understand that the encoder and decoder components can function independently as standalone models for various tasks. For instance, BERT serves as an exclusive encoder architecture, while GPT operates solely as a decoder architecture. On the other hand, T5 incorporates both encoder and decoder components within its architecture.</p>
-<p>The Encoder and Decoder blocks share similar components, including Positional Encoding, Multi-Head Attention, Add & Norm (comprising Skip connection and Layer normalization), and Feed Forward. However, one thing to notice is that as the decoder functions as a causal model, it employs causal attention or masked attention. This means that each token is restricted to attending only to its preceding tokens, not the subsequent ones.</p>
-<p>Mastering the Encoder block facilitates comprehension of the Decoder block and the entire Transformer architecture. Let’s see Encoder in detail.</p>
-<p>Encoder</p>
-<p>The Encoder consists of transformer block as shown in Fig. 2. A simplified and expanded diagram is also shown on the right side. Let’s understand the internal components of a Transformer block.</p>
+		<p>The encoder sends Values(V) and Queries(Q) to the decoder, linking them together to create the entire Transformer system. This connection, known as 
+		cross-attention, enables the decoder to pay attention to the encoded information from the input sequence provided by the encoder. With this mechanism, 
+		the decoder can concentrate on different sections of the input sequence when producing the output sequence.</p>
+		<p>It's important to understand that the encoder and decoder components can function independently as standalone models for various tasks. For instance, 
+		BERT serves as an exclusive encoder architecture, while GPT operates solely as a decoder architecture. On the other hand, T5 incorporates both encoder 
+		and decoder components within its architecture.</p>
+		<p>The Encoder and Decoder blocks share similar components, including Positional Encoding, Multi-Head Attention, Add & Norm (comprising Skip connection 
+		and Layer normalization), and Feed Forward. However, one thing to notice is that as the decoder functions as a causal model, it employs causal attention 
+		or masked attention. This means that each token is restricted to attending only to its preceding tokens, not the subsequent ones.</p>
+		<p><b>Mastering the Encoder block facilitates comprehension of the Decoder block and the entire Transformer architecture. Let’s see Encoder in detail.</b></p>
+		<h3 id="encoder">Encoder</h3>
+		<p>The Encoder consists of transformer block as shown in Fig. 2. A simplified and expanded diagram is also shown on the right side. Let’s understand the 
+		internal components of a Transformer block.</p>
         <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/enc_unfolded.png"
 				 alt="Figure 2"
-				 width="600" height="450">
+				 width="900" height="650">
 				 <p>Figure 2</p>
 		</div>
 <h3 id="the-transformer-block-can-be-sub-divided-into-two-main-sub-layers">The Transformer block can be sub-divided into two main sub-layers:</h3>
 <ul>
-<li>The first sub-layer comprises a multi-head attention mechanism that receives the queries, keys, and values as inputs.</li>
-<li>A second sub-layer comprises a fully-connected feed-forward network.</li>
+<li>The first sub-layer comprises a <b>multi-head attention mechanism</b> that receives the queries, keys, and values as inputs.</li>
+<li>A second sub-layer comprises a <b>fully-connected feed-forward network</b>.</li>
 </ul>
 <p>Following each of these two sub-layers is layer normalization, into which the sub-layer input (through a residual/skip connection) and output are fed. Regularization is also introduced into the model by applying a dropout to the output of each sub-layer (before the layer normalization step) which is not shown in the figure.</p>
 <p>The feed-forward network allows the model to extract higher-level features from the input. This network usually comprises two linear layers with a ReLU activation function in between. The feed-forward network allows the model to extract deeper meaning from the input data and more compactly and usefully represent the input. In the paper, an ANN with one hidden layer and a ReLu activation in the middle with no activation function at output layer has been implemented.</p>
@@ -392,57 +395,91 @@
         <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/tfr_blocks_assembed.png"
 				 alt="Figure 3"
-				 width="600" height="450">
+				 width="900" height="600">
 				 <p>Figure 3</p>
 		</div>
-<p>Multi-Head Attention</p>
+<h3 id="multi-head-attention">Multi-Head Attention</h3>
 <p>Please go through the previous article on the Self-Attention mechanism, which has implemented in Multi-Head Attention. In Multi-Head Attention, the Attention module repeats its computations multiple times in parallel. Each of these is called an Attention Head.The Attention module splits its Query, Key, and Value parameters N-ways and passes each split independently through a separate Head. All of these similar Attention calculations are then combined to produce a final Attention score. This is called multi-head attention and gives the Transformer greater power to encode multiple relationships and nuances for each word. A schematic representation of MHA is shown in Fig.4 below.</p>
         <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/mha.png"
 				 alt="Figure 4"
-				 width="600" height="450">
+				 width="900" height="650">
 				 <p>Figure 4</p>
 		</div>
 <p>Shape tracking and related calculations are shown with the help of Fig. 5.</p>
 <ul>
-<li>The shape of input to each self-attention layer  (T x dmodel)</li>
-<li>The output shape after each attention layer  (T x dV )</li>
-<li>After concatenation the shape of output [concatenate them along the feature dimension]   (T x hdV.)</li>
+<li>The shape of input to each self-attention layer \( \rightarrow (T \times  d_{model})\)</li>
+<li>The output shape after each attention layer \( \rightarrow (T \times  d_{V})\)</li>
+<li>After concatenation the shape of output [concatenate them along the feature dimension] \( \rightarrow(T \times  hd_{V})\)</li>
 </ul>
 <p>Imagine that output of each self-attention block lined up side by side after concatenation.</p>
-
-<ul>
-<li>Shape of: WO    (hdV  x  dmodel )</li>
-<li>Shape of final Output = Concat (A1, A2, …, Ah ) WO</li>
-<li>(T x hdV)  x (hdV  x  dmodel )  (T x  dmodel )</li>
-</ul>
+<p>Final Projection:  Output = Concat \((A_1, A_2, …, A_h ) W^O\)</p>
+	<ul>
+		<li>Shape of :  Concat \((A_1, A_2, …, A_h ) \rightarrow (T \times  hd_{V})\)</li>
+		<li>Shape of : \( W^O  \rightarrow  (hd_V  \times  d_{model} )\)</li>
+		<li>Shape of final Output = Concat \((A_1, A_2, …, A_h ) W^O\)
+		<br>
+		  \(=  (T \times hd_V) \times (hd_V  \times  d_{model} ) \rightarrow(T \times  d_{model} )\)
+		  <br> 
+			<div style="
+				background: linear-gradient(135deg, #667eea, #764ba2);
+				color: white;
+				padding: 0.5rem;
+				border-radius: 12px;
+				text-align: center;
+				margin: 2rem 0;
+				box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+				font-weight: 600;
+				display: inline-block;
+				font-size: 1.1rem;
+			">
+				Back to the initial input shape!
+			</div>
+		  </li>
+		  
+	</ul>
         <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/mh_concat.png"
 				 alt="Figure 5"
-				 width="600" height="450">
+				 width="900" height="650">
 				 <p>Figure 5</p>
 		</div>
 <p>We can notice in the above figure that each attention calculation is functioning parallelly and has no dependency on the other.</p>
-<p>Positional Encoding</p>
+<h3 id="positional-encoding">Positional Encoding</h3>
 <p>Passing embeddings directly into the transformer block results in missing of information about the order of tokens as we get rid of RNN blocks and attention is permutation invariant i.e. order of token does not matter to attention.</p>
 <p>Although transformers are a sequence model, it appears that this important detail has somehow been lost. Positional encoding is for rescue. Positional encoding adds positional information to the existing embeddings.</p>
-<p>A unique set of numbers added at each position of the existing embeddings, such that this new set of numbers can uniquely identify which position they are located at.</p>
+<p><b>A unique set of numbers added at each position of the existing embeddings</b>, such that this new set of numbers can uniquely identify which position they are located at.</p>
 <h3 id="following-two-ways-are-there-to-add-positional-encoding">Following two ways are there to add positional encoding:</h3>
-<p>1. Positional Encoding by Sub-Classing the Embedding Layer (Trainable)</p>
-<p>2. Positional Encoding scheme as per the paper (non-trainable)</p>
-<div class="image">
-  <img src="figure" alt="figure">
-  <p>figure</p>
-</div>
-<p>Causal Attention/Masked Attention in Decoder Block</p>
-<p>All the above-mentioned components are found in both the encoder and decoder blocks. However, the decoder block utilizes a Causal Attention/Masked Attention Mechanism, differing slightly from the Attention mechanism in the encoder block. Let's explore further.</p>
-<p>Decoder is a causal model i.e. it acts like a text generation tool, similar to how forecasts are made in time series analysis, where it predicts the next element based on previous ones. To accomplish this, when generating output at any position in the sequence, the model should only be permitted to consider the preceding tokens, excluding any tokens that followed.</p>
-<p>Let's see mathematically how to achieve this through an attention score matrix. The Fig.6(a) below shows the attention score matrix for just 5 tokens for the sake of demonstration. It will have a shape of T x T for T sequences. Here, the attention score α (i, j) represents how much "i" pays attention to "j".</p>
-<p>Is it possible to restrict attention weights to consider only past input tokens? Yes, through some manipulation, we can achieve this: α (i, j) > 0 only when i > =j, resulting in the score matrix depicted in Fig.6(b).</p>
+<ol>
+<li>Positional Encoding by Sub-Classing the Embedding Layer (Trainable)</li>
+<li>Positional Encoding scheme as per the paper (non-trainable)</li>
+</ol>
+<p>In the scheme suggested in the paper the encoding is created by using a set of sins and cosines at different frequencies. The paper uses the following 
+formula for calculating the positional encoding.</p>
+
+<h4>
+\( PE_{(pos,\,2i)}=\sin\!\left(\frac{pos}{10000^{2i/d_{model}}}\right) \)
+</h4>
+
+<h4>
+\( PE_{(pos,\,2i+1)}=\cos\!\left(\frac{pos}{10000^{2i/d_{model}}}\right) \)
+</h4>
+
+
+<h3 id="causal-or-masked-attention">Causal Attention/Masked Attention in Decoder Block</h3>
+<p>All the above-mentioned components are found in both the encoder and decoder blocks. However, the decoder block utilizes a Causal Attention/Masked Attention Mechanism, 
+differing slightly from the Attention mechanism in the encoder block. Let's explore further.</p>
+<p>Decoder is a causal model i.e. it acts like a text generation tool, similar to how forecasts are made in time series analysis, where it predicts the next element based 
+on previous ones. To accomplish this, when generating output at any position in the sequence, the model should only be permitted to consider the preceding tokens, 
+excluding any tokens that followed.</p>
+<p>Let's see mathematically how to achieve this through an attention score matrix. The Fig.6(a) below shows the attention score matrix for just 5 tokens for the sake of 
+demonstration. It will have a shape of \(T \times T \) for \(T\) sequences. Here, the attention score \(α (i, j)\) represents how much "(\i\)" pays attention to "\(j\)".</p>
+<p>Is it possible to restrict attention weights to consider only past input tokens? Yes, through some manipulation, we can achieve this: \( α (i, j) > 0 \) only when \(i > =j\), resulting
+ in the score matrix depicted in Fig.6(b).</p>
         <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/masking.png"
 				 alt="Figure 6"
-				 width="600" height="450">
+				 width="700" height="500">
 				 <p>Figure 6</p>
 		</div>
 <p>We have masked the upper triangular elements to set them to zero. Thus, rather than employing plain Multi-Head Attention, we utilize a masked version known as 'Causal Self-Attention.</p>
@@ -450,22 +487,22 @@
         <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/decoder_with_masked_mha.png"
 				 alt="Figure 7"
-				 width="600" height="450">
+				 width="900" height="650">
 				 <p>Figure 7</p>
 		</div>
 <p>We have seen both the Encoder and Decoder separately. Encoder-only architecture is BERT while Decoder-only Architecture is GPT. Similarly, the architecture that contains both Encoder and Decoder is called T5 i.e. `Text to Text Transfer Transformer’. The Fig. 8 below shows how Encoder and Decoder are connected in full Encoder and Decoder architecture.</p>
         <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/enc_dec_connection.png"
 				 alt="Figure 8"
-				 width="600" height="450">
+				 width="350" height="200">
 				 <p>Figure 8</p>
 		</div>
-<p>Why does multi-head attention work?</p>
+<h3 id="why-does-multi-head-attention-work">Why does multi-head attention work?</h3>
 <p>It allows the layer to learn multiple features. Think of attention outputs as features that tell us something about the sentence. For example, see the Fig. 9 below, when Suman pays attention to bank, the feature might be Where did Suman go? But we might also be interested in what Suman did. He cashed the check. We can only do this if we allow our layer to produce multiple features, each of which has the Suman token pay attention to different tokens in the sentence. There would be multiple and different kind of relationship and dependency between different tokens in any sequence. Multi-head attention helps in learning those different relationships by learning corresponding multiple features.</p>
         <div class="image">
 			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/intuition_mha.png"
 				 alt="Figure 9"
-				 width="600" height="450">
+				 width="450" height="250">
 				 <p>Figure 9</p>
 		</div>
       </main>
