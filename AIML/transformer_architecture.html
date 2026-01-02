@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transformer Model Architecture | Rami RK</title>
+  <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\(', '\)']],
+      displayMath: [['$$', '$$'], ['\[', '\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+  :root{
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --muted: #6b7280;
+    --border: #e1e7f5;
+    --shadow: 0 18px 45px rgba(0,0,0,0.12);
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.08);
+    --accent: #667eea;
+    --accent2: #764ba2;
+    --link: #2980b9;
+    --note-bg: #f1f5ff;
+    --quote-bg: #f8f9fb;
+  }
+
+  :root[data-theme="dark"]{
+    --bg: #0b1220;
+    --card: #0f172a;
+    --text: #e5e7eb;
+    --muted: #a1a1aa;
+    --border: rgba(255,255,255,0.10);
+    --shadow: 0 18px 45px rgba(0,0,0,0.55);
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.40);
+    --accent: #7c8cff;
+    --accent2: #a879ff;
+    --link: #7dd3fc;
+    --note-bg: rgba(124,140,255,0.10);
+    --quote-bg: rgba(125,211,252,0.08);
+	--toc-top: 260px;
+  }
+
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+  }
+	 html {
+	  scroll-behavior: smooth;
+	}
+
+  .progress-bar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    z-index: 9999;
+  }
+
+  .article-wrapper{
+    max-width: 980px;
+    margin: 3rem auto;
+    background: var(--card);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .hero{
+    padding: 2.6rem 2.2rem 2.1rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+  }
+
+  .hero-top{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .hero h1{
+    margin: 0 0 0.5rem 0;
+    font-size: 2.2rem;
+    line-height: 1.25;
+  }
+  .hero p{
+    margin: 0.2rem 0;
+    opacity: 0.9;
+  }
+
+  .theme-toggle{
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.14);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.5rem 0.7rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.12s ease, background 0.12s ease;
+    flex: 0 0 auto;
+  }
+  .theme-toggle:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.18); }
+  .theme-toggle:active{ transform: translateY(0px); }
+
+	.content-shell{
+	  display: block;
+	  padding: 2rem 2.2rem 2.6rem;
+
+	  /* push content right to make space for fixed TOC */
+	  padding-left: calc(250px + 2.2rem + 18px);
+	}
+
+
+  .toc{
+	  position: fixed;
+	  top: var(--toc-top, 260px);                 /* leaves space for the progress bar/header area */
+	  left: max(16px, calc((100vw - 980px)/2));  /* aligns with your centered card */
+	  width: 250px;
+
+	  max-height: calc(100vh - 90px);
+	  overflow: auto;
+
+	  background: rgba(255,255,255,0.55);
+	  border: 1px solid var(--border);
+	  border-radius: 14px;
+	  padding: 1rem 1rem;
+	  box-shadow: var(--shadow-soft);
+	  backdrop-filter: blur(8px);
+	  z-index: 50;
+  }
+  :root[data-theme="dark"] .toc{
+    background: rgba(15,23,42,0.65);
+  }
+	 .toc-top a {
+	  font-weight: 600;
+	  color: var(--accent);
+	}
+
+	.toc-top a:hover {
+	  text-decoration: underline;
+	}
+
+  
+  .toc-title{
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+  }
+  .toc ul{
+    margin: 0.2rem 0 0;
+    padding-left: 1.1rem;
+  }
+  .toc a{
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+  .toc a:hover{ text-decoration: underline; }
+  .toc a.active{ color: var(--text); font-weight: 600; }
+
+  .article-content{ min-width: 0; }
+
+  h2{
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.4rem;
+    color: var(--text);
+    border-left: 4px solid var(--accent);
+    padding-left: 0.6rem;
+  }
+  h3{
+    margin-top: 1.6rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+    color: var(--text);
+    opacity: 0.9;
+  }
+  p{ margin: 0.4rem 0; text-align: justify; }
+
+  ul{ padding-left: 1.4rem; }
+  li{ margin: 0.3rem 0; }
+
+  .note{
+    background: var(--note-bg);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .quote{
+    background: var(--quote-bg);
+    border-left: 4px solid var(--link);
+    padding: 1.2rem 1.4rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    border-radius: 10px;
+  }
+
+  code{
+    background: rgba(148,163,184,0.18);
+    padding: 0.15rem 0.35rem;
+    border-radius: 6px;
+    font-size: 0.92rem;
+  }
+
+  .image{
+    text-align: center;
+    margin: 2rem 0;
+  }
+  .image img{
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+  }
+  .image p{
+    margin-top: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-style: italic;
+	text-align: center;
+  }
+
+  img{
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+  }
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+  th, td{
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th{
+    background: rgba(148,163,184,0.12);
+    font-weight: 600;
+  }
+
+  /* Definition / Theorem / Example boxes (ready to use) */
+  .callout{
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+    margin: 1.5rem 0;
+    background: rgba(148,163,184,0.08);
+  }
+  .callout-title{
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+  .definition{ border-left: 5px solid var(--accent); }
+  .theorem{ border-left: 5px solid var(--accent2); }
+  .example{ border-left: 5px solid var(--link); }
+
+  a{ color: var(--link); text-decoration: none; }
+  a:hover{ text-decoration: underline; }
+
+  footer{
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 1.5rem 0 2rem;
+  }
+
+  @media (max-width: 980px){
+    .article-wrapper{ margin: 1.5rem; }
+    .content-shell{ grid-template-columns: 1fr; }
+    .toc{ position: relative; top: auto; }
+  }
+
+  @media (max-width: 600px){
+    .hero{ padding: 2.2rem 1.3rem 1.9rem; }
+    .hero h1{ font-size: 1.7rem; }
+    .content-shell{ padding: 1.4rem 1.3rem 2.2rem; }
+  }
+  @media (max-width: 980px){
+	  .toc{
+		position: relative;
+		top: auto;
+		left: auto;
+		width: auto;
+		max-height: none;
+		overflow: visible;
+		margin-bottom: 1rem;
+	  }
+
+	  .content-shell{
+		padding-left: 1.3rem;  /* normal padding on mobile */
+	  }
+	}
+
+  
+  
+
+  .toc-h3{ margin-left: 0.7rem; }
+  .toc-h3 a{ font-size: 0.90rem; }
+
+  h4{
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.05rem;
+    color: var(--text);
+    opacity: 0.95;
+  }
+</style>
+
+
+</head>
+<body>
+  <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+  <div id="top"></div>
+
+  <div class="article-wrapper">
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-text">
+          <h1>Transformer Model Architecture</h1>
+        </div>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span class="toggle-icon" aria-hidden="true">🌙</span>
+        </button>
+      </div>
+    </section>
+
+    <div class="content-shell">
+      <nav class="toc" aria-label="On this page">
+  <div class="toc-title">On this page</div>
+  <ul>
+    <li class="toc-top"><a href="#top">↑ Back to top</a></li><li class="toc-h2"><a href="#encoder">Encoder</a></li><li class="toc-h2"><a href="#multi-head-attention">Multi-Head Attention</a></li><li class="toc-h2"><a href="#positional-encoding">Positional Encoding</a></li><li class="toc-h2"><a href="#causal-attentionmasked-attention-in-decoder-block">Causal Attention/Masked Attention in Decoder Block</a></li><li class="toc-h2"><a href="#why-does-multi-head-attention-work">Why does multi-head attention work?</a></li>
+  </ul>
+</nav>
+      <main class="article-content">
+        <p>The Fig.1 given below is showing a Transformer Model Architecture as per the paper “Attention Is All You Need” published in 2017 by A. Vaswani et al. It has two blocks - the left block is Encoder and the right block is Decoder. This transformer-based encoder-decoder architecture operates similarly to the RNN-based encoder-decoder that we saw in the previous translation example but without the presence of an RNN component. Despite this difference, the input-output feeding mechanism to the encoder-decoder remains consistent. Additionally, akin to the RNN model, the decoder functions as a causal model.</p>
+        <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/tfr_full_archi.png"
+				 alt="Figure 1"
+				 width="600" height="450">
+				 <p>Figure 1</p>
+		</div>
+<p>Figure 1.</p>
+<p>The encoder sends Values(V) and Queries (Q) to the decoder, linking them together to create the entire Transformer system. This connection, known as cross-attention, enables the decoder to pay attention to the encoded information from the input sequence provided by the encoder. With this mechanism, the decoder can concentrate on different sections of the input sequence when producing the output sequence.</p>
+<p>It's important to understand that the encoder and decoder components can function independently as standalone models for various tasks. For instance, BERT serves as an exclusive encoder architecture, while GPT operates solely as a decoder architecture. On the other hand, T5 incorporates both encoder and decoder components within its architecture.</p>
+<p>The Encoder and Decoder blocks share similar components, including Positional Encoding, Multi-Head Attention, Add & Norm (comprising Skip connection and Layer normalization), and Feed Forward. However, one thing to notice is that as the decoder functions as a causal model, it employs causal attention or masked attention. This means that each token is restricted to attending only to its preceding tokens, not the subsequent ones.</p>
+<p>Mastering the Encoder block facilitates comprehension of the Decoder block and the entire Transformer architecture. Let’s see Encoder in detail.</p>
+<p>Encoder</p>
+<p>The Encoder consists of transformer block as shown in Fig. 2. A simplified and expanded diagram is also shown on the right side. Let’s understand the internal components of a Transformer block.</p>
+        <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/enc_unfolded.png"
+				 alt="Figure 2"
+				 width="600" height="450">
+				 <p>Figure 2</p>
+		</div>
+<h3 id="the-transformer-block-can-be-sub-divided-into-two-main-sub-layers">The Transformer block can be sub-divided into two main sub-layers:</h3>
+<ul>
+<li>The first sub-layer comprises a multi-head attention mechanism that receives the queries, keys, and values as inputs.</li>
+<li>A second sub-layer comprises a fully-connected feed-forward network.</li>
+</ul>
+<p>Following each of these two sub-layers is layer normalization, into which the sub-layer input (through a residual/skip connection) and output are fed. Regularization is also introduced into the model by applying a dropout to the output of each sub-layer (before the layer normalization step) which is not shown in the figure.</p>
+<p>The feed-forward network allows the model to extract higher-level features from the input. This network usually comprises two linear layers with a ReLU activation function in between. The feed-forward network allows the model to extract deeper meaning from the input data and more compactly and usefully represent the input. In the paper, an ANN with one hidden layer and a ReLu activation in the middle with no activation function at output layer has been implemented.</p>
+<p>Encoder is formed by repeated transformer block joined one after another multiple times which is shown as multiplied by N in Fig.2 above. The transformer encoder is a crucial part of the transformer encoder-decoder architecture, which is widely used for natural language processing tasks.</p>
+<p>BERT which stands for Bi-directional encoder representation is an encoder-only architecture that consists of 6 to 12 such transformer blocks and a prediction head as the last layer, shown in Fig.3 below.</p>
+        <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/tfr_blocks_assembed.png"
+				 alt="Figure 3"
+				 width="600" height="450">
+				 <p>Figure 3</p>
+		</div>
+<p>Multi-Head Attention</p>
+<p>Please go through the previous article on the Self-Attention mechanism, which has implemented in Multi-Head Attention. In Multi-Head Attention, the Attention module repeats its computations multiple times in parallel. Each of these is called an Attention Head.The Attention module splits its Query, Key, and Value parameters N-ways and passes each split independently through a separate Head. All of these similar Attention calculations are then combined to produce a final Attention score. This is called multi-head attention and gives the Transformer greater power to encode multiple relationships and nuances for each word. A schematic representation of MHA is shown in Fig.4 below.</p>
+        <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/mha.png"
+				 alt="Figure 4"
+				 width="600" height="450">
+				 <p>Figure 4</p>
+		</div>
+<p>Shape tracking and related calculations are shown with the help of Fig. 5.</p>
+<ul>
+<li>The shape of input to each self-attention layer  (T x dmodel)</li>
+<li>The output shape after each attention layer  (T x dV )</li>
+<li>After concatenation the shape of output [concatenate them along the feature dimension]   (T x hdV.)</li>
+</ul>
+<p>Imagine that output of each self-attention block lined up side by side after concatenation.</p>
+
+<ul>
+<li>Shape of: WO    (hdV  x  dmodel )</li>
+<li>Shape of final Output = Concat (A1, A2, …, Ah ) WO</li>
+<li>(T x hdV)  x (hdV  x  dmodel )  (T x  dmodel )</li>
+</ul>
+        <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/mh_concat.png"
+				 alt="Figure 5"
+				 width="600" height="450">
+				 <p>Figure 5</p>
+		</div>
+<p>We can notice in the above figure that each attention calculation is functioning parallelly and has no dependency on the other.</p>
+<p>Positional Encoding</p>
+<p>Passing embeddings directly into the transformer block results in missing of information about the order of tokens as we get rid of RNN blocks and attention is permutation invariant i.e. order of token does not matter to attention.</p>
+<p>Although transformers are a sequence model, it appears that this important detail has somehow been lost. Positional encoding is for rescue. Positional encoding adds positional information to the existing embeddings.</p>
+<p>A unique set of numbers added at each position of the existing embeddings, such that this new set of numbers can uniquely identify which position they are located at.</p>
+<h3 id="following-two-ways-are-there-to-add-positional-encoding">Following two ways are there to add positional encoding:</h3>
+<p>1. Positional Encoding by Sub-Classing the Embedding Layer (Trainable)</p>
+<p>2. Positional Encoding scheme as per the paper (non-trainable)</p>
+<div class="image">
+  <img src="figure" alt="figure">
+  <p>figure</p>
+</div>
+<p>Causal Attention/Masked Attention in Decoder Block</p>
+<p>All the above-mentioned components are found in both the encoder and decoder blocks. However, the decoder block utilizes a Causal Attention/Masked Attention Mechanism, differing slightly from the Attention mechanism in the encoder block. Let's explore further.</p>
+<p>Decoder is a causal model i.e. it acts like a text generation tool, similar to how forecasts are made in time series analysis, where it predicts the next element based on previous ones. To accomplish this, when generating output at any position in the sequence, the model should only be permitted to consider the preceding tokens, excluding any tokens that followed.</p>
+<p>Let's see mathematically how to achieve this through an attention score matrix. The Fig.6(a) below shows the attention score matrix for just 5 tokens for the sake of demonstration. It will have a shape of T x T for T sequences. Here, the attention score α (i, j) represents how much "i" pays attention to "j".</p>
+<p>Is it possible to restrict attention weights to consider only past input tokens? Yes, through some manipulation, we can achieve this: α (i, j) > 0 only when i > =j, resulting in the score matrix depicted in Fig.6(b).</p>
+        <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/masking.png"
+				 alt="Figure 6"
+				 width="600" height="450">
+				 <p>Figure 6</p>
+		</div>
+<p>We have masked the upper triangular elements to set them to zero. Thus, rather than employing plain Multi-Head Attention, we utilize a masked version known as 'Causal Self-Attention.</p>
+<p>Finally, the Decoder is depicted in Fig. 7 below, which is equivalent to the Encoder, but the transformer block implements Masked Multi-Head Attention. All GPTs(Generative Pre-trained Transformers) are versions of decoder-only architecture with many more components attached to them, trained on a humongous amount of data.</p>
+        <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/decoder_with_masked_mha.png"
+				 alt="Figure 7"
+				 width="600" height="450">
+				 <p>Figure 7</p>
+		</div>
+<p>We have seen both the Encoder and Decoder separately. Encoder-only architecture is BERT while Decoder-only Architecture is GPT. Similarly, the architecture that contains both Encoder and Decoder is called T5 i.e. `Text to Text Transfer Transformer’. The Fig. 8 below shows how Encoder and Decoder are connected in full Encoder and Decoder architecture.</p>
+        <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/enc_dec_connection.png"
+				 alt="Figure 8"
+				 width="600" height="450">
+				 <p>Figure 8</p>
+		</div>
+<p>Why does multi-head attention work?</p>
+<p>It allows the layer to learn multiple features. Think of attention outputs as features that tell us something about the sentence. For example, see the Fig. 9 below, when Suman pays attention to bank, the feature might be Where did Suman go? But we might also be interested in what Suman did. He cashed the check. We can only do this if we allow our layer to produce multiple features, each of which has the Suman token pay attention to different tokens in the sentence. There would be multiple and different kind of relationship and dependency between different tokens in any sequence. Multi-head attention helps in learning those different relationships by learning corresponding multiple features.</p>
+        <div class="image">
+			<img src="https://raw.githubusercontent.com/Rami-RK/rami-rk.github.io/main/images/transformer/intuition_mha.png"
+				 alt="Figure 9"
+				 width="600" height="450">
+				 <p>Figure 9</p>
+		</div>
+      </main>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Rami RK — Transformers Notes</p>
+  </footer>
+
+  <script>
+    (function() {
+      const bar = document.getElementById('progressBar');
+      const onScroll = () => {
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const scrollHeight = doc.scrollHeight - doc.clientHeight;
+        const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+        bar.style.width = pct + '%';
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
+    (function() {
+      const key = 'rk_theme';
+      const btn = document.getElementById('themeToggle');
+      const icon = btn.querySelector('.toggle-icon');
+
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem(key);
+      const initial = saved ? saved : (prefersDark ? 'dark' : 'light');
+
+      const apply = (mode) => {
+        document.documentElement.dataset.theme = mode;
+        icon.textContent = mode === 'dark' ? '☀️' : '🌙';
+        localStorage.setItem(key, mode);
+      };
+
+      apply(initial);
+
+      btn.addEventListener('click', () => {
+        const current = document.documentElement.dataset.theme || 'light';
+        apply(current === 'dark' ? 'light' : 'dark');
+      });
+    })();
+
+    (function() {
+      const links = Array.from(document.querySelectorAll('.toc a'));
+      const sections = links
+        .map(a => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+
+      if (!('IntersectionObserver' in window) || sections.length === 0) return;
+
+      const setActive = (id) => {
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      };
+
+      const obs = new IntersectionObserver((entries) => {
+        const visible = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible && visible.target && visible.target.id) setActive(visible.target.id);
+      }, {
+        rootMargin: '0px 0px -70% 0px',
+        threshold: [0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
+      });
+
+      sections.forEach(s => obs.observe(s));
+    })();
+  </script>
+</body>
+</body>
+</html>
