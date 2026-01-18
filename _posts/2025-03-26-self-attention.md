@@ -5,6 +5,7 @@ description: From intuition to scaled dot-product attention.
 tags: [AIML]
 categories: [AIML]
 date: 2025-03-26
+featured: true
 toc:
   - name: Overview
   - name: Calculation of Attention Weights
