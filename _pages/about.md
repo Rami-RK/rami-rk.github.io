@@ -1,4 +1,4 @@
-﻿---
+---
 layout: about
 title: About Me
 permalink: /
@@ -42,8 +42,8 @@ of what we interact with every day. I believe that understanding these foundatio
 come from a technical or non-technical background--empowers you to better navigate and shape the
 future.
 
-Through this blog, I aim to **demystify AI and Machine Learning**, breaking the notion that they
-are complex or accessible only to a select few. With curiosity, consistency, and the right
+Through this blog, I aim to **demystify AI and Machine Learning**, breaking the notion that
+they are complex or accessible only to a select few. With curiosity, consistency, and the right
 mindset, anyone can begin this journey.
 
 The real magic happens when **mathematics meets data, algorithms, and computational power**--
