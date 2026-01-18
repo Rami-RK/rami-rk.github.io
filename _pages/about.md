@@ -1,34 +1,51 @@
 ---
 layout: about
-title: about
-permalink: /
-subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
+title: About Me
+permalink: /about/
+subtitle: Data Scientist | AI/ML Consultant
 
 profile:
   align: right
   image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
-    <p>555 your office number</p>
-    <p>123 your address street</p>
-    <p>Your City, State 12345</p>
+    <p><strong>📍 Location:</strong> Delhi, NCR, India</p>
+    <p><strong>✉️ Email:</strong> <a href="mailto:karna.ramenk@gmail.com">karna.ramenk@gmail.com</a></p>
+    <p><strong>🔗 LinkedIn:</strong> <a href="https://www.linkedin.com/in/ramendra-kumar-57334478/" target="_blank">Ramendra Kumar</a></p>
 
-selected_papers: true # includes a list of papers marked as "selected={true}"
+selected_papers: false # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 
 announcements:
-  enabled: true # includes a list of news items
-  scrollable: true # adds a vertical scroll bar if there are more than 3 news items
+  enabled: false # includes a list of news items
+  scrollable: false # adds a vertical scroll bar if there are more than 3 news items
   limit: 5 # leave blank to include all the news in the `_news` folder
 
 latest_posts:
-  enabled: true
-  scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
+  enabled: false
+  scrollable: false # adds a vertical scroll bar if there are more than 3 new posts items
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
+Welcome, everyone!
 
-Put your address / P.O. box / other info right below your picture. You can also disable any of these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically.
+I am Ramendra, and I love being called **Rami**.
 
-Link to your social media connections, too. This theme is set up to use [Font Awesome icons](https://fontawesome.com/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
+I am a passionate learner and educator, and I created this blog to share knowledge across **Mathematics**, **Artificial Intelligence**, and **Machine Learning**. The content here spans a broad spectrum—from mathematical and statistical foundations to modern AI, Machine Learning, and Data Science applications.
+
+In today's world, intelligent systems with heavy mathematics under the hood quietly power much of what we interact with every day. I believe that understanding these foundations—whether you come from a technical or non-technical background—empowers you to better navigate and shape the future.
+
+Through this blog, I aim to **demystify AI and Machine Learning**, breaking the notion that they are complex or accessible only to a select few. With curiosity, consistency, and the right mindset, anyone can begin this journey.
+
+The real magic happens when **mathematics meets data, algorithms, and computational power**—from personal machines to scalable cloud computing platforms. This is where ideas evolve into meaningful, real-world impact.
+
+**Currently working at Volkswagen (Scania)**, focused on real-world AI solutions from classical ML to transformer-based NLP (BERT/GPT variants), RAG, and production MLOps/LLMOps on AWS.
+
+## 🚀 Current Work
+Multi-modal RAG pipelines, AWS Bedrock agents, Document processing with OCR & multilingual NLP.
+
+## 💻 Tech Stack
+**Machine Learning, MLOps, Deep Learning, CV, NLP**: BERT, GPT, LLMs  
+**Python**: NumPy, Pandas, Matplotlib, Scikit-Learn, TensorFlow/Keras, PyTorch  
+**AWS**: SageMaker, Bedrock, EC2, ECR-ECS-Fargate
+
