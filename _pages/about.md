@@ -1,7 +1,8 @@
 ﻿---
 layout: about
 title: About Me
-permalink: /about/
+permalink: /
+nav: true
 subtitle: Data Scientist | AI/ML Consultant
 
 profile:
