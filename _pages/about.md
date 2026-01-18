@@ -2,7 +2,6 @@
 layout: about
 title: About Me
 permalink: /
-nav: true
 subtitle: Data Scientist | AI/ML Consultant
 
 profile:
