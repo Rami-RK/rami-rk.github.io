@@ -3,8 +3,8 @@ const ninja = document.querySelector('ninja-keys');
 
 // add the home and posts menu items
 ninja.data = [{
-    id: "nav-about-me",
-    title: "About Me",
+    id: "nav-",
+    title: "",
     section: "Navigation",
     handler: () => {
       window.location.href = "/";
@@ -23,18 +23,7 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-a-post-with-plotly-js",
-        
-          title: "a post with plotly.js",
-        
-        description: "this is what included plotly.js code could look like",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2025/plotly/";
-          
-        },
-      },{id: "post-self-attention",
+        },{id: "post-self-attention",
         
           title: "Self Attention",
         
@@ -109,6 +98,28 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2024/pseudocode/";
+          
+        },
+      },{id: "post-transformer-model-architecture",
+        
+          title: "Transformer Model Architecture",
+        
+        description: "From encoders to masked attention and decoders - Transformer architecture demystified.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/transformer-architecture/";
+          
+        },
+      },{id: "post-birth-of-attention-mechanism",
+        
+          title: "Birth of Attention Mechanism",
+        
+        description: "The evolution of attention in sequence-to-sequence models.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/birth-of-attention-mechanism/";
           
         },
       },{id: "post-a-post-with-code-diff",
@@ -320,17 +331,6 @@ ninja.data = [{
             window.location.href = "/blog/2021/diagrams/";
           
         },
-      },{id: "post-a-distill-style-blog-post",
-        
-          title: "a distill-style blog post",
-        
-        description: "an example of a distill-style blog post and main elements",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2021/distill/";
-          
-        },
       },{id: "post-a-post-with-twitter",
         
           title: "a post with twitter",
@@ -351,17 +351,6 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2015/disqus-comments/";
-          
-        },
-      },{id: "post-a-post-with-math",
-        
-          title: "a post with math",
-        
-        description: "an example of a blog post with some math",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2015/math/";
           
         },
       },{id: "post-a-post-with-code",
