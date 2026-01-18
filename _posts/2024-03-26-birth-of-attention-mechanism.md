@@ -11,8 +11,8 @@ toc:
   - name: Lets See the Decoder in Detail
   - name: What Goes Into the Bottom of the Decoder RNN Unit
   - name: Problem With Seq2Seq
-  - name: To Solve This Problem: Attention is Originated for Seq2Seq
-  - name: Improved Encoder-Decoder Architecture With Attention
+  - name: "To Solve This Problem: Attention is Originated for Seq2Seq"
+  - name: "Improved Encoder-Decoder Architecture With Attention"
   - name: Context Vector
   - name: Calculating Attention Weights
 ---
