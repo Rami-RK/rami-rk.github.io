@@ -120,7 +120,12 @@ This masked attention is used inside decoder blocks. GPT-style models are decode
 
 The decoder with masked MHA is shown in Fig. 7:
 
-{% include figure.liquid path="assets/img/transformer/decoder_with_masked_mha.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 7" %}
+{% include figure.liquid
+  path="assets/img/transformer/decoder_with_masked_mha.png"
+  class="img-fluid rounded z-depth-1"
+  zoomable=true
+  caption="Figure 7"
+%}
 
 The full encoder-decoder connection is shown in Fig. 8:
 

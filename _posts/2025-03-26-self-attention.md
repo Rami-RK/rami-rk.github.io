@@ -42,7 +42,12 @@ the words closely related to "station" contribute more to the sum, producing a c
 
 Unfolding the equation for the word "train":
 
-{% include figure.liquid path="assets/img/self-attention/unfolding_attention_vector.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1 (unfolding)" %}
+{% include figure.liquid
+  path="assets/img/self-attention/unfolding_attention_vector.png"
+  class="img-fluid rounded z-depth-1"
+  zoomable=true
+  caption="Figure 1 (unfolding)"
+%}
 
 This process is repeated for every word in the sentence, yielding a new sequence of context-aware vectors.
 
@@ -81,7 +86,12 @@ Self-attention in vectorized form:
 
 $$ \text{SoftMax}\left(\frac{X_i^T X_j}{\text{const.}}\right) \cdot x_j \quad \text{(I)} $$
 
-{% include figure.liquid path="assets/img/self-attention/table_comparison.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Table 1: Comparison of self-attention and RNN-based attention" %}
+{% include figure.liquid
+  path="assets/img/self-attention/table_comparison.png"
+  class="img-fluid rounded z-depth-1"
+  zoomable=true
+  caption="Table 1: Comparison of self-attention and RNN-based attention"
+%}
 
 ---
 
@@ -100,7 +110,12 @@ compute Queries (Q), Keys (K), and Values (V):
 
 Assume the input is a sequence with length $$ T $$ and embedding dimension $$ d_{model} $$.
 
-{% include figure.liquid path="assets/img/self-attention/input_data_sample.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 4" %}
+{% include figure.liquid
+  path="assets/img/self-attention/input_data_sample.png"
+  class="img-fluid rounded z-depth-1"
+  zoomable=true
+  caption="Figure 4"
+%}
 
 Shape tracking:
 
@@ -112,9 +127,19 @@ Substituting into (I), with $$ \text{const.} = \sqrt{d_k} $$, we get:
 
 $$ \text{Attention}(Q, K, V) = \text{SoftMax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V \quad \text{(II)} $$
 
-{% include figure.liquid path="assets/img/self-attention/scaled_dor_product_depiction1.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 5" %}
+{% include figure.liquid
+  path="assets/img/self-attention/scaled_dor_product_depiction1.png"
+  class="img-fluid rounded z-depth-1"
+  zoomable=true
+  caption="Figure 5"
+%}
 
-{% include figure.liquid path="assets/img/self-attention/scaled_dot_product_shapes1_m.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 6" %}
+{% include figure.liquid
+  path="assets/img/self-attention/scaled_dot_product_shapes1_m.png"
+  class="img-fluid rounded z-depth-1"
+  zoomable=true
+  caption="Figure 6"
+%}
 
 Shape of $$ QK^T $$:
 
@@ -134,7 +159,12 @@ hyperparameters chosen to make the matrix multiplications valid.
 In databases, queries retrieve data, keys identify records, and values contain the data. A similar analogy applies to
 self-attention Q, K, and V:
 
-{% include figure.liquid path="assets/img/self-attention/database_inspiration.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 7" %}
+{% include figure.liquid
+  path="assets/img/self-attention/database_inspiration.png"
+  class="img-fluid rounded z-depth-1"
+  zoomable=true
+  caption="Figure 7"
+%}
 
 In self-attention, every word acts as a query once, while all words in the sequence act as keys. Attention weights determine
 which keys match a query. Values are then combined using these weights to form the attention vector.

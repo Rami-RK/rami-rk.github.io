@@ -1,4 +1,4 @@
----
+﻿---
 layout: about
 title: About Me
 permalink: /
@@ -9,9 +9,9 @@ profile:
   image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
-    <p><strong>📍 Location:</strong> Delhi, NCR, India</p>
-    <p><strong>✉️ Email:</strong> <a href="mailto:karna.ramenk@gmail.com">karna.ramenk@gmail.com</a></p>
-    <p><strong>🔗 LinkedIn:</strong> <a href="https://www.linkedin.com/in/ramendra-kumar-57334478/" target="_blank">Ramendra Kumar</a></p>
+    <p><strong>Location:</strong> Delhi, NCR, India</p>
+    <p><strong>Email:</strong> <a href="mailto:karna.ramenk@gmail.com">karna.ramenk@gmail.com</a></p>
+    <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/ramendra-kumar-57334478/" target="_blank">Ramendra Kumar</a></p>
 
 selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
@@ -31,21 +31,31 @@ Welcome, everyone!
 
 I am Ramendra, and I love being called **Rami**.
 
-I am a passionate learner and educator, and I created this blog to share knowledge across **Mathematics**, **Artificial Intelligence**, and **Machine Learning**. The content here spans a broad spectrum—from mathematical and statistical foundations to modern AI, Machine Learning, and Data Science applications.
+I am a passionate learner and educator, and I created this blog to share knowledge across
+**Mathematics**, **Artificial Intelligence**, and **Machine Learning**. The content here spans a
+broad spectrum--from mathematical and statistical foundations to modern AI, Machine Learning,
+and Data Science applications.
 
-In today's world, intelligent systems with heavy mathematics under the hood quietly power much of what we interact with every day. I believe that understanding these foundations—whether you come from a technical or non-technical background—empowers you to better navigate and shape the future.
+In today's world, intelligent systems with heavy mathematics under the hood quietly power much
+of what we interact with every day. I believe that understanding these foundations--whether you
+come from a technical or non-technical background--empowers you to better navigate and shape the
+future.
 
-Through this blog, I aim to **demystify AI and Machine Learning**, breaking the notion that they are complex or accessible only to a select few. With curiosity, consistency, and the right mindset, anyone can begin this journey.
+Through this blog, I aim to **demystify AI and Machine Learning**, breaking the notion that they
+are complex or accessible only to a select few. With curiosity, consistency, and the right
+mindset, anyone can begin this journey.
 
-The real magic happens when **mathematics meets data, algorithms, and computational power**—from personal machines to scalable cloud computing platforms. This is where ideas evolve into meaningful, real-world impact.
+The real magic happens when **mathematics meets data, algorithms, and computational power**--
+from personal machines to scalable cloud computing platforms. This is where ideas evolve into
+meaningful, real-world impact.
 
-**Currently working at Volkswagen (Scania)**, focused on real-world AI solutions from classical ML to transformer-based NLP (BERT/GPT variants), RAG, and production MLOps/LLMOps on AWS.
+**Currently working at Volkswagen (Scania)**, focused on real-world AI solutions from classical
+ML to transformer-based NLP (BERT/GPT variants), RAG, and production MLOps/LLMOps on AWS.
 
-### 🚀 Current Work
+### Current Work
 Multi-modal RAG pipelines, AWS Bedrock agents, Document processing with OCR & multilingual NLP.
 
-### 💻 Tech Stack
+### Tech Stack
 **Machine Learning, MLOps, Deep Learning, CV, NLP**: BERT, GPT, LLMs  
 **Python**: NumPy, Pandas, Matplotlib, Scikit-Learn, TensorFlow/Keras, PyTorch  
 **AWS**: SageMaker, Bedrock, EC2, ECR-ECS-Fargate
-

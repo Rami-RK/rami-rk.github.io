@@ -33,7 +33,12 @@ The encoder ingests the input and computes hidden states $$ h(1), h(2), \dots, h
 $$ h(T) $$. This vector is a compressed representation of the input sequence (often called a "thought vector") and becomes
 the input to the decoder.
 
-{% include figure.liquid path="assets/img/birth-of-attention-mechanism/enc_dec_rnn.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1" %}
+{% include figure.liquid
+  path="assets/img/birth-of-attention-mechanism/enc_dec_rnn.png"
+  class="img-fluid rounded z-depth-1"
+  zoomable=true
+  caption="Figure 1"
+%}
 
 ---
 
@@ -65,13 +70,23 @@ training requires paired input-output sentence data.
 
 The idea is to let each output word attend to the most relevant parts of the input.
 
-{% include figure.liquid path="assets/img/birth-of-attention-mechanism/attention_def.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 2" %}
+{% include figure.liquid
+  path="assets/img/birth-of-attention-mechanism/attention_def.png"
+  class="img-fluid rounded z-depth-1"
+  zoomable=true
+  caption="Figure 2"
+%}
 
 Consider an input sentence (in Hindi) that translates to "I am going to play." The list $$ t_1 $$ contains attention values
 for the first output word, $$ t_2 $$ for the second, and so on. Each list represents how much the output should focus on each
 input word.
 
-{% include figure.liquid path="assets/img/birth-of-attention-mechanism/attention_values.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 3" %}
+{% include figure.liquid
+  path="assets/img/birth-of-attention-mechanism/attention_values.png"
+  class="img-fluid rounded z-depth-1"
+  zoomable=true
+  caption="Figure 3"
+%}
 
 For the first output word, we might focus on just the first input token; later steps may focus on different or multiple input
 tokens. This is exactly what standard seq2seq fails to do, since each step only sees the same final encoder state.
@@ -94,7 +109,12 @@ Similarly, for output at time step $$ t = 4 $$:
 
 $$ \alpha_{4,1}, \alpha_{4,2}, \alpha_{4,3}, \alpha_{4,4} $$
 
-{% include figure.liquid path="assets/img/birth-of-attention-mechanism/rnn_with_attention.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 4" %}
+{% include figure.liquid
+  path="assets/img/birth-of-attention-mechanism/rnn_with_attention.png"
+  class="img-fluid rounded z-depth-1"
+  zoomable=true
+  caption="Figure 4"
+%}
 
 ---
 
