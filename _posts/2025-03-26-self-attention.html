@@ -1,0 +1,625 @@
+---
+layout: post
+title: Self Attention
+date: 2025-03-26
+categories: [AIML]
+tags: [AIML]
+description: Short summary here
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Attention Mechanism | Rami RK</title>
+	<!-- MathJax for equation rendering -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+	<style>
+  :root{
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --muted: #6b7280;
+    --border: #e1e7f5;
+    --shadow: 0 18px 45px rgba(0,0,0,0.12);
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.08);
+    --accent: #667eea;
+    --accent2: #764ba2;
+    --link: #2980b9;
+    --note-bg: #f1f5ff;
+    --quote-bg: #f8f9fb;
+  }
+
+  :root[data-theme="dark"]{
+    --bg: #0b1220;
+    --card: #0f172a;
+    --text: #e5e7eb;
+    --muted: #a1a1aa;
+    --border: rgba(255,255,255,0.10);
+    --shadow: 0 18px 45px rgba(0,0,0,0.55);
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.40);
+    --accent: #7c8cff;
+    --accent2: #a879ff;
+    --link: #7dd3fc;
+    --note-bg: rgba(124,140,255,0.10);
+    --quote-bg: rgba(125,211,252,0.08);
+	--toc-top: 260px;
+  }
+
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+  }
+	 html {
+	  scroll-behavior: smooth;
+	}
+
+  .progress-bar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    z-index: 9999;
+  }
+
+  .article-wrapper{
+    max-width: 980px;
+    margin: 3rem auto;
+    background: var(--card);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .hero{
+    padding: 2.6rem 2.2rem 2.1rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+  }
+
+  .hero-top{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .hero h1{
+    margin: 0 0 0.5rem 0;
+    font-size: 2.2rem;
+    line-height: 1.25;
+  }
+  .hero p{
+    margin: 0.2rem 0;
+    opacity: 0.9;
+  }
+
+  .theme-toggle{
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.14);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.5rem 0.7rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.12s ease, background 0.12s ease;
+    flex: 0 0 auto;
+  }
+  .theme-toggle:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.18); }
+  .theme-toggle:active{ transform: translateY(0px); }
+
+	.content-shell{
+	  display: block;
+	  padding: 2rem 2.2rem 2.6rem;
+
+	  /* push content right to make space for fixed TOC */
+	  padding-left: calc(250px + 2.2rem + 18px);
+	}
+
+
+  .toc{
+	  position: fixed;
+	  top: var(--toc-top, 260px);                 /* leaves space for the progress bar/header area */
+	  left: max(16px, calc((100vw - 980px)/2));  /* aligns with your centered card */
+	  width: 250px;
+
+	  max-height: calc(100vh - 90px);
+	  overflow: auto;
+
+	  background: rgba(255,255,255,0.55);
+	  border: 1px solid var(--border);
+	  border-radius: 14px;
+	  padding: 1rem 1rem;
+	  box-shadow: var(--shadow-soft);
+	  backdrop-filter: blur(8px);
+	  z-index: 50;
+  }
+  :root[data-theme="dark"] .toc{
+    background: rgba(15,23,42,0.65);
+  }
+	 .toc-top a {
+	  font-weight: 600;
+	  color: var(--accent);
+	}
+
+	.toc-top a:hover {
+	  text-decoration: underline;
+	}
+
+  
+  .toc-title{
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+  }
+  .toc ul{
+    margin: 0.2rem 0 0;
+    padding-left: 1.1rem;
+  }
+  .toc a{
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+  .toc a:hover{ text-decoration: underline; }
+  .toc a.active{ color: var(--text); font-weight: 600; }
+
+  .article-content{ min-width: 0; }
+  
+  .visitor-counter {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+  h2{
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.4rem;
+    color: var(--text);
+    border-left: 4px solid var(--accent);
+    padding-left: 0.6rem;
+  }
+  h3{
+    margin-top: 1.6rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+    color: var(--text);
+    opacity: 0.9;
+  }
+  p{ margin: 0.4rem 0; text-align: justify; }
+
+  ul{ padding-left: 1.4rem; }
+  li{ margin: 0.3rem 0; }
+
+  .note{
+    background: var(--note-bg);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .quote{
+    background: var(--quote-bg);
+    border-left: 4px solid var(--link);
+    padding: 1.2rem 1.4rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    border-radius: 10px;
+  }
+
+  code{
+    background: rgba(148,163,184,0.18);
+    padding: 0.15rem 0.35rem;
+    border-radius: 6px;
+    font-size: 0.92rem;
+  }
+
+  .image{
+    text-align: center;
+    margin: 2rem 0;
+  }
+  .image img{
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+  }
+  .image p{
+    margin-top: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-style: italic;
+	text-align: center;
+  }
+
+  img{
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+  }
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+  th, td{
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th{
+    background: rgba(148,163,184,0.12);
+    font-weight: 600;
+  }
+
+  /* Definition / Theorem / Example boxes (ready to use) */
+  .callout{
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+    margin: 1.5rem 0;
+    background: rgba(148,163,184,0.08);
+  }
+  .callout-title{
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+  .definition{ border-left: 5px solid var(--accent); }
+  .theorem{ border-left: 5px solid var(--accent2); }
+  .example{ border-left: 5px solid var(--link); }
+
+  a{ color: var(--link); text-decoration: none; }
+  a:hover{ text-decoration: underline; }
+
+  footer{
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 1.5rem 0 2rem;
+  }
+
+  @media (max-width: 980px){
+    .article-wrapper{ margin: 1.5rem; }
+    .content-shell{ grid-template-columns: 1fr; }
+    .toc{ position: relative; top: auto; }
+  }
+
+  @media (max-width: 600px){
+    .hero{ padding: 2.2rem 1.3rem 1.9rem; }
+    .hero h1{ font-size: 1.7rem; }
+    .content-shell{ padding: 1.4rem 1.3rem 2.2rem; }
+  }
+  @media (max-width: 980px){
+	  .toc{
+		position: relative;
+		top: auto;
+		left: auto;
+		width: auto;
+		max-height: none;
+		overflow: visible;
+		margin-bottom: 1rem;
+	  }
+
+	  .content-shell{
+		padding-left: 1.3rem;  /* normal padding on mobile */
+	  }
+	}
+
+
+  
+  
+</style>
+</head>
+
+<body>
+  <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+  <div id="top"></div>
+  <div class="article-wrapper">
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-text">
+          <h1>Self-Attention Mechanism</h1>
+        <p>From intuition to Scaled Dot-Product Attention</p>
+        <p>Part of the Transformers & Attention series</p>
+        </div>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span class="toggle-icon" aria-hidden="true">🌙</span>
+        </button>
+      </div>
+    </section>
+
+    <div class="content-shell">
+		<nav class="toc" aria-label="On this page">
+		  <div class="toc-title">On this page</div>
+		  <ul>
+			<li class="toc-top"><a href="#top">↑ Back to top</a></li>
+			<li><a href="#calculation-of-attention-weights">Calculation of Attention weights</a></li>
+			<li><a href="#introducing-queriesq-keysk-and-valuesv">Introducing Queries(Q), Keys(K), and Values(V)</a></li>
+			<li><a href="#database-analogy-for-queriesq-keysk-and-valuesv">Database Analogy for Queries(Q), Keys(K) and Values(V)</a></li>
+			<li><a href="#how-does-self-attention-help-in-contextual-understanding">How does self-attention help in contextual understanding?</a></li>
+		  </ul>
+		</nav>
+      <main class="article-content">
+        <p>Most of the popular language models are Transformer-based architectures that use an important technique called 'self-attention'. The 'self-attention' is a little different from the attention mechanism used in the RNN-based encoder-decoder model. Let's first try to understand the intuition before delving into mathematical details and equations.</p>
+
+        <p>The primary function of self-attention is to generate context-aware vectors from the input sequence itself rather than considering both input and output as in the RNN-based encoder-decoder architecture. See the example below shown in Fig. 1 (Ref. Deep Learning with Python by François Chollet).</p>
+        
+        <!-- Keep original image links as-is -->      
+	   
+	    <div class="image">
+			<img src="{{ '/assets/img/self-attention/attention_matrix.png' | relative_url }}" 
+			alt="Figure 1" 
+			width="850" height="600">
+			<p>Figure 1</p>
+		</div>
+	    
+        <p>In this example, there are 7 sequences in the sentence 'the train left the station on time', and we can see 
+		there is a 7x7 attention score matrix. For the time being, let's say we somehow obtained these attention score values.</p>
+
+        <p>According to the self-attention scores depicted in the picture, the word 'train' pays more attention to the 
+		word 'station' rather than other words in consideration, such as 'on' or 'the'. Alternatively, we can say the word 'station'
+		pays more attention to the word 'train' rather than other words in consideration, such as 'on' or 'the'.</p>
+
+        <p>The attention scores of each word in a sequence with all other words can be calculated, and the same is shown in 
+		the figure as a 7x7 score matrix. The self-attention model allows inputs to interact with each other 
+		(i.e., calculate the attention of all other inputs with one input).</p>
+
+        <p>Attention scores help in understanding the contextual meaning of a word in a given sentence. For example, here the word 
+		'station' has been used in the context of a train station, not in other contexts like a gas station or a bus station, etc.</p>
+
+        <p>The attention score is computed through cosine similarity, i.e., the dot product of two-word vectors, which assesses
+		the strength of their relationship or the degree of similarity between the words being compared. Obviously, there are
+		many other mathematical aspects to consider, which will be discussed subsequently.</p>
+
+        <p>These attention scores are utilized as weights for calculating the weighted sum of all the words in the sentence.
+		For example, when representing the word 'station', the words closely related to 'station' will contribute more to 
+		the sum (including the word 'station' itself), while irrelevant words will contribute almost nothing. 
+		The resulting vector serves as a new representation for 'station': one that incorporates the surrounding context. 
+		Specifically, it includes part of the 'train' vector, thereby clarifying that it is, indeed, a 'train station'.</p>
+		
+		<div class="note">
+		<p>Let’s understand the above paragraph by writing a mathematical equation as given below, where \( A(i) \), \(\alpha(i,j)\) are 
+		weighted sum (termed as attention vector) and attention scores (weights) respectively, and individual word vectors 
+		are represented by \(x_j\). The ‘\(T_x\)' represents the total number of terms in the sequence.</p>
+		
+		\( A(i) = \sum_{j=1}^{T_x} \alpha(i,j) x_j \)
+		</div>
+		<p>Unfolding above equation, when i is equal to a word 'train' i.e. , i = train:</p>
+
+		        <!-- Keep original image links as-is -->
+ 	   <div class="image">
+			<img src="{{ '/assets/img/self-attention/unfolding_attention_vector.png' | relative_url }}" 
+			alt="Figure"
+			width="650" height="400">
+		</div>
+
+		<p>This process is iterated for every word in the sentence, yielding a new sequence of vectors that encode the sentence.</p>
+
+        <h2 id="calculation-of-attention-weights">Calculation of Attention weights</h2>
+        <p>Before delving into the mathematical details of the self-attention mechanism, let's revisit the equations and terms derived from the attention mechanism in RNN-based encoder-decoder architectures (as explained in my initial article: 'Birth of Attention Mechanism'). Although it's not necessary, to begin with the RNN-based attention mechanism to grasp self-attention, comparing term by term would facilitate comprehension and help us understand how identical concepts are used in both.</p>
+
+        <p>A conceptual diagram is shown in Fig. 2 below to depict the attention mechanism in the RNN-based encoder-decoder model, where symbols have their usual meaning.</p>
+
+        <!-- Keep original image links as-is -->
+		
+		<div class="image">
+			<img src="{{ '/assets/img/self-attention/context_vector.png' | relative_url }}"
+				 alt="Figure 2"
+				 width="400" height="300">
+			<p>Figure 2</p>
+		</div>
+
+		<div class="note">
+            <p><strong>Recall, in case of Attention in RNN based encoder-decoder model:</strong></p>
+            <p><strong>Context vector:</strong> \( C(i)=\sum_{j=1}^{T_x} \alpha_{i,j}h(j) \)</p>
+            <p><strong>score:</strong> \( e_{i,j} = f( S_{i-1}, h_j ) \)</p>
+            <p><strong>Attention Score (SoftMax of score):</strong> \( \alpha_{i,j} = \frac{ \exp(e_{i,j})}{\sum_{k=1}^{T} \exp(e_{i,k})} \)</p>
+        </div>
+
+        <p>In Self-Attention, we get rid of RNN units and calculate the context-aware vectors from the input sequence itself. A conceptual diagram is shown in Fig. 3 below to depict the Self-attention. Suppose we have a sequence of feature vectors (embeddings) \( X_1 \), \( X_2 \) all the way up to \( X_T \), in this case, T equals 4. We can use the concept of cosine similarity, which measures sameness or relatedness, to calculate scores and finally obtain the SoftMax, which can be used in the context vector as given below.</p>
+
+        <p>In case of Self attention, score is cosine similarity, i.e. dot product of input sequence with itself.</p>
+        <p>Thus,</p>
+        <div class="note">
+            <p><strong>score:</strong> \( X_i ^{T}. X_j \); [Dot product of input vector with itself.]</p>
+            <p><strong>Attention Score:</strong> \( \alpha_{i,j} = SoftMax(score/const.) \) [Dividing by a constant to control the variance]</p>
+            <p><strong>Self-Attention Vector:</strong> \( A(i)=\sum_{j=1}^{T_x} \alpha_{i,j}x(j) \)</p>
+        </div>
+        <p>Here, h(j) is replaced by \( x_j \) and notation is changed from C to A as we call it 'Attention Vector' instead of 'context vector'.</p>
+
+        <div class="image">
+			<img src="{{ '/assets/img/self-attention/attention_vector.png' | relative_url }}"
+				 alt="Figure 3"
+				 width="300" height="250">
+			<p>Figure 3</p>
+		</div>
+		
+		<p><strong>Self-Attention in vectorized form: \( SoftMax( \frac{X_i ^{T}. X_j } {const.}). x_j \)  ---------(I)</strong></p>
+
+        <br><br>
+		Table 1 shown below presents the side-by-side comparison of Self Attention Mechanism and RNN based Attention Mechanism.
+		<br><br>
+		<h4><center>Table 1:  Comparison of Self attention and RNN based Attention</center></h4>
+        <div class="image">
+			<img src="{{ '/assets/img/self-attention/table_comparison.png' | relative_url }}"
+				 alt="Figure"
+				 width="600" height="450">
+		</div>		
+			
+        <h2 id="introducing-queriesq-keysk-and-valuesv">Introducing Queries(Q), Keys(K), and Values(V)</h2>
+        <p>We computed the Self-Attention vector, as derived above, based on the inputs of the vectors themselves.</p>
+        <p>This means that for fixed inputs, these attention weights would always be fixed. In other words, there are no learnable parameters. This is problematic and needs to be fixed by introducing some learnable parameters that will make the self-attention mechanism more flexible and tunable for various tasks. To fulfill this purpose, three trainable weight matrices are introduced and multiplied with input \( X_i \) separately, and three new terms Queries(Q), Keys(K), and Values(V) come into the picture as given by the equations below. Vectorized implementation & Shape tracking are also shown in subsequent steps.</p>
+
+        <p>Assume input 'X' is a sequence of 'T' time steps or in simple words a sentence with 'T' words and each word is represented by an Embedding vector of dimension ' \( d_{model} \) '. Fig. 4 below is showing multiple sentence samples (Xi's) in rows S1, S2, S3, and so on, and words by column as ti=1, 2, 3, ..., ti=T, which is say, up to 100.</p>
+
+        
+		<div class="image">
+            <img src="{{ '/assets/img/self-attention/input_data_sample.png' | relative_url }}" 
+			alt="Figure 4" 
+			width="550" height="300">
+            <p>Figure 4</p>
+        </div>
+		
+		Notation and dimensions are followed as per the paper <a href="https://arxiv.org/pdf/1706.03762v6.pdf">‘
+		Attention Is All You Need’</a>. Table 2 of shapes and Fig. 6 are taken from this paper.
+		
+		
+		<p>shape of \( X \rightarrow T \times d_{model} \)</p>
+        <p>\( d_{model} \) = Embedding vector for each word (512 as per the paper)</p>
+
+        <div class="note">
+            <p><strong>Queries:</strong> \( Q = XW^Q \); Where \( W^Q \) is weight matrix introduced to calculate Q from X.</p>
+            <p><strong>Keys:</strong> \( K = XW^K \); Where \( W^K \) is weight matrix introduced to calculate K from X.</p>
+            <p><strong>Values:</strong> \( V = XW^V \); Where \( W^V \) is weight matrix introduced to calculate V from X.</p>
+        </div>
+
+        <p><strong>Shape tracking →</strong> (shape of X ) Matrix multiplication (shape of Weight Matrix ) → Output shape</p>
+        <p>\( Q = XW^Q \rightarrow (T \times d_{model})* (d_{model} × d_k) \rightarrow (T \times d_k) \)</p>
+        <p>\( K = XW^K \rightarrow (T \times d_{model})* (d_{model} × d_k) \rightarrow (T \times d_k) \)</p>
+        <p>\( V = XW^V \rightarrow (T \times d_{model})* (d_{model} × d_v) \rightarrow (T \times d_v) \)</p>
+
+        <p>Finally, substituting Q, K, V, and const. \( = \sqrt{d_k} \) ( \( d_k \) dimensionality of the key vector) in above self-attention eqn. (I), we get equation for attention as given below:</p>
+
+        <div class="quote">
+            <p><strong>Attention(Q,K,V) = \( SoftMax( \frac{QK^{T}} {\sqrt{d_k}})V \) ---------(II)</strong></p>
+        </div>
+
+		<p>Fig.5 below is a graphical representation of obtaining Q, K, and V from input X and feeding into equation (II) above.<br><br>
+		
+		<div class="image">
+            <img src="{{ '/assets/img/self-attention/scaled_dor_product_depiction1.png' | relative_url }}" 
+			alt="Figure 5" 
+			width="600" height="250">
+            <p>Figure 5</p>
+        </div>
+		
+		<p>Above attention eqn. (II) is also termed as <b>Scaled Dot Product Attention</b> depicted by Fig. 6 given below.</p>
+
+        <div class="image">
+            <img src="{{ '/assets/img/self-attention/scaled_dot_product_shapes1_m.png' | relative_url }}" 
+			alt="Figure 6" 
+			width="600" height="250">
+            <p>Figure 6<p>
+        </div>
+		
+	    \( \text{Shape of } QK^T \rightarrow (T \times d_k) \times (d_k \times T) \rightarrow (T \times T) \)
+
+
+        <p>And finally, the shape of final attention output: \( (T \times T) * (T \times d_v) → (T \times d_v) \)</p>
+        <p>If we consider a batch of N samples at a time for processing, then above shape will be: \( N \times T \times d_v \).</p>
+        <p>Please note that the shapes of \( W^Q, W^K, W^V \) are chosen in a way that matrix multiplication with input 'X' is possible. The values of \( d_k, d_v , d_{model} \) are hyperparameters and the table of shapes above shows the values used by the author in the paper.</p>
+
+        <h2 id="database-analogy-for-queriesq-keysk-and-valuesv">Database Analogy for Queries(Q), Keys(K) and Values(V)</h2>
+        <p>In the context of databases, queries are used to interact with databases to retrieve or manipulate data, keys are used to uniquely identify records and establish relationships between tables, and values are the actual data stored in the fields of a database table. The same kind of analogy exists in Self-attention Q, K, and V as well, as shown in Fig. 7 below.</p>
+
+        <div class="image">
+            <img src="{{ '/assets/img/self-attention/database_inspiration.png' | relative_url }}" 
+			alt="Figure 7" 
+			width="600" height="250">
+            <p>Figure 7<p>
+        </div>
+		
+		<p>In self-attention, every word acts as a query once, while the entire words in the sequence act as keys, and attention weights are calculated to figure out which key matches with the query.</p>
+
+        <p>Finally, the words (represented as vectors) are treated as values, and attention weights are used to form a weighted sum of the values, resulting in an attention vector. The attention vector for the word 'check' will be the weighted sum of the value vectors.</p>
+
+        <h2 id="how-does-self-attention-help-in-contextual-understanding">How does self-attention help in contextual understanding?</h2>
+        <p>In the example we looked at, we were figuring out the meaning of a word. So, if we just see the word 'check' by itself, it could mean different things. But when we look at the other words in the sentence, like 'cashed' and 'bank', it helps us understand that in this context 'check' refers to a financial document, not something like checking your homework or check in chess.</p>
+
+        <div class="note">
+            <p><strong>A few points to notice:</strong></p>
+            <ul>
+                <li>Every word must have an attention weight with every other word, i.e., for T number of terms, T² computations are required to calculate attention weights.</li>
+                <li>Q, K, and V are calculated independently, resulting in parallelization, unlike in RNN where h(t-1) must be computed before h(t).</li>
+                <li>Self-attention can handle sequences of any length, unlike RNN, which has trouble with vanishing gradients.</li>
+            </ul>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <footer>
+      <p>&copy; 2025 Rami RK — Self-Attention Notes</p>
+	  <p class="visitor-counter">👁️ Visitors: <span id="counter">—</span></p>
+  </footer>
+
+  <script>
+    (function() {
+      const bar = document.getElementById('progressBar');
+      const onScroll = () => {
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const scrollHeight = doc.scrollHeight - doc.clientHeight;
+        const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+        bar.style.width = pct + '%';
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
+    (function() {
+      const key = 'rk_theme';
+      const btn = document.getElementById('themeToggle');
+      const icon = btn.querySelector('.toggle-icon');
+
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const saved = localStorage.getItem(key);
+      const initial = saved ? saved : (prefersDark ? 'dark' : 'light');
+
+      const apply = (mode) => {
+        document.documentElement.dataset.theme = mode;
+        icon.textContent = mode === 'dark' ? '☀️' : '🌙';
+        localStorage.setItem(key, mode);
+      };
+
+      apply(initial);
+
+      btn.addEventListener('click', () => {
+        const current = document.documentElement.dataset.theme || 'light';
+        apply(current === 'dark' ? 'light' : 'dark');
+      });
+    })();
+
+    (function() {
+      const links = Array.from(document.querySelectorAll('.toc a'));
+      const sections = links
+        .map(a => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+
+      if (!('IntersectionObserver' in window) || sections.length === 0) return;
+
+      const setActive = (id) => {
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      };
+
+      const obs = new IntersectionObserver((entries) => {
+        const visible = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible && visible.target && visible.target.id) setActive(visible.target.id);
+      }, {
+        rootMargin: '0px 0px -70% 0px',
+        threshold: [0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
+      });
+
+      sections.forEach(s => obs.observe(s));
+    })();
+  </script>
+  <script src="/counter.js"></script>
+</body>
+</html>

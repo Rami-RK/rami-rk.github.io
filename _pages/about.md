@@ -14,7 +14,7 @@ profile:
     <p><strong>🔗 LinkedIn:</strong> <a href="https://www.linkedin.com/in/ramendra-kumar-57334478/" target="_blank">Ramendra Kumar</a></p>
 
 selected_papers: false # includes a list of papers marked as "selected={true}"
-social: true # includes social icons at the bottom of the page
+social: false # includes social icons at the bottom of the page
 
 announcements:
   enabled: false # includes a list of news items
@@ -41,10 +41,10 @@ The real magic happens when **mathematics meets data, algorithms, and computatio
 
 **Currently working at Volkswagen (Scania)**, focused on real-world AI solutions from classical ML to transformer-based NLP (BERT/GPT variants), RAG, and production MLOps/LLMOps on AWS.
 
-## 🚀 Current Work
+### 🚀 Current Work
 Multi-modal RAG pipelines, AWS Bedrock agents, Document processing with OCR & multilingual NLP.
 
-## 💻 Tech Stack
+### 💻 Tech Stack
 **Machine Learning, MLOps, Deep Learning, CV, NLP**: BERT, GPT, LLMs  
 **Python**: NumPy, Pandas, Matplotlib, Scikit-Learn, TensorFlow/Keras, PyTorch  
 **AWS**: SageMaker, Bedrock, EC2, ECR-ECS-Fargate
