@@ -9,7 +9,7 @@ profile:
   image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
-    <p><strong>Location:</strong> Delhi, NCR, India</p>
+    <p><strong>📍Location:</strong> Delhi, NCR, India</p>
     <p><strong>Email:</strong> <a href="mailto:karna.ramenk@gmail.com">karna.ramenk@gmail.com</a></p>
     <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/ramendra-kumar-57334478/" target="_blank">Ramendra Kumar</a></p>
 
@@ -52,10 +52,10 @@ meaningful, real-world impact.
 **Currently working at Volkswagen (Scania)**, focused on real-world AI solutions from classical
 ML to transformer-based NLP (BERT/GPT variants), RAG, and production MLOps/LLMOps on AWS.
 
-### Current Work
+#### 🚀Current Work
 Multi-modal RAG pipelines, AWS Bedrock agents, Document processing with OCR & multilingual NLP.
 
-### Tech Stack
+#### 💻Tech Stack
 **Machine Learning, MLOps, Deep Learning, CV, NLP**: BERT, GPT, LLMs  
 **Python**: NumPy, Pandas, Matplotlib, Scikit-Learn, TensorFlow/Keras, PyTorch  
 **AWS**: SageMaker, Bedrock, EC2, ECR-ECS-Fargate
