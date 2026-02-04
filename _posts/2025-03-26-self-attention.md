@@ -36,8 +36,9 @@ These attention scores are utilized as weights for calculating the weighted sum 
 
 Let’s understand the above paragraph by writing a mathematical equation as given below, where $$ A(i),  \alpha(i,j) $$ are weighted sum (termed as attention vector) and attention scores (weights) respectively, and individual word vector is represented by  $$ x_j $$ . $$ T_x $$ represents the total number of terms in the sequence.
 
-> **Note** : The attention vector and weights can be written as:
-> $$ A(i) = \sum_{j=1}^{T_x} \alpha(i,j) x_j $$
+**Note** : The attention vector and weights can be written as:
+
+$$ A(i) = \sum_{j=1}^{T_x} \alpha(i,j) x_j $$
 
 Unfolding the equation for the word "train":
 
@@ -53,11 +54,11 @@ This process is iterated for every word in the sentence, yielding a new sequence
 ---
 ### Calculation of Attention Weights
 
-Before delving into the mathematical details of the self-attention mechanism, let’s revisit the equations and terms derived from the attention mechanism in RNN-based encoder-decoder architectures (as explained in my initial article: ‘Birth of Attention Mechanism’). Although it’s not necessary, to begin with the RNN-based attention mechanism to grasp self-attention, comparing term by term would facilitate comprehension and help us understand how identical concepts are used in both.
+Before delving into the mathematical details of the self-attention mechanism, let’s revisit the equations and terms derived from the attention mechanism in RNN-based encoder-decoder architectures (as explained in my initial article: [Birth of Attention Mechanism](/blog/2024/birth-of-attention-mechanism/) ). Although it’s not necessary, to begin with the RNN-based attention mechanism to grasp self-attention, comparing term by term would facilitate comprehension and help us understand how identical concepts are used in both.
 
 A conceptual diagram is shown in Fig. 2 below to depict the attention mechanism in the RNN-based encoder-decoder model, where symbols have their usual meaning.
 
-{% include figure.liquid path="assets/img/self-attention/context_vector.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 2" width="40%" %}
+{% include figure.liquid path="assets/img/self-attention/context_vector.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 2" max-width="65%" %}
 
 **Recall: in the case of Attention in RNN based encoder-decoder model:**
 
@@ -82,7 +83,7 @@ In the case of Self-attention, the score is cosine similarity, i.e. dot product 
 
 Here $$ h(j) $$ is replaced by $$ x_j $$ and notation is changed from **C** to **A** as we call it **"Attention Vector"** insted of "context vector."
 
-{% include figure.liquid path="assets/img/self-attention/attention_vector.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 3" width="40%" %}
+{% include figure.liquid path="assets/img/self-attention/attention_vector.png" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 3" max-width="65%" %}
 
 **Self-attention in vectorized form:**
 
@@ -112,7 +113,7 @@ Assume input ‘X’ is a sequence of ‘T’ time steps or in simple words a se
   caption="Figure 4"
 %}
 
-Notation and dimensions are followed as per the paper ‘Attention Is All You Need’. Table 2 of shapes and Fig. 6 are taken from this paper.
+Notation and dimensions are followed as per the paper [Attention Is All You Need](https://arxiv.org/abs/1706.03762){:target="_blank"}. Table 2 of shapes and Fig. 6 are taken from this paper.
 
 **Shape of** $$ X \rightarrow (T \times d_{model}) $$
 
