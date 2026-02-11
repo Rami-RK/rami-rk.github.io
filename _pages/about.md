@@ -9,10 +9,10 @@ profile:
   image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
-    <div style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-top: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-      <p style="margin-bottom: 8px;"><strong>📍</strong> Delhi, NCR, India</p>
-      <p style="margin-bottom: 8px;"><strong>✉️ </strong> <a href="mailto:karna.ramenk@gmail.com">karna.ramenk@gmail.com</a></p>
-      <p style="margin-bottom: 0;"><strong>💼 </strong> <a href="https://www.linkedin.com/in/ramendra-kumar-57334478/" target="_blank">LinkedIn</a></p>
+    <div style="background-color: var(--global-card-bg-color); border: 1px solid var(--global-divider-color); border-radius: 8px; padding: 15px; margin-top: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+      <p style="margin-bottom: 8px; color: var(--global-text-color);"><strong>📍</strong> Delhi, NCR, India</p>
+      <p style="margin-bottom: 8px; color: var(--global-text-color);"><strong>✉️ </strong> <a href="mailto:karna.ramenk@gmail.com">karna.ramenk@gmail.com</a></p>
+      <p style="margin-bottom: 0; color: var(--global-text-color);"><strong>💼 </strong> <a href="https://www.linkedin.com/in/ramendra-kumar-57334478/" target="_blank">LinkedIn</a></p>
     </div>
 
 selected_papers: false # includes a list of papers marked as "selected={true}"

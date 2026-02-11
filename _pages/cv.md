@@ -19,18 +19,23 @@ toc:
   .cv-content {
     font-family: Arial, Helvetica, sans-serif;
     margin: 24px;
-    color: #000;
+    color: var(--global-text-color);
     line-height: 1.4;
   }
 
   .cv-content a {
-    color: #000;
+    color: var(--global-theme-color);
     text-decoration: none;
+  }
+
+  .cv-content a:hover {
+    text-decoration: underline;
   }
 
   .cv-content p {
     margin: 6px 0;
     font-size: 14px;
+    color: var(--global-text-color);
   }
 
   .cv-content ul {
@@ -40,6 +45,11 @@ toc:
   .cv-content li {
     margin-bottom: 4px;
     font-size: 14px;
+    color: var(--global-text-color);
+  }
+
+  .cv-content strong {
+    color: var(--global-text-color);
   }
 
   /* ===============================
@@ -66,6 +76,7 @@ toc:
   .cv-content .text h2 {
     margin: 0 0 8px 0;
     font-size: 26px;
+    color: var(--global-text-color);
   }
 
   .cv-content .text p {
@@ -79,8 +90,9 @@ toc:
     margin-top: 18px;
     margin-bottom: 6px;
     font-size: 16px;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid var(--global-divider-color);
     padding-bottom: 3px;
+    color: var(--global-text-color);
   }
 
   /* ===============================
@@ -89,6 +101,7 @@ toc:
   @media print {
     .cv-content {
       margin: 18mm;
+      color: #000;
     }
 
     .cv-content .container,
@@ -100,13 +113,24 @@ toc:
       color: black;
       text-decoration: none;
     }
+
+    .cv-content p,
+    .cv-content li,
+    .cv-content h3,
+    .cv-content strong {
+      color: #000;
+    }
+
+    .cv-content h3 {
+      border-bottom-color: #000;
+    }
   }
 
   /* ===============================
      ICON SETTINGS
      =============================== */
   .cv-content .text a {
-    color: #0a66c2; /* LinkedIn blue */
+    color: var(--global-theme-color);
     text-decoration: none;
   }
 
@@ -115,7 +139,7 @@ toc:
   }
 
   .cv-content .phone-icon {
-    color: #0a66c2; /* Blue (LinkedIn-style) */
+    color: var(--global-theme-color);
   }
 </style>
 
