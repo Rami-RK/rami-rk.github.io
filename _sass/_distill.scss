@@ -2,6 +2,27 @@
  * Style overrides for distill blog posts.
  ******************************************************************************/
 
+// Increase content width for distill articles
+d-title,
+d-byline,
+d-article {
+  --main-content-width: 800px;
+
+  & > * {
+    grid-column: text;
+  }
+}
+
+d-title {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 0;
+
+  h1 {
+    font-size: 1.75rem !important;
+  }
+}
+
 d-byline {
   border-top-color: var(--global-divider-color) !important;
 }
@@ -31,6 +52,28 @@ d-article {
   table {
     color: var(--global-text-color) !important;
   }
+
+  // Reduce spacing between sections
+  h2,
+  h3 {
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  p {
+    margin-bottom: 0.75rem !important;
+  }
+
+  figure {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  hr {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
   h1,
   h2,
   hr,
@@ -50,6 +93,8 @@ d-article {
   }
   blockquote {
     border-left: 2px solid var(--global-theme-color) !important;
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
   }
 
   // Style taken from code blocks
@@ -108,7 +153,7 @@ d-article {
         display: block;
         outline: none;
         margin-bottom: 0.8em;
-        color: rgba(0, 0, 0, 0.8);
+        color: var(--global-text-color);
         font-weight: bold;
       }
       ul {
@@ -164,6 +209,21 @@ d-appendix {
       color: var(--global-hover-color) !important;
     }
   }
+}
+
+// Hide border and reduce spacing for appendix when empty
+d-appendix:empty,
+d-appendix:not(:has(d-footnote-list:not(:empty))):not(:has(d-citation-list:not(:empty))) {
+  border-top: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+// Remove border from the second d-article (related posts section)
+.post.distill > d-article:last-of-type {
+  border-top: none !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 @media (max-width: 1024px) {

@@ -165,6 +165,11 @@ ul.task-list input[type="checkbox"] {
   margin-top: 0.75rem;
   margin-bottom: 1.5rem;
   text-align: center;
+  color: var(--global-text-color);
+}
+
+figcaption {
+  color: var(--global-text-color);
 }
 
 // Card
@@ -607,6 +612,11 @@ footer.sticky-bottom {
     list-style: none;
     padding-top: 2rem;
     padding-bottom: 2rem;
+
+    h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
 
     .post-meta {
       color: var(--global-text-color-light);
@@ -1180,6 +1190,10 @@ nav[data-toggle="toc"] {
   a {
     color: var(--global-text-color-light);
     text-decoration: none;
+
+    .card-title {
+      font-size: 1.1rem;
+    }
 
     .card-text {
       overflow: hidden;
