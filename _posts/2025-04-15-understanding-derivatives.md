@@ -78,9 +78,11 @@ $$ \left(\frac{dy}{dx}\right)_{(2,6)} = 2 \times 2 = 4 $$
 So, we got the slope ($$ m = 4 $$) of the tangent line that passes through the point $$ (x_0 = 2, y_0 = 6) $$ on the curve $$ y = x^2 + 2 $$.
 
 To plot the tangent line, we can use the point-slope form of the straight-line equation, demonstrated below.
+
 <div style="text-align: center;">
 {% include figure.liquid path="assets/img/derivatives/slope_point_eqn.png" class="img-fluid rounded z-depth-1" zoomable=true max-width="70%" %}
 </div>
+
 $$ 4 = \frac{y - 6}{x - 2} $$
 
 $$ 4x - 8 = y - 6 $$
