@@ -55,7 +55,7 @@ meaningful, real-world impact.
 ML to transformer-based NLP (BERT/GPT variants), RAG, and production MLOps/LLMOps on AWS.
 
 #### 🚀Current Work
-Multi-modal RAG pipelines, AWS Bedrock agents, Document processing with OCR & multilingual NLP.
+Multi-modal Document processing, OCR & multilingual NLP pipelines, Agents.
 
 #### 💻Tech Stack
 **Machine Learning, MLOps, Deep Learning, CV, NLP**: BERT, GPT, LLMs  
