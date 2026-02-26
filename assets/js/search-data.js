@@ -27,7 +27,7 @@ ninja.data = [{
         
           title: "Continuous Distribution &amp; PDF",
         
-        description: "From discrete outcomes to continuous intervals - understanding probability density functions.",
+        description: "Understand continuous probability distributions and PDF. Learn how histograms become density functions with intuitive manufacturing examples.",
         section: "Posts",
         handler: () => {
           
@@ -38,7 +38,7 @@ ninja.data = [{
         
           title: "Normal Distribution",
         
-        description: "From Histogram to Normal Distribution.",
+        description: "Complete guide to Normal (Gaussian) distribution. Learn standard normal, mean, variance, sigma, and why it matters for machine learning algorithms.",
         section: "Posts",
         handler: () => {
           
@@ -49,7 +49,7 @@ ninja.data = [{
         
           title: "Random Variables",
         
-        description: "Building the intuition of random variables, starting with a coin toss.",
+        description: "Understand random variables with intuitive examples. Learn discrete vs continuous random variables, PMF, PDF, and probability distributions for machine learning.",
         section: "Posts",
         handler: () => {
           
@@ -60,7 +60,7 @@ ninja.data = [{
         
           title: "Understanding Derivatives",
         
-        description: "Building intuition and physical meaning of derivatives with simple examples.",
+        description: "Learn derivatives intuitively with visual examples. Understand slope, rate of change, gradient, and why derivatives matter for gradient descent in ML.",
         section: "Posts",
         handler: () => {
           
@@ -71,7 +71,7 @@ ninja.data = [{
         
           title: "Self Attention",
         
-        description: "From intuition to scaled dot-product attention.",
+        description: "Master self-attention mechanism in transformers. Learn Queries, Keys, Values, scaled dot-product attention with intuitive examples and mathematical derivations.",
         section: "Posts",
         handler: () => {
           
@@ -82,7 +82,7 @@ ninja.data = [{
         
           title: "Transformer Model Architecture",
         
-        description: "From encoders to masked attention and decoders - Transformer architecture demystified.",
+        description: "Complete guide to Transformer architecture. Learn encoder, decoder, multi-head attention, positional encoding, and masked attention with detailed explanations.",
         section: "Posts",
         handler: () => {
           
@@ -93,7 +93,7 @@ ninja.data = [{
         
           title: "Birth of Attention Mechanism",
         
-        description: "The evolution of attention in sequence-to-sequence models.",
+        description: "Learn how attention mechanism works in seq2seq encoder-decoder models. Understand context vectors, attention weights, and why attention solves the long sequence problem.",
         section: "Posts",
         handler: () => {
           
