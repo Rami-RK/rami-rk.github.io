@@ -1,11 +1,13 @@
 ---
 layout: distill
 title: Understanding Derivatives
-description: Building intuition and physical meaning of derivatives with simple examples.
-tags: [Math]
+description: Learn derivatives intuitively with visual examples. Understand slope, rate of change, gradient, and why derivatives matter for gradient descent in ML.
+tags: [Math, calculus, optimization]
 categories: [Math]
 date: 2025-04-15
 featured: true
+keywords: derivatives, calculus, slope, gradient, rate of change, gradient descent, optimization, machine learning math, differentiation, first principle
+og_image: /assets/img/derivatives/tangent_on_curve.png
 toc:
   - name: Calculating Slope using Derivative
   - name: Notation

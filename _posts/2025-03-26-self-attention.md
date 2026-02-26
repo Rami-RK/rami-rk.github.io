@@ -1,11 +1,13 @@
 ---
 layout: distill
 title: Self Attention
-description: From intuition to scaled dot-product attention.
-tags: [AIML]
+description: Master self-attention mechanism in transformers. Learn Queries, Keys, Values, scaled dot-product attention with intuitive examples and mathematical derivations.
+tags: [AIML, deep-learning, NLP, transformers]
 categories: [AIML]
 date: 2025-03-26
 featured: true
+keywords: self-attention, transformer, queries keys values, scaled dot-product attention, QKV, BERT, GPT, attention mechanism, deep learning, NLP
+og_image: /assets/img/self-attention/attention_matrix.png
 toc:
   - name: Overview
   - name: Calculation of Attention Weights

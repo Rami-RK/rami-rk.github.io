@@ -1,11 +1,13 @@
 ---
 layout: distill
 title: Normal Distribution
-description: From Histogram to Normal Distribution.
-tags: [Math]
+description: Complete guide to Normal (Gaussian) distribution. Learn standard normal, mean, variance, sigma, and why it matters for machine learning algorithms.
+tags: [Math, probability, statistics]
 categories: [Math]
 date: 2025-05-02
 featured: true
+keywords: normal distribution, gaussian distribution, standard normal, bell curve, mean variance, sigma, probability distribution, statistics, machine learning math
+og_image: /assets/img/random_variable_and_distribution/histogram_with_bell_curve.png
 toc:
   - name: Standard Normal
   - name: Normal Random Variable

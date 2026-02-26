@@ -1,11 +1,13 @@
 ---
 layout: distill
 title: Birth of Attention Mechanism
-description: The evolution of attention in sequence-to-sequence models.
-tags: [AIML]
+description: Learn how attention mechanism works in seq2seq encoder-decoder models. Understand context vectors, attention weights, and why attention solves the long sequence problem.
+tags: [AIML, deep-learning, NLP, transformers]
 categories: [AIML]
 date: 2024-03-26
 featured: true
+keywords: attention mechanism, seq2seq, encoder decoder, context vector, attention weights, neural machine translation, RNN, NLP, deep learning
+og_image: /assets/img/birth-of-attention-mechanism/rnn_with_attention.png
 toc:
   - name: Overview
   - name: Lets See the Decoder in Detail

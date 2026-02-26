@@ -1,11 +1,13 @@
 ---
 layout: distill
 title: Continuous Distribution & PDF
-description: From discrete outcomes to continuous intervals - understanding probability density functions.
-tags: [Math]
+description: Understand continuous probability distributions and PDF. Learn how histograms become density functions with intuitive manufacturing examples.
+tags: [Math, probability, statistics]
 categories: [Math]
 date: 2025-05-03
 featured: true
+keywords: continuous distribution, probability density function, PDF, histogram, continuous random variable, probability theory, statistics, machine learning math
+og_image: /assets/img/random_variable_and_distribution/continuous_distribution.png
 toc:
   - name: Probability Density Function
   - name: Example

@@ -1,11 +1,13 @@
 ---
 layout: distill
 title: Transformer Model Architecture
-description: From encoders to masked attention and decoders - Transformer architecture demystified.
-tags: [AIML]
+description: Complete guide to Transformer architecture. Learn encoder, decoder, multi-head attention, positional encoding, and masked attention with detailed explanations.
+tags: [AIML, deep-learning, NLP, transformers]
 categories: [AIML]
 date: 2024-03-27
 featured: true
+keywords: transformer architecture, multi-head attention, positional encoding, encoder decoder, masked attention, BERT, GPT, attention is all you need, deep learning, NLP
+og_image: /assets/img/transformer/tfr_full_archi.png
 toc:
   - name: Overview
   - name: Encoder

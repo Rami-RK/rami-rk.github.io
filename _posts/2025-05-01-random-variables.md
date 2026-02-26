@@ -1,11 +1,13 @@
 ---
 layout: distill
 title: Random Variables
-description: Building the intuition of random variables, starting with a coin toss.
-tags: [Math]
+description: Understand random variables with intuitive examples. Learn discrete vs continuous random variables, PMF, PDF, and probability distributions for machine learning.
+tags: [Math, probability, statistics]
 categories: [Math]
 date: 2025-05-01
 featured: true
+keywords: random variables, discrete random variable, continuous random variable, probability mass function, PMF, PDF, probability distribution, statistics, machine learning math
+og_image: /assets/img/random_variable_and_distribution/contineous_and_discrete.png
 toc:
   - name: Coin Toss Example
   - name: Rolling a Fair Six-Sided Die
