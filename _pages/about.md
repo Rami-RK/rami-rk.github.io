@@ -33,7 +33,7 @@ Welcome, everyone!
 
 I am Ramendra, and I love being called **Rami**.
 
-I am a passionate learner and educator, and I created this blog to share knowledge across
+I am a passionate learner, educator, and I created this blog to share knowledge across
 **Mathematics**, **Artificial Intelligence**, and **Machine Learning**. The content here spans a
 broad spectrum--from mathematical and statistical foundations to modern AI, Machine Learning,
 and Data Science applications.

@@ -221,8 +221,8 @@ toc:
        =============================== -->
   <h3>ACADEMIC DETAILS</h3>
   <ul>
-    <li>M.S. Mechanical Engineering (Thermal Science), CGPA: 8.57/10 – IIT Delhi, 2019</li>
-    <li>B.E. Mechanical Engineering, 70.82% – T.U. Kathmandu, Nepal, 2010</li>
+    <li>M.S. Mechanical Engineering (Thermal Science), IIT Delhi, 2019</li>
+    <li>B.E. Mechanical Engineering, T.U. Kathmandu, Nepal, 2010</li>
   </ul>
 
   <!-- ===============================
